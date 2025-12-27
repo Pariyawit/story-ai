@@ -1,22 +1,17 @@
 'use client';
 
+import { StoryBeat } from '@/types';
 import { useState, useEffect } from 'react';
 
 // Type definitions
 type GameState = 'START' | 'STORY';
-
-interface StoryBeat {
-  text: string;
-  choices: string[];
-  imagePlaceholder: string;
-}
 
 // Mock API function - returns hardcoded story beat after 1 second delay
 const getMockResponse = async (choice?: string): Promise<StoryBeat> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return {
-    text: choice
+    storyText: choice
       ? `You chose to ${choice.toLowerCase()}! The magical forest sparkles around you as new adventures await. Birds chirp happily and butterflies dance in the sunlight.`
       : 'Welcome to the Enchanted Forest! You find yourself standing at the edge of a beautiful meadow filled with colorful flowers. In the distance, you can see three paths leading into the forest.',
     choices: [
@@ -24,8 +19,8 @@ const getMockResponse = async (choice?: string): Promise<StoryBeat> => {
       'Climb the big friendly tree',
       'Explore the flower garden',
     ],
-    imagePlaceholder:
-      'A magical forest meadow with colorful flowers and three mysterious paths',
+    imageUrl:
+      'https://fastly.picsum.photos/id/515/1546/1024.jpg?hmac=LuAPB6384-AK_eSaqp_gm18kAX7Trucxj8MjG8pRz9s',
   };
 };
 
