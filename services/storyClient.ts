@@ -1,7 +1,6 @@
 import { StoryBeat } from '@/types';
 
 export async function postStory(name: string, history: StoryBeat[]) {
-  console.log({ name, history });
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -9,7 +8,6 @@ export async function postStory(name: string, history: StoryBeat[]) {
   });
 
   if (!response.ok) throw new Error('Failed to get next story beat');
-  console.log(response);
 
   // if response has no choice = end
   return response.json();

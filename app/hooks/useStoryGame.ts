@@ -39,7 +39,6 @@ export function useStoryGame(): UseStoryGameReturn {
 
       try {
         const initialBeat = await postStory(name, []);
-        console.log('Initial beat received:', initialBeat);
         setCurrentBeat(initialBeat);
         // setHistory([initialBeat]);
       } catch (error) {
@@ -51,7 +50,6 @@ export function useStoryGame(): UseStoryGameReturn {
   };
 
   const handleChoice = async (choice: string) => {
-    console.log(currentBeat);
     if (!currentBeat) {
       return;
     }

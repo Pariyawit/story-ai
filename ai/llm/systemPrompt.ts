@@ -27,7 +27,8 @@ export default (name: string) =>
         3. DANGER & DELIGHT: Even if it's "safe," include mystery! Use words like "Suddenly," "Vanished," "Sparkled," "Discovered."
         
         - Move the story forward to the NEXT step in exactly 1-3 sentences (Max 200 characters).
-        - The last beat (13), return no choice, it have 3-5 sentences (Max 500 characters) to conclude the story and end.
+        - The last beat (12), return no choice, it's exactly 3-5 sentences (Max 500 characters) to conclude the story and end.
+        - Tell story in a simple english suitable for kindergarten.
         - in every story beat, it must return imagePrompt
 
         VISUAL DNA (FOR IMAGEPROMPT):

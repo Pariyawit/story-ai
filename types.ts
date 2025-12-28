@@ -1,7 +1,7 @@
 export type StoryBeat = {
   storyText: string;
   choices: string[];
-  imageUrl: string;
+  imageUrl?: string;
   imagePrompt: string;
   selected?: string;
 };

@@ -7,8 +7,7 @@ import { generateImage } from './generateImage';
 // act as if it is store in some db
 const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
   const messages: AIMessage[] = [systemPrompt(name)];
-  console.log('mapHistory');
-  console.log(history);
+
   history.forEach((storyBeat, index) => {
     const { storyText, choices, selected, imagePrompt, imageUrl } = storyBeat;
 
@@ -27,18 +26,30 @@ const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
   return messages;
 };
 
+const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
+
 export const runStory = async (name: string, history: StoryBeat[]) => {
   // map history to llm message
   const result = await runLLM({ messages: mapHistory(name, history) });
-  console.log(result.content);
+
   if (!result.content) {
     return null;
   }
   const content = JSON.parse(result.content);
-  console.log({ content });
-  if (content.imagePrompt) {
-    const imageUrl = await generateImage({ prompt: content.imagePrompt });
-    return { ...content, imageUrl };
+  console.log(content);
+  // Generate image if enabled and prompt exists
+  if (ENABLE_IMAGE_GENERATION && content.imagePrompt) {
+    try {
+      const imageUrl = await generateImage({ prompt: content.imagePrompt });
+      return { ...content, imageUrl };
+    } catch (error) {
+      console.error(
+        'Image generation failed, continuing without image:',
+        error
+      );
+      return { ...content, imageUrl: undefined };
+    }
   }
-  return content;
+
+  return { ...content, imageUrl: undefined };
 };
