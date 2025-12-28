@@ -15,6 +15,7 @@ interface UseStoryGameReturn {
   setNameInput: (name: string) => void;
   handleNameSubmit: (e: React.FormEvent) => Promise<void>;
   handleChoice: (choice: string) => Promise<void>;
+  handleRestart: () => void;
 }
 
 export function useStoryGame(): UseStoryGameReturn {
@@ -72,6 +73,21 @@ export function useStoryGame(): UseStoryGameReturn {
     }
   };
 
+  const handleRestart = () => {
+    // Clear localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('story-history');
+    }
+
+    // Reset all state
+    setGameState('START');
+    setPlayerName('');
+    setNameInput('');
+    setHistory([]);
+    setCurrentBeat(null);
+    setIsLoading(false);
+  };
+
   return {
     gameState,
     playerName,
@@ -82,5 +98,6 @@ export function useStoryGame(): UseStoryGameReturn {
     setNameInput,
     handleNameSubmit,
     handleChoice,
+    handleRestart,
   };
 }

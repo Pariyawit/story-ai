@@ -10,6 +10,7 @@ interface StoryScreenProps {
   currentBeat: StoryBeat | null;
   isLoading: boolean;
   onChoice: (choice: string) => void;
+  onRestart: () => void;
 }
 
 export default function StoryScreen({
@@ -17,6 +18,7 @@ export default function StoryScreen({
   currentBeat,
   isLoading,
   onChoice,
+  onRestart,
 }: StoryScreenProps) {
   return (
     <div className='relative flex min-h-screen w-full flex-col bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 md:flex-row md:items-center'>
@@ -38,6 +40,7 @@ export default function StoryScreen({
         <ChoiceButtons
           choices={currentBeat?.choices}
           onChoice={onChoice}
+          onRestart={onRestart}
           isLoading={isLoading}
         />
       </div>

@@ -29,18 +29,33 @@ const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
 const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
 
 export const runStory = async (name: string, history: StoryBeat[]) => {
+  const startTime = Date.now();
+
   // map history to llm message
+  console.log('[PERF] Starting LLM call...');
+  const llmStart = Date.now();
   const result = await runLLM({ messages: mapHistory(name, history) });
+  const llmDuration = Date.now() - llmStart;
+  console.log(`[PERF] LLM completed in ${llmDuration}ms`);
 
   if (!result.content) {
     return null;
   }
   const content = JSON.parse(result.content);
   console.log(content);
+
   // Generate image if enabled and prompt exists
   if (ENABLE_IMAGE_GENERATION && content.imagePrompt) {
     try {
+      console.log('[PERF] Starting image generation...');
+      const imageStart = Date.now();
       const imageUrl = await generateImage({ prompt: content.imagePrompt });
+      const imageDuration = Date.now() - imageStart;
+      console.log(`[PERF] Image generation completed in ${imageDuration}ms`);
+
+      const totalDuration = Date.now() - startTime;
+      console.log(`[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: ${imageDuration}ms)`);
+
       return { ...content, imageUrl };
     } catch (error) {
       console.error(
@@ -50,6 +65,9 @@ export const runStory = async (name: string, history: StoryBeat[]) => {
       return { ...content, imageUrl: undefined };
     }
   }
+
+  const totalDuration = Date.now() - startTime;
+  console.log(`[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: disabled)`);
 
   return { ...content, imageUrl: undefined };
 };

@@ -14,6 +14,7 @@ export default function Home() {
     setNameInput,
     handleNameSubmit,
     handleChoice,
+    handleRestart,
   } = useStoryGame();
 
   if (gameState === 'START') {
@@ -33,6 +34,7 @@ export default function Home() {
       currentBeat={currentBeat}
       isLoading={isLoading}
       onChoice={handleChoice}
+      onRestart={handleRestart}
     />
   );
 }
