@@ -2,7 +2,8 @@ export type StoryBeat = {
   storyText: string;
   choices: string[];
   imageUrl: string;
-  selected?: number;
+  imagePrompt: string;
+  selected?: string;
 };
 
 // history is array of Step

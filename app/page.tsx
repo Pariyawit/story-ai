@@ -1,28 +1,12 @@
 'use client';
 
+import { postStory } from '@/services/storyClient';
 import { StoryBeat } from '@/types';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 // Type definitions
 type GameState = 'START' | 'STORY';
-
-// Mock API function - returns hardcoded story beat after 1 second delay
-const getMockResponse = async (choice?: string): Promise<StoryBeat> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  return {
-    storyText: choice
-      ? `You chose to ${choice.toLowerCase()}! The magical forest sparkles around you as new adventures await. Birds chirp happily and butterflies dance in the sunlight.`
-      : 'Welcome to the Enchanted Forest! You find yourself standing at the edge of a beautiful meadow filled with colorful flowers. In the distance, you can see three paths leading into the forest.',
-    choices: [
-      'Follow the sparkling stream',
-      'Climb the big friendly tree',
-      'Explore the flower garden',
-    ],
-    imageUrl:
-      'https://fastly.picsum.photos/id/515/1546/1024.jpg?hmac=LuAPB6384-AK_eSaqp_gm18kAX7Trucxj8MjG8pRz9s',
-  };
-};
 
 export default function Home() {
   // State management
@@ -61,12 +45,14 @@ export default function Home() {
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (nameInput.trim()) {
+      const name = nameInput.trim();
       setPlayerName(nameInput.trim());
       setGameState('STORY');
       setIsLoading(true);
 
       try {
-        const initialBeat = await getMockResponse();
+        const initialBeat = await postStory(name, []);
+        console.log('Initial beat received:', initialBeat);
         setCurrentBeat(initialBeat);
         setHistory([initialBeat]);
       } catch (error) {
@@ -79,12 +65,22 @@ export default function Home() {
 
   // Handle choice selection
   const handleChoice = async (choice: string) => {
+    console.log(currentBeat);
+    if (!currentBeat) {
+      return;
+    }
     setIsLoading(true);
-
+    const updatedHistory = [
+      ...history,
+      {
+        ...currentBeat,
+        selected: choice,
+      },
+    ];
+    setHistory(updatedHistory);
     try {
-      const nextBeat = await getMockResponse(choice);
+      const nextBeat = await postStory(playerName, updatedHistory);
       setCurrentBeat(nextBeat);
-      setHistory((prev) => [...prev, nextBeat]);
     } catch (error) {
       console.error('Failed to get next story beat:', error);
     } finally {
@@ -147,12 +143,23 @@ export default function Home() {
       <div className='w-full p-4 md:w-1/2 md:p-6 lg:p-8'>
         <div className='flex items-center justify-center'>
           <div className='w-full max-w-2xl md:max-w-none'>
-            <div className='aspect-[5/4] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-lg'>
-              <div className='flex h-full w-full items-center justify-center p-8 text-center'>
-                <p className='text-xl font-medium text-purple-700'>
-                  {currentBeat?.imagePlaceholder || 'Loading...'}
-                </p>
-              </div>
+            <div className='relative aspect-[5/4] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-lg'>
+              {currentBeat?.imageUrl ? (
+                <Image
+                  src={currentBeat.imageUrl}
+                  alt={currentBeat.imagePrompt}
+                  fill
+                  className='object-cover'
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                  priority
+                />
+              ) : (
+                <div className='flex h-full w-full items-center justify-center p-8 text-center'>
+                  <p className='text-xl font-medium text-purple-700'>
+                    Loading image...
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -169,7 +176,7 @@ export default function Home() {
               </div>
             ) : (
               <p className='text-lg leading-relaxed text-purple-900'>
-                {currentBeat?.text || 'Your adventure begins...'}
+                {currentBeat?.storyText || 'Your adventure begins...'}
               </p>
             )}
           </div>

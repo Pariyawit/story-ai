@@ -8,8 +8,9 @@ export const dynamic = 'force-dynamic';
 const storyBeatSchema = z.object({
   storyText: z.string(),
   choices: z.array(z.string()),
-  imageUrl: z.string(),
-  selected: z.number().optional(),
+  imageUrl: z.string().optional(),
+  imagePrompt: z.string().optional(),
+  selected: z.string().optional(),
 });
 
 // Zod schema for request body

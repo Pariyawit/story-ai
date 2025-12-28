@@ -1,6 +1,7 @@
-import { Step } from '@/types';
+import { StoryBeat } from '@/types';
 
-export async function postStory(name: string, history: History) {
+export async function postStory(name: string, history: StoryBeat[]) {
+  console.log({ name, history });
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
