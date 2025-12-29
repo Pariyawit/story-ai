@@ -1,8 +1,12 @@
 import { openai } from '@/ai/ai';
 import { z } from 'zod';
 import { Language } from '@/types';
+import type { SpeechCreateParams } from 'openai/resources/audio/speech';
 
 export const dynamic = 'force-dynamic';
+
+// Type alias for OpenAI TTS voice options
+type TTSVoice = SpeechCreateParams['voice'];
 
 // Zod schema for request body
 const requestSchema = z.object({
@@ -12,7 +16,7 @@ const requestSchema = z.object({
 
 // Voice selection based on language for baby story telling
 // Using voices that are warm, friendly, and suitable for children
-const getVoiceForLanguage = (language: Language): 'alloy' | 'ash' | 'coral' | 'echo' | 'fable' | 'onyx' | 'nova' | 'sage' | 'shimmer' => {
+const getVoiceForLanguage = (language: Language): TTSVoice => {
   // nova: Warm, friendly female voice - great for children's stories in English
   // shimmer: Soft, gentle voice - works well for Thai as it handles tonal languages
   if (language === 'th') {

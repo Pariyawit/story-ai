@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Language } from '@/types';
 import { fetchSpeech } from '@/services/ttsClient';
 
@@ -15,6 +15,20 @@ export default function SpeakButton({ text, language, className = '' }: SpeakBut
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
+
+  // Cleanup audio URL on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   const stopAudio = useCallback(() => {
     if (audioRef.current) {
@@ -57,9 +71,14 @@ export default function SpeakButton({ text, language, className = '' }: SpeakBut
         setIsPlaying(false);
       };
 
-      audio.onerror = () => {
+      audio.onerror = (event) => {
         setIsPlaying(false);
-        console.error('Audio playback error');
+        const mediaError = audio.error;
+        console.error('Audio playback error:', {
+          event,
+          code: mediaError?.code,
+          message: mediaError?.message,
+        });
       };
 
       await audio.play();
