@@ -69,6 +69,6 @@ export default (name: string, gender: Gender, language: Language) =>
           "storyText": "The text of the current story step.",
           "choices": ["Follow the glowing path", "Climb the tall tree", "Ask the wise owl for help"],
           "imagePrompt": "The detailed prompt for this specific scene."
-        }       
+        }
   `,
   } as const);
