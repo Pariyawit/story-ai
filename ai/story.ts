@@ -10,6 +10,10 @@ const PLACEHOLDER_PATTERNS = [
   /^option\s*[a-c]$/i,
   /^choice\s*\d+$/i,
   /^option\s*\d+$/i,
+  /^alternative\s*[a-c]$/i,
+  /^pick\s*[a-c]$/i,
+  /^\d+\.\s*choice\s*[a-c]$/i,
+  /^[a-c]\.?\s*$/i,
 ];
 
 // Check if a choice looks like a placeholder
@@ -18,9 +22,9 @@ const isPlaceholderChoice = (choice: string): boolean => {
   return PLACEHOLDER_PATTERNS.some(pattern => pattern.test(trimmed));
 };
 
-// Validate and warn about placeholder choices
-const validateChoices = (choices: string[] | undefined): void => {
-  if (!choices || !Array.isArray(choices)) return;
+// Validate choices for placeholder patterns. Returns true if choices are valid.
+const validateChoices = (choices: string[] | undefined): boolean => {
+  if (!choices || !Array.isArray(choices)) return true;
   
   const placeholderChoices = choices.filter(isPlaceholderChoice);
   if (placeholderChoices.length > 0) {
@@ -28,7 +32,9 @@ const validateChoices = (choices: string[] | undefined): void => {
       '[WARN] Detected placeholder choices that may indicate LLM hallucination:',
       placeholderChoices
     );
+    return false;
   }
+  return true;
 };
 
 // act as if it is store in some db
@@ -72,7 +78,10 @@ export const runStory = async (name: string, history: StoryBeat[]) => {
   console.log(content);
 
   // Validate choices for placeholder patterns
-  validateChoices(content.choices);
+  const choicesValid = validateChoices(content.choices);
+  if (!choicesValid) {
+    console.warn('[WARN] Proceeding with potentially invalid choices');
+  }
 
   // Generate image if enabled and prompt exists
   if (ENABLE_IMAGE_GENERATION && content.imagePrompt) {
