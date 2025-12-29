@@ -7,13 +7,11 @@ import Card from '../common/Card';
 interface TransitionScreenProps {
   transitionTexts: string[];
   language?: Language;
-  onComplete?: () => void;
 }
 
 export default function TransitionScreen({
   transitionTexts,
   language = 'en',
-  onComplete,
 }: TransitionScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState('');
@@ -26,7 +24,7 @@ export default function TransitionScreen({
   // Typewriter effect for current sentence
   useEffect(() => {
     if (currentIndex >= transitionTexts.length) {
-      onComplete?.();
+      // Stay on the last sentence - the component will be unmounted when API responds
       return;
     }
 
@@ -43,17 +41,18 @@ export default function TransitionScreen({
         setIsTyping(false);
         clearInterval(typingInterval);
         
-        // Wait before showing next sentence
-        setTimeout(() => {
-          if (currentIndex < transitionTexts.length - 1) {
+        // Wait before showing next sentence (only if there are more sentences)
+        if (currentIndex < transitionTexts.length - 1) {
+          setTimeout(() => {
             setCurrentIndex(prev => prev + 1);
-          }
-        }, 1500); // Wait 1.5 seconds before next sentence
+          }, 1500); // Wait 1.5 seconds before next sentence
+        }
+        // If this is the last sentence, just stay here until API responds
       }
     }, 50); // 50ms per character for typing effect
 
     return () => clearInterval(typingInterval);
-  }, [currentIndex, transitionTexts, onComplete]);
+  }, [currentIndex, transitionTexts]);
 
   return (
     <div className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 p-4'>
