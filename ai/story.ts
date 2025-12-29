@@ -4,6 +4,39 @@ import { AIMessage } from './types';
 import { runLLM } from './llm';
 import { generateImage } from './generateImage';
 
+// Patterns that indicate placeholder/hallucinated choices
+const PLACEHOLDER_PATTERNS = [
+  /^choice\s*[a-c]$/i,
+  /^option\s*[a-c]$/i,
+  /^choice\s*\d+$/i,
+  /^option\s*\d+$/i,
+  /^alternative\s*[a-c]$/i,
+  /^pick\s*[a-c]$/i,
+  /^\d+\.\s*choice\s*[a-c]$/i,
+  /^[a-c]\.?\s*$/i,
+];
+
+// Check if a choice looks like a placeholder
+const isPlaceholderChoice = (choice: string): boolean => {
+  const trimmed = choice.trim();
+  return PLACEHOLDER_PATTERNS.some(pattern => pattern.test(trimmed));
+};
+
+// Validate choices for placeholder patterns. Returns true if choices are valid.
+const validateChoices = (choices: string[] | undefined): boolean => {
+  if (!choices || !Array.isArray(choices)) return true;
+  
+  const placeholderChoices = choices.filter(isPlaceholderChoice);
+  if (placeholderChoices.length > 0) {
+    console.warn(
+      '[WARN] Detected placeholder choices that may indicate LLM hallucination:',
+      placeholderChoices
+    );
+    return false;
+  }
+  return true;
+};
+
 // act as if it is store in some db
 const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
   const messages: AIMessage[] = [systemPrompt(name)];
@@ -43,6 +76,12 @@ export const runStory = async (name: string, history: StoryBeat[]) => {
   }
   const content = JSON.parse(result.content);
   console.log(content);
+
+  // Validate choices for placeholder patterns
+  const choicesValid = validateChoices(content.choices);
+  if (!choicesValid) {
+    console.warn('[WARN] Proceeding with potentially invalid choices');
+  }
 
   // Generate image if enabled and prompt exists
   if (ENABLE_IMAGE_GENERATION && content.imagePrompt) {

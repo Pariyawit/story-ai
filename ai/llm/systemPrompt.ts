@@ -41,11 +41,17 @@ export default (name: string) =>
           Style of [STYLE]
           "
 
+        CHOICE RULES:
+        - Each choice MUST be a specific, actionable option for the child (e.g., "Follow the butterfly", "Open the magic door", "Talk to the friendly owl")
+        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
+        - Choices must relate directly to the current story scene
+        - Use simple, exciting verbs that children understand
+
         STRICT JSON FORMAT:
         You must respond ONLY with this JSON structure. No prose before or after.
         {
           "storyText": "The text of the current story step.",
-          "choices": ["Choice A", "Choice B", "Choice C"],
+          "choices": ["Follow the glowing path", "Climb the tall tree", "Ask the wise owl for help"],
           "imagePrompt": "The detailed prompt for this specific scene."
         }       
   `,
