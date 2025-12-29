@@ -46,7 +46,9 @@ export default function StoryScreen({
         </div>
         <div className='rounded-2xl bg-purple-500/90 px-3 py-1 shadow-md backdrop-blur-sm'>
           <p className='text-sm font-bold text-white'>
-            {language === 'th' ? `หน้า ${currentPage}/12` : `Page ${currentPage}/12`}
+            {isStoryEnded
+              ? (language === 'th' ? '📖 สรุป' : '📖 Summary')
+              : (language === 'th' ? `หน้า ${currentPage}/12` : `Page ${currentPage}/12`)}
           </p>
         </div>
       </div>
