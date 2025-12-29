@@ -1,5 +1,5 @@
-import { use, useState } from 'react';
-import { StoryBeat } from '@/types';
+import { useState } from 'react';
+import { StoryBeat, Gender, Language } from '@/types';
 import { postStory } from '@/services/storyClient';
 // import { useLocalStorage } from './useLocalStorage';
 
@@ -9,10 +9,15 @@ interface UseStoryGameReturn {
   gameState: GameState;
   playerName: string;
   nameInput: string;
+  gender: Gender;
+  language: Language;
   history: StoryBeat[];
   currentBeat: StoryBeat | null;
+  currentPage: number;
   isLoading: boolean;
   setNameInput: (name: string) => void;
+  setGender: (gender: Gender) => void;
+  setLanguage: (language: Language) => void;
   handleNameSubmit: (e: React.FormEvent) => Promise<void>;
   handleChoice: (choice: string) => Promise<void>;
   handleRestart: () => void;
@@ -22,6 +27,8 @@ export function useStoryGame(): UseStoryGameReturn {
   const [gameState, setGameState] = useState<GameState>('START');
   const [playerName, setPlayerName] = useState('');
   const [nameInput, setNameInput] = useState('');
+  const [gender, setGender] = useState<Gender>('boy');
+  const [language, setLanguage] = useState<Language>('en');
   const [history, setHistory] = useState<StoryBeat[]>([]);
   // const [history, setHistory] = useLocalStorage<StoryBeat[]>(
   //   'story-history',
@@ -29,6 +36,8 @@ export function useStoryGame(): UseStoryGameReturn {
   // );
   const [currentBeat, setCurrentBeat] = useState<StoryBeat | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const currentPage = history.length + 1;
 
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +48,7 @@ export function useStoryGame(): UseStoryGameReturn {
       setIsLoading(true);
 
       try {
-        const initialBeat = await postStory(name, []);
+        const initialBeat = await postStory(name, [], gender, language);
         setCurrentBeat(initialBeat);
         // setHistory([initialBeat]);
       } catch (error) {
@@ -64,7 +73,7 @@ export function useStoryGame(): UseStoryGameReturn {
     ];
     setHistory(updatedHistory);
     try {
-      const nextBeat = await postStory(playerName, updatedHistory);
+      const nextBeat = await postStory(playerName, updatedHistory, gender, language);
       setCurrentBeat(nextBeat);
     } catch (error) {
       console.error('Failed to get next story beat:', error);
@@ -83,6 +92,8 @@ export function useStoryGame(): UseStoryGameReturn {
     setGameState('START');
     setPlayerName('');
     setNameInput('');
+    setGender('boy');
+    setLanguage('en');
     setHistory([]);
     setCurrentBeat(null);
     setIsLoading(false);
@@ -92,10 +103,15 @@ export function useStoryGame(): UseStoryGameReturn {
     gameState,
     playerName,
     nameInput,
+    gender,
+    language,
     history,
     currentBeat,
+    currentPage,
     isLoading,
     setNameInput,
+    setGender,
+    setLanguage,
     handleNameSubmit,
     handleChoice,
     handleRestart,

@@ -1,4 +1,4 @@
-import { StoryBeat } from '@/types';
+import { StoryBeat, Gender, Language } from '@/types';
 import systemPrompt from './llm/systemPrompt';
 import { AIMessage } from './types';
 import { runLLM } from './llm';
@@ -38,8 +38,8 @@ const validateChoices = (choices: string[] | undefined): boolean => {
 };
 
 // act as if it is store in some db
-const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
-  const messages: AIMessage[] = [systemPrompt(name)];
+const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language): AIMessage[] => {
+  const messages: AIMessage[] = [systemPrompt(name, gender, language)];
 
   history.forEach((storyBeat, index) => {
     const { storyText, choices, selected, imagePrompt, imageUrl } = storyBeat;
@@ -61,13 +61,13 @@ const mapHistory = (name: string, history: StoryBeat[]): AIMessage[] => {
 
 const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
 
-export const runStory = async (name: string, history: StoryBeat[]) => {
+export const runStory = async (name: string, history: StoryBeat[], gender: Gender, language: Language) => {
   const startTime = Date.now();
 
   // map history to llm message
   console.log('[PERF] Starting LLM call...');
   const llmStart = Date.now();
-  const result = await runLLM({ messages: mapHistory(name, history) });
+  const result = await runLLM({ messages: mapHistory(name, history, gender, language) });
   const llmDuration = Date.now() - llmStart;
   console.log(`[PERF] LLM completed in ${llmDuration}ms`);
 

@@ -9,9 +9,15 @@ export default function Home() {
     gameState,
     playerName,
     nameInput,
+    gender,
+    language,
+    history,
     currentBeat,
+    currentPage,
     isLoading,
     setNameInput,
+    setGender,
+    setLanguage,
     handleNameSubmit,
     handleChoice,
     handleRestart,
@@ -21,7 +27,11 @@ export default function Home() {
     return (
       <StartScreen
         nameInput={nameInput}
+        gender={gender}
+        language={language}
         onNameChange={setNameInput}
+        onGenderChange={setGender}
+        onLanguageChange={setLanguage}
         onSubmit={handleNameSubmit}
         isLoading={isLoading}
       />
@@ -32,6 +42,9 @@ export default function Home() {
     <StoryScreen
       playerName={playerName}
       currentBeat={currentBeat}
+      currentPage={currentPage}
+      history={history}
+      language={language}
       isLoading={isLoading}
       onChoice={handleChoice}
       onRestart={handleRestart}

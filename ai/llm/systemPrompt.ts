@@ -1,7 +1,23 @@
-const STYLE =
-  'A dreamy watercolor children’s book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.';
+import { Gender, Language } from '@/types';
 
-export default (name: string) =>
+const STYLE =
+  "A dreamy watercolor children's book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.";
+
+const getLanguageInstruction = (language: Language): string => {
+  if (language === 'th') {
+    return 'Tell the story in simple Thai language suitable for young children (เขียนเรื่องเป็นภาษาไทยง่ายๆ เหมาะสำหรับเด็กเล็ก).';
+  }
+  return 'Tell story in a simple English suitable for kindergarten.';
+};
+
+const getGenderDescription = (gender: Gender): string => {
+  if (gender === 'boy') {
+    return 'a young boy';
+  }
+  return 'a young girl';
+};
+
+export default (name: string, gender: Gender, language: Language) =>
   ({
     role: 'system',
     content: `You are a world-class children's book narrator specializing in the Hero's Journey.
@@ -28,12 +44,12 @@ export default (name: string) =>
         
         - Move the story forward to the NEXT step in exactly 1-3 sentences (Max 200 characters).
         - The last beat (12), return no choice, it's exactly 3-5 sentences (Max 500 characters) to conclude the story and end.
-        - Tell story in a simple english suitable for kindergarten.
+        - ${getLanguageInstruction(language)}
         - in every story beat, it must return imagePrompt
 
         VISUAL DNA (FOR IMAGEPROMPT):
         - STYLE: "${STYLE}"
-        - CHARACTER: The hero is [${name}], a child with [HAIR DESCRIPTION] and [OUTFIT DESCRIPTION]. This description MUST remain identical in every prompt.
+        - CHARACTER: The hero is [${name}], ${getGenderDescription(gender)} with [HAIR DESCRIPTION] and [OUTFIT DESCRIPTION]. This description MUST remain identical in every prompt.
         - PROMPT RULE: You MUST include the "imagePrompt" field in EVERY SINGLE response. If you omit it, the world stops.
         - STRUCTURE: Your "imagePrompt" must always follow this template:
           "
@@ -56,6 +72,3 @@ export default (name: string) =>
         }       
   `,
   } as const);
-
-/*
- */
