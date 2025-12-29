@@ -1,3 +1,6 @@
+export type Gender = 'boy' | 'girl';
+export type Language = 'th' | 'en';
+
 export type StoryBeat = {
   storyText: string;
   choices: string[];

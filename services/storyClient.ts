@@ -1,10 +1,10 @@
-import { StoryBeat } from '@/types';
+import { StoryBeat, Gender, Language } from '@/types';
 
-export async function postStory(name: string, history: StoryBeat[]) {
+export async function postStory(name: string, history: StoryBeat[], gender: Gender, language: Language) {
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, history }),
+    body: JSON.stringify({ name, history, gender, language }),
   });
 
   if (!response.ok) throw new Error('Failed to get next story beat');

@@ -17,6 +17,8 @@ const storyBeatSchema = z.object({
 const requestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   history: z.array(storyBeatSchema),
+  gender: z.enum(['boy', 'girl']),
+  language: z.enum(['th', 'en']),
 });
 
 export async function POST(request: Request) {
@@ -25,11 +27,11 @@ export async function POST(request: Request) {
 
     const validatedData = requestSchema.parse(body);
 
-    const { name, history } = validatedData;
+    const { name, history, gender, language } = validatedData;
 
     // if history is empty
     // Mock response for now
-    const data = await runStory(name, history);
+    const data = await runStory(name, history, gender, language);
 
     return Response.json(data, { status: 200 });
   } catch (error) {
