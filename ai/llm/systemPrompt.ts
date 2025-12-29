@@ -33,7 +33,7 @@ const getJsonFormatExample = (language: Language): string => {
         You must respond ONLY with this JSON structure. No prose before or after.
         {
           "storyText": "ข้อความของเรื่องในขั้นตอนปัจจุบัน (ภาษาไทย)",
-          "choices": ["ตามทางที่เรืองแสงไป", "ปีนต้นไม้สูง", "ถามนกฮูกผู้ชาญฉลาด"],
+          "choices": ["ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูกใจดี"],
           "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
         }`;
   }
@@ -41,7 +41,7 @@ const getJsonFormatExample = (language: Language): string => {
         You must respond ONLY with this JSON structure. No prose before or after.
         {
           "storyText": "The text of the current story step.",
-          "choices": ["Follow the glowing path", "Climb the tall tree", "Ask the wise owl for help"],
+          "choices": ["Follow the butterfly", "Open the magic door", "Talk to the friendly owl"],
           "imagePrompt": "The detailed prompt for this specific scene."
         }`;
 };
