@@ -1,4 +1,7 @@
-import { Language } from '@/types';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { Language, StoryBeat } from '@/types';
 import Button from '../common/Button';
 
 interface ChoiceButtonsProps {
@@ -7,6 +10,8 @@ interface ChoiceButtonsProps {
   onRestart: () => void;
   isLoading: boolean;
   language?: Language;
+  history?: StoryBeat[];
+  currentBeat?: StoryBeat | null;
 }
 
 export default function ChoiceButtons({
@@ -15,8 +20,23 @@ export default function ChoiceButtons({
   onRestart,
   isLoading,
   language = 'en',
+  history = [],
+  currentBeat,
 }: ChoiceButtonsProps) {
+  const router = useRouter();
   const isStoryEnded = !isLoading && (!choices || choices.length === 0);
+
+  const handleViewGallery = () => {
+    // Combine history with current beat for full story
+    const fullHistory = currentBeat ? [...history, currentBeat] : history;
+
+    // Save to localStorage for gallery page to read
+    localStorage.setItem('story-gallery-history', JSON.stringify(fullHistory));
+    localStorage.setItem('story-gallery-language', language);
+
+    // Navigate to gallery
+    router.push('/gallery');
+  };
 
   const gradientColors = [
     'from-pink-300 to-rose-300 hover:from-pink-400 hover:to-rose-400',
@@ -39,6 +59,18 @@ export default function ChoiceButtons({
                 {language === 'th' ? 'คุณได้เสร็จสิ้นการเดินทางมหัศจรรย์แล้ว!' : "You've completed your magical journey!"}
               </p>
             </div>
+
+            {/* View Gallery Button */}
+            <Button
+              onClick={handleViewGallery}
+              disabled={isLoading || history.length === 0}
+              variant='gradient'
+              gradientColors='from-amber-300 to-orange-300 hover:from-amber-400 hover:to-orange-400'
+              fullWidth
+              className='py-4 text-lg'
+            >
+              {language === 'th' ? '🎨 ดูแกลเลอรีการผจญภัย' : '🎨 View Adventure Gallery'}
+            </Button>
 
             <Button
               onClick={onRestart}
