@@ -63,9 +63,9 @@ export default function StoryScreen({
       {/* Right Side: Story Text and Choices */}
       <div className='flex w-full flex-col p-4 md:w-1/2 md:p-6 lg:p-8'>
         {isStoryEnded ? (
-          <StoryText 
-            text={getFullStory()} 
-            isLoading={isLoading} 
+          <StoryText
+            text={getFullStory()}
+            isLoading={isLoading}
             title={language === 'th' ? '📖 เรื่องราวทั้งหมด' : '📖 The Complete Story'}
             language={language}
           />
@@ -78,6 +78,8 @@ export default function StoryScreen({
           onRestart={onRestart}
           isLoading={isLoading}
           language={language}
+          history={history}
+          currentBeat={currentBeat}
         />
       </div>
     </div>
