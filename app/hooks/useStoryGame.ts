@@ -5,6 +5,24 @@ import { postStory } from '@/services/storyClient';
 
 type GameState = 'START' | 'STORY' | 'TRANSITION';
 
+// Initial transition texts shown when starting a new adventure
+const getInitialTransitionTexts = (playerName: string, language: Language): string[] => {
+  if (language === 'th') {
+    return [
+      `🌟 สวัสดี ${playerName}! การผจญภัยของเธอกำลังจะเริ่มต้น...`,
+      '📚 หนังสือวิเศษกำลังเปิดหน้าใหม่ให้เธอ...',
+      '✨ โลกแห่งจินตนาการกำลังรอเธออยู่!',
+      '🎭 เตรียมพร้อมสำหรับการเดินทางที่น่าตื่นเต้น...',
+    ];
+  }
+  return [
+    `🌟 Hello ${playerName}! Your adventure is about to begin...`,
+    '📚 A magical book is opening its pages just for you...',
+    '✨ A world of imagination awaits!',
+    '🎭 Get ready for an exciting journey...',
+  ];
+};
+
 interface UseStoryGameReturn {
   gameState: GameState;
   playerName: string;
@@ -46,17 +64,24 @@ export function useStoryGame(): UseStoryGameReturn {
     if (nameInput.trim()) {
       const name = nameInput.trim();
       setPlayerName(name);
-      setGameState('STORY');
+      
+      // Show engaging transition screen while generating initial story
+      const initialTexts = getInitialTransitionTexts(name, language);
+      setTransitionTexts(initialTexts);
+      setGameState('TRANSITION');
       setIsLoading(true);
 
       try {
         const initialBeat = await postStory(name, [], gender, language);
         setCurrentBeat(initialBeat);
+        setGameState('STORY');
         // setHistory([initialBeat]);
       } catch (error) {
         console.error('Failed to get initial story:', error);
+        setGameState('STORY');
       } finally {
         setIsLoading(false);
+        setTransitionTexts([]);
       }
     }
   };
