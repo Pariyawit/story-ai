@@ -10,6 +10,42 @@ const getLanguageInstruction = (language: Language): string => {
   return 'Tell story in a simple English suitable for kindergarten.';
 };
 
+const getChoiceRules = (language: Language): string => {
+  if (language === 'th') {
+    return `CHOICE RULES:
+        - Each choice MUST be written in simple Thai language (ภาษาไทยง่ายๆ)
+        - Each choice MUST be a specific, actionable option for the child (e.g., "ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูก")
+        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
+        - Choices must relate directly to the current story scene
+        - Use simple, exciting Thai verbs that children understand`;
+  }
+  return `CHOICE RULES:
+        - Each choice MUST be written in simple English
+        - Each choice MUST be a specific, actionable option for the child (e.g., "Follow the butterfly", "Open the magic door", "Talk to the friendly owl")
+        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
+        - Choices must relate directly to the current story scene
+        - Use simple, exciting verbs that children understand`;
+};
+
+const getJsonFormatExample = (language: Language): string => {
+  if (language === 'th') {
+    return `STRICT JSON FORMAT:
+        You must respond ONLY with this JSON structure. No prose before or after.
+        {
+          "storyText": "ข้อความของเรื่องในขั้นตอนปัจจุบัน (ภาษาไทย)",
+          "choices": ["ตามทางที่เรืองแสงไป", "ปีนต้นไม้สูง", "ถามนกฮูกผู้ชาญฉลาด"],
+          "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
+        }`;
+  }
+  return `STRICT JSON FORMAT:
+        You must respond ONLY with this JSON structure. No prose before or after.
+        {
+          "storyText": "The text of the current story step.",
+          "choices": ["Follow the glowing path", "Climb the tall tree", "Ask the wise owl for help"],
+          "imagePrompt": "The detailed prompt for this specific scene."
+        }`;
+};
+
 const getGenderDescription = (gender: Gender): string => {
   if (gender === 'boy') {
     return 'a young boy';
@@ -57,18 +93,8 @@ export default (name: string, gender: Gender, language: Language) =>
           Style of [STYLE]
           "
 
-        CHOICE RULES:
-        - Each choice MUST be a specific, actionable option for the child (e.g., "Follow the butterfly", "Open the magic door", "Talk to the friendly owl")
-        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
-        - Choices must relate directly to the current story scene
-        - Use simple, exciting verbs that children understand
+        ${getChoiceRules(language)}
 
-        STRICT JSON FORMAT:
-        You must respond ONLY with this JSON structure. No prose before or after.
-        {
-          "storyText": "The text of the current story step.",
-          "choices": ["Follow the glowing path", "Climb the tall tree", "Ask the wise owl for help"],
-          "imagePrompt": "The detailed prompt for this specific scene."
-        }
+        ${getJsonFormatExample(language)}
   `,
   } as const);
