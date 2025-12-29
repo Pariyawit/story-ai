@@ -5,7 +5,7 @@ import { runLLM } from './llm';
 import { generateImage } from './generateImage';
 
 // Patterns that indicate placeholder/hallucinated choices
-const PLACEHOLDER_PATTERNS = [
+export const PLACEHOLDER_PATTERNS = [
   /^choice\s*[a-c]$/i,
   /^option\s*[a-c]$/i,
   /^choice\s*\d+$/i,
@@ -17,15 +17,15 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 // Check if a choice looks like a placeholder
-const isPlaceholderChoice = (choice: string): boolean => {
+export const isPlaceholderChoice = (choice: string): boolean => {
   const trimmed = choice.trim();
   return PLACEHOLDER_PATTERNS.some(pattern => pattern.test(trimmed));
 };
 
 // Validate choices for placeholder patterns. Returns true if choices are valid.
-const validateChoices = (choices: string[] | undefined): boolean => {
+export const validateChoices = (choices: string[] | undefined): boolean => {
   if (!choices || !Array.isArray(choices)) return true;
-  
+
   const placeholderChoices = choices.filter(isPlaceholderChoice);
   if (placeholderChoices.length > 0) {
     console.warn(
@@ -37,8 +37,8 @@ const validateChoices = (choices: string[] | undefined): boolean => {
   return true;
 };
 
-// act as if it is store in some db
-const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language): AIMessage[] => {
+// Transforms story history to AI message format
+export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language): AIMessage[] => {
   const messages: AIMessage[] = [systemPrompt(name, gender, language)];
 
   history.forEach((storyBeat, index) => {
