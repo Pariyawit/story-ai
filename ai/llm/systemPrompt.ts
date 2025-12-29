@@ -17,14 +17,18 @@ const getChoiceRules = (language: Language): string => {
         - Each choice MUST be a specific, actionable option for the child (e.g., "ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูก")
         - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
         - Choices must relate directly to the current story scene
-        - Use simple, exciting Thai verbs that children understand`;
+        - Use simple, exciting Thai verbs that children understand
+        - For each choice, provide 3-4 short transition sentences that describe what happens when the child picks that choice
+        - Transition sentences should build excitement and bridge to the next scene`;
   }
   return `CHOICE RULES:
         - Each choice MUST be written in simple English
         - Each choice MUST be a specific, actionable option for the child (e.g., "Follow the butterfly", "Open the magic door", "Talk to the friendly owl")
         - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
         - Choices must relate directly to the current story scene
-        - Use simple, exciting verbs that children understand`;
+        - Use simple, exciting verbs that children understand
+        - For each choice, provide 3-4 short transition sentences that describe what happens when the child picks that choice
+        - Transition sentences should build excitement and bridge to the next scene`;
 };
 
 const getJsonFormatExample = (language: Language): string => {
@@ -34,6 +38,11 @@ const getJsonFormatExample = (language: Language): string => {
         {
           "storyText": "ข้อความของเรื่องในขั้นตอนปัจจุบัน (ภาษาไทย)",
           "choices": ["ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูกใจดี"],
+          "choicesWithTransition": [
+            {"text": "ตามผีเสื้อไป", "transition": ["เธอวิ่งตามผีเสื้อสีรุ้ง...", "ปีกของมันเปล่งแสงวิเศษ...", "มันพาเธอไปยังสวนลับ..."]},
+            {"text": "เปิดประตูวิเศษ", "transition": ["เธอหมุนลูกบิดประตู...", "แสงสว่างวาบออกมา...", "ดินแดนมหัศจรรย์ปรากฏ..."]},
+            {"text": "คุยกับนกฮูกใจดี", "transition": ["เธอเดินเข้าไปหานกฮูก...", "ตาโตของมันเป็นประกาย...", "มันกระซิบความลับ..."]}
+          ],
           "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
         }`;
   }
@@ -42,6 +51,11 @@ const getJsonFormatExample = (language: Language): string => {
         {
           "storyText": "The text of the current story step.",
           "choices": ["Follow the butterfly", "Open the magic door", "Talk to the friendly owl"],
+          "choicesWithTransition": [
+            {"text": "Follow the butterfly", "transition": ["You chase the rainbow butterfly...", "Its wings shimmer with magic...", "It leads you to a secret garden..."]},
+            {"text": "Open the magic door", "transition": ["You turn the golden doorknob...", "Bright light bursts through...", "A wonderful land appears..."]},
+            {"text": "Talk to the friendly owl", "transition": ["You walk up to the wise owl...", "Its big eyes sparkle...", "It whispers a secret..."]}
+          ],
           "imagePrompt": "The detailed prompt for this specific scene."
         }`;
 };

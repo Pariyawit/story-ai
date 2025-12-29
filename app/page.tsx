@@ -3,6 +3,7 @@
 import { useStoryGame } from './hooks/useStoryGame';
 import StartScreen from './components/story/StartScreen';
 import StoryScreen from './components/story/StoryScreen';
+import TransitionScreen from './components/story/TransitionScreen';
 
 export default function Home() {
   const {
@@ -15,6 +16,7 @@ export default function Home() {
     currentBeat,
     currentPage,
     isLoading,
+    transitionTexts,
     setNameInput,
     setGender,
     setLanguage,
@@ -36,6 +38,10 @@ export default function Home() {
         isLoading={isLoading}
       />
     );
+  }
+
+  if (gameState === 'TRANSITION' && transitionTexts.length > 0) {
+    return <TransitionScreen transitionTexts={transitionTexts} language={language} />;
   }
 
   return (

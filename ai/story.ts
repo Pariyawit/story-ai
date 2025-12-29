@@ -42,11 +42,11 @@ const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language
   const messages: AIMessage[] = [systemPrompt(name, gender, language)];
 
   history.forEach((storyBeat, index) => {
-    const { storyText, choices, selected, imagePrompt, imageUrl } = storyBeat;
+    const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } = storyBeat;
 
     messages.push({
       role: 'assistant',
-      content: JSON.stringify({ storyText, choices, imagePrompt, imageUrl }),
+      content: JSON.stringify({ storyText, choices, choicesWithTransition, imagePrompt, imageUrl }),
     });
 
     if (selected) {

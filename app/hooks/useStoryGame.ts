@@ -3,7 +3,7 @@ import { StoryBeat, Gender, Language } from '@/types';
 import { postStory } from '@/services/storyClient';
 // import { useLocalStorage } from './useLocalStorage';
 
-type GameState = 'START' | 'STORY';
+type GameState = 'START' | 'STORY' | 'TRANSITION';
 
 interface UseStoryGameReturn {
   gameState: GameState;
@@ -15,6 +15,7 @@ interface UseStoryGameReturn {
   currentBeat: StoryBeat | null;
   currentPage: number;
   isLoading: boolean;
+  transitionTexts: string[];
   setNameInput: (name: string) => void;
   setGender: (gender: Gender) => void;
   setLanguage: (language: Language) => void;
@@ -36,6 +37,7 @@ export function useStoryGame(): UseStoryGameReturn {
   // );
   const [currentBeat, setCurrentBeat] = useState<StoryBeat | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [transitionTexts, setTransitionTexts] = useState<string[]>([]);
 
   const currentPage = history.length + 1;
 
@@ -63,6 +65,17 @@ export function useStoryGame(): UseStoryGameReturn {
     if (!currentBeat) {
       return;
     }
+    
+    // Find transition texts for the selected choice
+    const selectedTransition = currentBeat.choicesWithTransition?.find(
+      c => c.text === choice
+    );
+    
+    if (selectedTransition?.transition && selectedTransition.transition.length > 0) {
+      setTransitionTexts(selectedTransition.transition);
+      setGameState('TRANSITION');
+    }
+    
     setIsLoading(true);
     const updatedHistory = [
       ...history,
@@ -75,10 +88,13 @@ export function useStoryGame(): UseStoryGameReturn {
     try {
       const nextBeat = await postStory(playerName, updatedHistory, gender, language);
       setCurrentBeat(nextBeat);
+      setGameState('STORY');
     } catch (error) {
       console.error('Failed to get next story beat:', error);
+      setGameState('STORY');
     } finally {
       setIsLoading(false);
+      setTransitionTexts([]);
     }
   };
 
@@ -97,6 +113,7 @@ export function useStoryGame(): UseStoryGameReturn {
     setHistory([]);
     setCurrentBeat(null);
     setIsLoading(false);
+    setTransitionTexts([]);
   };
 
   return {
@@ -109,6 +126,7 @@ export function useStoryGame(): UseStoryGameReturn {
     currentBeat,
     currentPage,
     isLoading,
+    transitionTexts,
     setNameInput,
     setGender,
     setLanguage,
