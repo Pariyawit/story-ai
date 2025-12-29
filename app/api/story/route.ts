@@ -4,10 +4,17 @@ import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
+// Zod schema for ChoiceWithTransition
+const choiceWithTransitionSchema = z.object({
+  text: z.string(),
+  transition: z.array(z.string()),
+});
+
 // Zod schema for StoryBeat
 const storyBeatSchema = z.object({
   storyText: z.string(),
   choices: z.array(z.string()),
+  choicesWithTransition: z.array(choiceWithTransitionSchema).optional(),
   imageUrl: z.string().optional(),
   imagePrompt: z.string(),
   selected: z.string().optional(),
