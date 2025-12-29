@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Language } from '@/types';
 import Card from '../common/Card';
+import SpeakButton from '../common/SpeakButton';
 
 interface TransitionScreenProps {
   transitionTexts: string[];
@@ -20,6 +21,9 @@ export default function TransitionScreen({
   const loadingText = language === 'th' 
     ? '✨ เวทมนตร์กำลังทำงาน... ✨' 
     : '✨ Magic is happening... ✨';
+
+  // Combine all transition texts for TTS
+  const fullTransitionText = transitionTexts.join(' ');
 
   // Typewriter effect for current sentence
   useEffect(() => {
@@ -82,6 +86,11 @@ export default function TransitionScreen({
                 <span className='ml-1 inline-block animate-pulse text-purple-400'>|</span>
               )}
             </p>
+          </div>
+
+          {/* Speak button */}
+          <div className='mt-4 flex justify-center'>
+            <SpeakButton text={fullTransitionText} language={language} />
           </div>
 
           {/* Loading indicator */}

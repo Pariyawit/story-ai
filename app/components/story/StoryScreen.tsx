@@ -65,9 +65,10 @@ export default function StoryScreen({
             text={getFullStory()} 
             isLoading={isLoading} 
             title={language === 'th' ? '📖 เรื่องราวทั้งหมด' : '📖 The Complete Story'}
+            language={language}
           />
         ) : (
-          <StoryText text={currentBeat?.storyText} isLoading={isLoading} />
+          <StoryText text={currentBeat?.storyText} isLoading={isLoading} language={language} />
         )}
         <ChoiceButtons
           choices={currentBeat?.choices}
