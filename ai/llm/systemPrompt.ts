@@ -1,4 +1,4 @@
-import { Gender, Language } from '@/types';
+import { Gender, Language, StoryTheme } from '@/types';
 
 const STYLE =
   "A dreamy watercolor children's book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.";
@@ -67,10 +67,51 @@ const getGenderDescription = (gender: Gender): string => {
   return 'a young girl';
 };
 
-export default (name: string, gender: Gender, language: Language) =>
-  ({
-    role: 'system',
-    content: `You are a world-class children's book narrator specializing in the Hero's Journey.
+const getThemeDescription = (theme: StoryTheme, language: Language): string => {
+  const themes = {
+    enchanted_forest: {
+      en: 'Set in a magical forest with talking animals, wise owls, friendly fairies, ancient trees with faces, and hidden glades full of wonder.',
+      th: 'ในป่าวิเศษที่มีสัตว์พูดได้ นกฮูกฉลาด นางฟ้าใจดี ต้นไม้โบราณมีใบหน้า และทุ่งหญ้าลับเต็มไปด้วยความมหัศจรรย์'
+    },
+    space_adventure: {
+      en: 'Set in outer space with colorful planets, friendly aliens, rocket ships, space stations, shooting stars, and cosmic wonders.',
+      th: 'ในอวกาศกว้างใหญ่ มีดาวเคราะห์หลากสี เอเลี่ยนใจดี จรวดอวกาศ สถานีอวกาศ ดาวตก และความมหัศจรรย์ของจักรวาล'
+    },
+    underwater_kingdom: {
+      en: 'Set deep beneath the ocean with coral palaces, singing mermaids, playful dolphins, wise sea turtles, and sparkling treasures.',
+      th: 'ใต้ท้องมหาสมุทรลึก มีวังปะการัง นางเงือกร้องเพลง โลมาขี้เล่น เต่าทะเลฉลาด และสมบัติระยิบระยับ'
+    },
+    dinosaur_land: {
+      en: 'Set in a prehistoric world with gentle giant dinosaurs, erupting volcanoes, lush jungles, and ancient mysteries.',
+      th: 'ในโลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ยักษ์ใจดี ภูเขาไฟปะทุ ป่าเขียวขจี และความลึกลับโบราณ'
+    },
+    fairy_tale_castle: {
+      en: 'Set in a magical kingdom with towering castles, brave knights, friendly dragons, and enchanted treasures.',
+      th: 'ในอาณาจักรมหัศจรรย์ มีปราสาทสูงตระหง่าน อัศวินกล้าหาญ มังกรใจดี และสมบัติที่ถูกสาปต์'
+    }
+  };
+  return themes[theme][language];
+};
+
+const getThemeStyle = (theme: StoryTheme): string => {
+  const styles = {
+    enchanted_forest: 'magical forest, glowing mushrooms, fairy lights, moss-covered ancient trees',
+    space_adventure: 'cosmic nebulas, colorful planets, sparkling stars, retro-futuristic',
+    underwater_kingdom: 'coral reefs, bioluminescent creatures, underwater sunbeams, ocean bubbles',
+    dinosaur_land: 'lush prehistoric jungle, volcanic mountains, ferns and palms, gentle dinosaurs',
+    fairy_tale_castle: 'medieval fantasy, stone towers, royal banners, dragon-friendly kingdom'
+  };
+  return styles[theme];
+};
+
+export default (name: string, gender: Gender, language: Language, theme: StoryTheme) =>
+({
+  role: 'system',
+  content: `You are a world-class children's book narrator specializing in the Hero's Journey.
+
+        STORY SETTING:
+        ${getThemeDescription(theme, language)}
+        All locations, characters, and events must fit this theme.
         
         NARRATIVE ARCH (12 STEPS):
         You must guide the user through exactly 12 sequential interactions:
@@ -99,16 +140,18 @@ export default (name: string, gender: Gender, language: Language) =>
 
         VISUAL DNA (FOR IMAGEPROMPT):
         - STYLE: "${STYLE}"
+        - THEME ELEMENTS: "${getThemeStyle(theme)}"
         - CHARACTER: The hero is [${name}], ${getGenderDescription(gender)} with [HAIR DESCRIPTION] and [OUTFIT DESCRIPTION]. This description MUST remain identical in every prompt.
         - PROMPT RULE: You MUST include the "imagePrompt" field in EVERY SINGLE response. If you omit it, the world stops.
         - STRUCTURE: Your "imagePrompt" must always follow this template:
           "
-          [CHARACTER] [ACTION] in [SPECIFIC SETTING], 
-          Style of [STYLE]
+          [CHARACTER] [ACTION] in [SPECIFIC SETTING matching the theme], 
+          Style of [STYLE], with [THEME ELEMENTS]
           "
 
         ${getChoiceRules(language)}
 
         ${getJsonFormatExample(language)}
   `,
-  } as const);
+} as const);
+

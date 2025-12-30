@@ -26,6 +26,7 @@ const requestSchema = z.object({
   history: z.array(storyBeatSchema),
   gender: z.enum(['boy', 'girl']),
   language: z.enum(['th', 'en']),
+  theme: z.enum(['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle']),
 });
 
 export async function POST(request: Request) {
@@ -34,11 +35,11 @@ export async function POST(request: Request) {
 
     const validatedData = requestSchema.parse(body);
 
-    const { name, history, gender, language } = validatedData;
+    const { name, history, gender, language, theme } = validatedData;
 
     // if history is empty
     // Mock response for now
-    const data = await runStory(name, history, gender, language);
+    const data = await runStory(name, history, gender, language, theme);
 
     return Response.json(data, { status: 200 });
   } catch (error) {

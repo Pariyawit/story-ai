@@ -1,4 +1,4 @@
-import { StoryBeat, Gender, Language } from '@/types';
+import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
 import systemPrompt from './llm/systemPrompt';
 import { AIMessage } from './types';
 import { runLLM } from './llm';
@@ -38,8 +38,8 @@ export const validateChoices = (choices: string[] | undefined): boolean => {
 };
 
 // Transforms story history to AI message format
-export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language): AIMessage[] => {
-  const messages: AIMessage[] = [systemPrompt(name, gender, language)];
+export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme): AIMessage[] => {
+  const messages: AIMessage[] = [systemPrompt(name, gender, language, theme)];
 
   history.forEach((storyBeat, index) => {
     const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } = storyBeat;
@@ -61,13 +61,13 @@ export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, l
 
 const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
 
-export const runStory = async (name: string, history: StoryBeat[], gender: Gender, language: Language) => {
+export const runStory = async (name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme) => {
   const startTime = Date.now();
 
   // map history to llm message
   console.log('[PERF] Starting LLM call...');
   const llmStart = Date.now();
-  const result = await runLLM({ messages: mapHistory(name, history, gender, language) });
+  const result = await runLLM({ messages: mapHistory(name, history, gender, language, theme) });
   const llmDuration = Date.now() - llmStart;
   console.log(`[PERF] LLM completed in ${llmDuration}ms`);
 

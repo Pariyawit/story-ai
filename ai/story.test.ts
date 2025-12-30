@@ -166,13 +166,13 @@ describe('validateChoices', () => {
 
 describe('mapHistory', () => {
     it('returns system prompt as first message for empty history', () => {
-        const messages = mapHistory('Alice', [], 'girl', 'en');
+        const messages = mapHistory('Alice', [], 'girl', 'en', 'enchanted_forest');
         expect(messages).toHaveLength(1);
         expect(messages[0].role).toBe('system');
     });
 
     it('includes player name in system prompt', () => {
-        const messages = mapHistory('Bob', [], 'boy', 'en');
+        const messages = mapHistory('Bob', [], 'boy', 'en', 'enchanted_forest');
         expect(messages[0].content).toContain('Bob');
     });
 
@@ -184,7 +184,7 @@ describe('mapHistory', () => {
                 imagePrompt: 'A forest path',
             },
         ];
-        const messages = mapHistory('Alice', history, 'girl', 'en');
+        const messages = mapHistory('Alice', history, 'girl', 'en', 'enchanted_forest');
         // system + 1 assistant (no user message since no selection)
         expect(messages).toHaveLength(2);
         expect(messages[0].role).toBe('system');
@@ -200,7 +200,7 @@ describe('mapHistory', () => {
                 selected: 'Go left',
             },
         ];
-        const messages = mapHistory('Bob', history, 'boy', 'en');
+        const messages = mapHistory('Bob', history, 'boy', 'en', 'enchanted_forest');
         expect(messages).toHaveLength(3); // system + assistant + user
         expect(messages[0].role).toBe('system');
         expect(messages[1].role).toBe('assistant');
@@ -222,24 +222,24 @@ describe('mapHistory', () => {
                 selected: 'E',
             },
         ];
-        const messages = mapHistory('Charlie', history, 'boy', 'en');
+        const messages = mapHistory('Charlie', history, 'boy', 'en', 'enchanted_forest');
         // system + (assistant + user) * 2 = 5
         expect(messages).toHaveLength(5);
     });
 
     it('handles Thai language correctly', () => {
-        const messages = mapHistory('สมชาย', [], 'boy', 'th');
+        const messages = mapHistory('สมชาย', [], 'boy', 'th', 'enchanted_forest');
         expect(messages[0].role).toBe('system');
         expect(messages[0].content).toContain('สมชาย');
     });
 
     it('handles girl gender correctly', () => {
-        const messages = mapHistory('Alice', [], 'girl', 'en');
+        const messages = mapHistory('Alice', [], 'girl', 'en', 'enchanted_forest');
         expect(messages[0].content).toContain('girl');
     });
 
     it('handles boy gender correctly', () => {
-        const messages = mapHistory('Bob', [], 'boy', 'en');
+        const messages = mapHistory('Bob', [], 'boy', 'en', 'enchanted_forest');
         expect(messages[0].content).toContain('boy');
     });
 
@@ -252,7 +252,7 @@ describe('mapHistory', () => {
                 selected: 'A',
             },
         ];
-        const messages = mapHistory('Test', history, 'boy', 'en');
+        const messages = mapHistory('Test', history, 'boy', 'en', 'enchanted_forest');
         const userMessage = messages.find((m) => m.role === 'user');
         expect(userMessage?.content).toContain('beat');
         expect(userMessage?.content).toContain('1');

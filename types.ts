@@ -1,5 +1,11 @@
 export type Gender = 'boy' | 'girl';
 export type Language = 'th' | 'en';
+export type StoryTheme =
+  | 'enchanted_forest'
+  | 'space_adventure'
+  | 'underwater_kingdom'
+  | 'dinosaur_land'
+  | 'fairy_tale_castle';
 
 export type ChoiceWithTransition = {
   text: string;
