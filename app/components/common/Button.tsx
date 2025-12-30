@@ -2,7 +2,7 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
-  variant?: 'primary' | 'gradient';
+  variant?: 'primary' | 'gradient' | 'outline';
   gradientColors?: string;
   fullWidth?: boolean;
   type?: 'button' | 'submit';
@@ -20,17 +20,19 @@ export default function Button({
   className = '',
 }: ButtonProps) {
   const baseClasses =
-    'rounded-3xl px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed';
+    'rounded-3xl px-6 py-4 text-lg font-semibold shadow-lg transition-all hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed';
 
   let variantClass = '';
   if (variant === 'primary') {
-    variantClass = 'bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500';
+    variantClass = 'bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white';
   } else if (variant === 'gradient') {
     if (gradientColors) {
-      variantClass = `bg-gradient-to-r ${gradientColors}`;
+      variantClass = `bg-gradient-to-r ${gradientColors} text-white`;
     } else {
-      variantClass = 'bg-gradient-to-r from-pink-300 to-rose-300 hover:from-pink-400 hover:to-rose-400';
+      variantClass = 'bg-gradient-to-r from-pink-300 to-rose-300 hover:from-pink-400 hover:to-rose-400 text-white';
     }
+  } else if (variant === 'outline') {
+    variantClass = 'bg-white/80 border-2 border-purple-300 text-purple-600 hover:bg-purple-50 hover:border-purple-400';
   }
 
   const widthClass = fullWidth ? 'w-full' : '';
