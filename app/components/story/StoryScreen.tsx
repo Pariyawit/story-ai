@@ -120,8 +120,6 @@ export default function StoryScreen({
               onRestart={onRestart}
               isLoading={isLoading}
               language={language}
-              history={history}
-              currentBeat={currentBeat}
             />
           </div>
         </div>
@@ -160,8 +158,6 @@ export default function StoryScreen({
           onRestart={onRestart}
           isLoading={isLoading}
           language={language}
-          history={history}
-          currentBeat={currentBeat}
         />
       </div>
     </div>
