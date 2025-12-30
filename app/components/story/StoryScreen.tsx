@@ -6,6 +6,7 @@ import StoryImage from './StoryImage';
 import StoryText from './StoryText';
 import StoryCarousel from './StoryCarousel';
 import ChoiceButtons from './ChoiceButtons';
+import ExportPdfButton from './ExportPdfButton';
 import Button from '../common/Button';
 
 type EndViewMode = 'carousel' | 'fullText';
@@ -113,7 +114,15 @@ export default function StoryScreen({
           )}
 
           {/* End state actions */}
-          <div className='mt-8 w-full max-w-md'>
+          <div className='mt-8 w-full max-w-md space-y-4'>
+            {/* Export PDF Button */}
+            <ExportPdfButton
+              history={getFullHistory()}
+              playerName={playerName}
+              language={language}
+            />
+            
+            {/* Restart and other options */}
             <ChoiceButtons
               choices={currentBeat?.choices}
               onChoice={onChoice}

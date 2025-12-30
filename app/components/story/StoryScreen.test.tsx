@@ -142,6 +142,44 @@ describe('StoryScreen', () => {
       expect(screen.getByRole('button', { name: /🎠 ดูแกลเลอรี/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /📖 อ่านเรื่องทั้งหมด/i })).toBeInTheDocument();
     });
+
+    it('shows PDF export button when story has ended', () => {
+      render(
+        <StoryScreen
+          playerName="Test Player"
+          currentBeat={endedCurrentBeat}
+          currentPage={3}
+          history={mockHistory}
+          language="en"
+          isLoading={false}
+          onChoice={vi.fn()}
+          onRestart={vi.fn()}
+        />
+      );
+
+      // Should show the PDF export button
+      const exportButton = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
+      expect(exportButton).toBeInTheDocument();
+    });
+
+    it('shows Thai PDF export button when language is th', () => {
+      render(
+        <StoryScreen
+          playerName="Test Player"
+          currentBeat={endedCurrentBeat}
+          currentPage={3}
+          history={mockHistory}
+          language="th"
+          isLoading={false}
+          onChoice={vi.fn()}
+          onRestart={vi.fn()}
+        />
+      );
+
+      // Should show the Thai PDF export button
+      const exportButton = screen.getByRole('button', { name: /ดาวน์โหลดหนังสือเรื่องราว \(PDF\)/i });
+      expect(exportButton).toBeInTheDocument();
+    });
   });
 
   describe('when story is ongoing', () => {
