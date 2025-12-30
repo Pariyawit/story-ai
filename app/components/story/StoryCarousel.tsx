@@ -7,10 +7,11 @@ import { StoryBeat, Language } from '@/types';
 interface StoryCarouselProps {
     history: StoryBeat[];
     language: Language;
+    startAtEnd?: boolean;
 }
 
-export default function StoryCarousel({ history, language }: StoryCarouselProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
+export default function StoryCarousel({ history, language, startAtEnd = false }: StoryCarouselProps) {
+    const [currentIndex, setCurrentIndex] = useState(startAtEnd && history.length > 0 ? history.length - 1 : 0);
 
     const goToPrevious = () => {
         setCurrentIndex((prev) => (prev === 0 ? history.length - 1 : prev - 1));
