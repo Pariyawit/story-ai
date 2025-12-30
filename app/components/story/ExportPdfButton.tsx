@@ -16,6 +16,34 @@ const PDF_MARGIN = 20;
 const PAGE_TOP_POSITION = 30;
 const BOTTOM_MARGIN_FOR_CONTENT = 50;
 const BOTTOM_MARGIN_FOR_CHOICE = 40;
+const IMAGE_HEIGHT = 80; // Height in mm for images in PDF
+const IMAGE_MARGIN_BOTTOM = 10; // Margin below image
+
+/**
+ * Fetches an image from a URL and converts it to a base64 data URL.
+ * Returns null if the image cannot be fetched.
+ */
+async function fetchImageAsBase64(imageUrl: string): Promise<string | null> {
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) {
+      return null;
+    }
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = () => {
+        resolve(null);
+      };
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
 
 export default function ExportPdfButton({
   history,
@@ -158,8 +186,16 @@ export default function ExportPdfButton({
       const pagesInfoWidth = doc.getTextWidth(pagesInfo);
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
+      // Pre-fetch all images as base64 data
+      const imageDataPromises = history.map((beat) =>
+        beat.imageUrl ? fetchImageAsBase64(beat.imageUrl) : Promise.resolve(null)
+      );
+      const imageDataArray = await Promise.all(imageDataPromises);
+
       // Story pages
-      history.forEach((beat, index) => {
+      for (let index = 0; index < history.length; index++) {
+        const beat = history[index];
+        const imageData = imageDataArray[index];
         doc.addPage();
         addPageDecoration();
 
@@ -180,6 +216,31 @@ export default function ExportPdfButton({
         doc.setLineWidth(0.5);
         doc.line(PDF_MARGIN, yPosition, pageWidth - PDF_MARGIN, yPosition);
         yPosition += 15;
+
+        // Add image if available
+        if (imageData) {
+          // Calculate image dimensions to fit within content width while maintaining aspect ratio
+          // Default aspect ratio for DALL-E images is 1:1, so we use a reasonable height
+          const imageWidth = contentWidth;
+          const imageHeight = IMAGE_HEIGHT;
+          
+          // Check if we need a new page for the image
+          if (yPosition + imageHeight > pageHeight - BOTTOM_MARGIN_FOR_CONTENT) {
+            doc.addPage();
+            addPageDecoration();
+            yPosition = PAGE_TOP_POSITION;
+          }
+          
+          doc.addImage(
+            imageData,
+            'PNG',
+            PDF_MARGIN,
+            yPosition,
+            imageWidth,
+            imageHeight
+          );
+          yPosition += imageHeight + IMAGE_MARGIN_BOTTOM;
+        }
 
         // Story text - wrapped nicely
         doc.setFont('helvetica', 'normal');
@@ -229,7 +290,7 @@ export default function ExportPdfButton({
         const pageNum = `${index + 2}`; // +2 because title page is 1
         const pageNumWidth = doc.getTextWidth(pageNum);
         doc.text(pageNum, (pageWidth - pageNumWidth) / 2, pageHeight - 15);
-      });
+      }
 
       // End page - "The End"
       doc.addPage();
