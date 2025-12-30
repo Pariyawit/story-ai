@@ -11,15 +11,23 @@ interface ExportPdfButtonProps {
   language: Language;
 }
 
+// PDF layout constants
+const PDF_MARGIN = 20;
+const PAGE_TOP_POSITION = 30;
+const BOTTOM_MARGIN_FOR_CONTENT = 50;
+const BOTTOM_MARGIN_FOR_CHOICE = 40;
+
 export default function ExportPdfButton({
   history,
   playerName,
   language,
 }: ExportPdfButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const generatePdf = async () => {
     setIsExporting(true);
+    setExportError(null);
 
     try {
       // Create a new PDF document with A4 size in portrait mode
@@ -31,8 +39,7 @@ export default function ExportPdfButton({
 
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
-      const margin = 20;
-      const contentWidth = pageWidth - 2 * margin;
+      const contentWidth = pageWidth - 2 * PDF_MARGIN;
 
       // Helper function to add a new page with decorative border
       const addPageDecoration = () => {
@@ -47,7 +54,24 @@ export default function ExportPdfButton({
         doc.roundedRect(15, 15, pageWidth - 30, pageHeight - 30, 3, 3, 'S');
       };
 
-      // Helper function to wrap text
+      // Helper function to break a long word that exceeds maxWidth
+      const breakLongWord = (word: string, maxWidth: number): string[] => {
+        const parts: string[] = [];
+        let remaining = word;
+        
+        while (remaining.length > 0) {
+          let end = remaining.length;
+          while (end > 1 && doc.getTextWidth(remaining.substring(0, end)) > maxWidth) {
+            end--;
+          }
+          parts.push(remaining.substring(0, end));
+          remaining = remaining.substring(end);
+        }
+        
+        return parts;
+      };
+
+      // Helper function to wrap text with support for long words
       const wrapText = (text: string, maxWidth: number, fontSize: number): string[] => {
         doc.setFontSize(fontSize);
         const words = text.split(' ');
@@ -55,15 +79,33 @@ export default function ExportPdfButton({
         let currentLine = '';
 
         words.forEach((word) => {
-          const testLine = currentLine ? `${currentLine} ${word}` : word;
-          const testWidth = doc.getTextWidth(testLine);
-          if (testWidth > maxWidth) {
+          // Check if the word itself is too long
+          if (doc.getTextWidth(word) > maxWidth) {
+            // First, push the current line if it exists
             if (currentLine) {
               lines.push(currentLine);
+              currentLine = '';
             }
-            currentLine = word;
+            // Break the long word into parts
+            const wordParts = breakLongWord(word, maxWidth);
+            wordParts.forEach((part, index) => {
+              if (index === wordParts.length - 1) {
+                currentLine = part;
+              } else {
+                lines.push(part);
+              }
+            });
           } else {
-            currentLine = testLine;
+            const testLine = currentLine ? `${currentLine} ${word}` : word;
+            const testWidth = doc.getTextWidth(testLine);
+            if (testWidth > maxWidth) {
+              if (currentLine) {
+                lines.push(currentLine);
+              }
+              currentLine = word;
+            } else {
+              currentLine = testLine;
+            }
           }
         });
 
@@ -121,7 +163,7 @@ export default function ExportPdfButton({
         doc.addPage();
         addPageDecoration();
 
-        let yPosition = 30;
+        let yPosition = PAGE_TOP_POSITION;
 
         // Scene number header
         doc.setFont('helvetica', 'bold');
@@ -130,13 +172,13 @@ export default function ExportPdfButton({
         const sceneLabel = language === 'th' 
           ? `ฉากที่ ${index + 1}` 
           : `Scene ${index + 1}`;
-        doc.text(sceneLabel, margin, yPosition);
+        doc.text(sceneLabel, PDF_MARGIN, yPosition);
         yPosition += 10;
 
         // Decorative line under scene number
         doc.setDrawColor(220, 180, 240);
         doc.setLineWidth(0.5);
-        doc.line(margin, yPosition, pageWidth - margin, yPosition);
+        doc.line(PDF_MARGIN, yPosition, pageWidth - PDF_MARGIN, yPosition);
         yPosition += 15;
 
         // Story text - wrapped nicely
@@ -149,12 +191,12 @@ export default function ExportPdfButton({
 
         storyLines.forEach((line) => {
           // Check if we need a new page
-          if (yPosition > pageHeight - 50) {
+          if (yPosition > pageHeight - BOTTOM_MARGIN_FOR_CONTENT) {
             doc.addPage();
             addPageDecoration();
-            yPosition = 30;
+            yPosition = PAGE_TOP_POSITION;
           }
-          doc.text(line, margin, yPosition);
+          doc.text(line, PDF_MARGIN, yPosition);
           yPosition += lineHeight;
         });
 
@@ -163,21 +205,21 @@ export default function ExportPdfButton({
           yPosition += 10;
 
           // Check if we need a new page
-          if (yPosition > pageHeight - 40) {
+          if (yPosition > pageHeight - BOTTOM_MARGIN_FOR_CHOICE) {
             doc.addPage();
             addPageDecoration();
-            yPosition = 30;
+            yPosition = PAGE_TOP_POSITION;
           }
 
           // Choice box
           doc.setFillColor(245, 240, 250);
-          doc.roundedRect(margin, yPosition - 5, contentWidth, 20, 3, 3, 'F');
+          doc.roundedRect(PDF_MARGIN, yPosition - 5, contentWidth, 20, 3, 3, 'F');
 
           doc.setFont('helvetica', 'italic');
           doc.setFontSize(12);
           doc.setTextColor(128, 90, 150);
           const choiceLabel = language === 'th' ? 'คุณเลือก: ' : 'You chose: ';
-          doc.text(choiceLabel + beat.selected, margin + 5, yPosition + 7);
+          doc.text(choiceLabel + beat.selected, PDF_MARGIN + 5, yPosition + 7);
         }
 
         // Page number at bottom
@@ -227,28 +269,40 @@ export default function ExportPdfButton({
       // Save the PDF
       const fileName = language === 'th'
         ? `การผจญภัยของ-${playerName}.pdf`
-        : `${playerName}s-Adventure.pdf`;
+        : `${playerName}'s-Adventure.pdf`;
       doc.save(fileName);
 
     } catch (error) {
       console.error('Failed to generate PDF:', error);
+      setExportError(
+        language === 'th' 
+          ? 'ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง' 
+          : 'Failed to create PDF. Please try again.'
+      );
     } finally {
       setIsExporting(false);
     }
   };
 
   return (
-    <Button
-      onClick={generatePdf}
-      disabled={isExporting || history.length === 0}
-      variant='gradient'
-      gradientColors='from-green-400 to-teal-400 hover:from-green-500 hover:to-teal-500'
-      fullWidth
-      className='py-4 text-lg'
-    >
-      {isExporting
-        ? (language === 'th' ? '⏳ กำลังสร้าง PDF...' : '⏳ Creating PDF...')
-        : (language === 'th' ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)' : '📥 Download Story Book (PDF)')}
-    </Button>
+    <div className="w-full">
+      <Button
+        onClick={generatePdf}
+        disabled={isExporting || history.length === 0}
+        variant='gradient'
+        gradientColors='from-green-400 to-teal-400 hover:from-green-500 hover:to-teal-500'
+        fullWidth
+        className='py-4 text-lg'
+      >
+        {isExporting
+          ? (language === 'th' ? '⏳ กำลังสร้าง PDF...' : '⏳ Creating PDF...')
+          : (language === 'th' ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)' : '📥 Download Story Book (PDF)')}
+      </Button>
+      {exportError && (
+        <p className="mt-2 text-center text-sm text-red-500">
+          {exportError}
+        </p>
+      )}
+    </div>
   );
 }
