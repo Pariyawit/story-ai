@@ -219,8 +219,7 @@ export default function ExportPdfButton({
 
         // Add image if available
         if (imageData) {
-          // Calculate image dimensions to fit within content width while maintaining aspect ratio
-          // Default aspect ratio for DALL-E images is 1:1, so we use a reasonable height
+          // Calculate image dimensions to fit within content width with a fixed height
           const imageWidth = contentWidth;
           const imageHeight = IMAGE_HEIGHT;
           
@@ -231,9 +230,17 @@ export default function ExportPdfButton({
             yPosition = PAGE_TOP_POSITION;
           }
           
+          // Extract image format from data URL (e.g., "data:image/png;base64,..." -> "PNG")
+          // Default to JPEG if format cannot be determined
+          let imageFormat = 'JPEG';
+          const formatMatch = imageData.match(/^data:image\/(\w+);/);
+          if (formatMatch) {
+            imageFormat = formatMatch[1].toUpperCase();
+          }
+          
           doc.addImage(
             imageData,
-            'PNG',
+            imageFormat,
             PDF_MARGIN,
             yPosition,
             imageWidth,
