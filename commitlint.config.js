@@ -23,9 +23,9 @@ module.exports = {
     'subject-empty': [2, 'never'],
     'subject-case': [0], // Allow any case for subject
     'subject-full-stop': [2, 'never', '.'],
-    'header-max-length': [2, 'always', 100],
+    'header-max-length': [2, 'always', 120],
     'body-leading-blank': [1, 'always'],
-    'body-max-line-length': [2, 'always', 100],
+    'body-max-line-length': [2, 'always', 120],
     'footer-leading-blank': [1, 'always'],
   },
 };
