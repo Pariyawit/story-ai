@@ -47,10 +47,11 @@ We use **Prettier** for code formatting and **ESLint** for code quality. All cod
 
 - **Line Length**: Maximum 120 characters
 - **Indentation**: 2 spaces (no tabs)
-- **Quotes**: Double quotes for strings
+- **Quotes**: Single quotes for strings (including JSX attributes)
 - **Semicolons**: Always use semicolons
 - **Trailing Commas**: ES5 style (objects, arrays)
 - **Line Endings**: LF (Unix-style)
+- **JSX Quotes**: Single quotes (configured via `jsxSingleQuote: true`)
 
 #### Available Commands
 

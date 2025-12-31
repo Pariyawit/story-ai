@@ -47,7 +47,7 @@ This project enforces strict code quality standards using automated tools:
 
 ### Linting & Formatting
 
-- **Prettier**: Code formatting (100-char line limit, 2 spaces, single quotes, LF endings)
+- **Prettier**: Code formatting (120-char line limit, 2 spaces, single quotes including JSX, LF endings)
 - **ESLint**: Code quality rules (TypeScript, React best practices, import ordering)
 - **EditorConfig**: Cross-editor consistency
 

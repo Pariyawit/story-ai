@@ -14,7 +14,7 @@ This repository is configured with comprehensive linting and formatting tools to
   - Max line length: 120 characters
   - Tab width: 2 spaces
   - Semicolons: Required
-  - Quotes: Double quotes
+  - Quotes: Single quotes (including JSX)
   - Line endings: LF (Unix)
 
 ### 2. ESLint (Code Linter)
@@ -217,13 +217,14 @@ These are pre-existing and don't block commits.
 
 ### Code Style Rules (Enforced by Prettier)
 
-- ✅ Max line length: 100
+- ✅ Max line length: 120
 - ✅ Indentation: 2 spaces
 - ✅ Semicolons: Always
-- ✅ Quotes: Double
+- ✅ Quotes: Single (including JSX via jsxSingleQuote)
 - ✅ Trailing commas: ES5 style
 - ✅ Line endings: LF
 - ✅ Arrow function parens: Always
+- ✅ JSX quotes: Single (jsxSingleQuote: true)
 
 ### Code Quality Rules (Enforced by ESLint)
 
