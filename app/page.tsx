@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useStoryGame } from './hooks/useStoryGame';
-import StartScreen from './components/story/StartScreen';
-import StoryScreen from './components/story/StoryScreen';
-import TransitionScreen from './components/story/TransitionScreen';
+import StartScreen from "./components/story/StartScreen";
+import StoryScreen from "./components/story/StoryScreen";
+import TransitionScreen from "./components/story/TransitionScreen";
+import { useStoryGame } from "./hooks/useStoryGame";
 
 export default function Home() {
   const {
@@ -27,7 +27,7 @@ export default function Home() {
     handleRestart,
   } = useStoryGame();
 
-  if (gameState === 'START') {
+  if (gameState === "START") {
     return (
       <StartScreen
         nameInput={nameInput}
@@ -44,7 +44,7 @@ export default function Home() {
     );
   }
 
-  if (gameState === 'TRANSITION' && transitionTexts.length > 0) {
+  if (gameState === "TRANSITION" && transitionTexts.length > 0) {
     return <TransitionScreen transitionTexts={transitionTexts} language={language} />;
   }
 
