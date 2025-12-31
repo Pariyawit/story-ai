@@ -1,4 +1,4 @@
-import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
+import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 import systemPrompt from './llm/systemPrompt';
 import { AIMessage } from './types';
 import { runLLM } from './llm';
@@ -38,8 +38,15 @@ export const validateChoices = (choices: string[] | undefined): boolean => {
 };
 
 // Transforms story history to AI message format
-export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme): AIMessage[] => {
-  const messages: AIMessage[] = [systemPrompt(name, gender, language, theme)];
+export const mapHistory = (
+  name: string,
+  history: StoryBeat[],
+  gender: Gender,
+  language: Language,
+  theme: StoryTheme,
+  character?: CharacterCustomization
+): AIMessage[] => {
+  const messages: AIMessage[] = [systemPrompt(name, gender, language, theme, character)];
 
   history.forEach((storyBeat, index) => {
     const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } = storyBeat;
@@ -61,13 +68,20 @@ export const mapHistory = (name: string, history: StoryBeat[], gender: Gender, l
 
 const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
 
-export const runStory = async (name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme) => {
+export const runStory = async (
+  name: string,
+  history: StoryBeat[],
+  gender: Gender,
+  language: Language,
+  theme: StoryTheme,
+  character?: CharacterCustomization
+) => {
   const startTime = Date.now();
 
   // map history to llm message
   console.log('[PERF] Starting LLM call...');
   const llmStart = Date.now();
-  const result = await runLLM({ messages: mapHistory(name, history, gender, language, theme) });
+  const result = await runLLM({ messages: mapHistory(name, history, gender, language, theme, character) });
   const llmDuration = Date.now() - llmStart;
   console.log(`[PERF] LLM completed in ${llmDuration}ms`);
 

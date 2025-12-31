@@ -1,4 +1,4 @@
-import { Gender, Language, StoryTheme } from '@/types';
+import { Gender, Language, StoryTheme, CharacterCustomization, HairColor, HairStyle, OutfitStyle, FavoriteColor } from '@/types';
 
 const STYLE =
   "A dreamy watercolor children's book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.";
@@ -104,7 +104,75 @@ const getThemeStyle = (theme: StoryTheme): string => {
   return styles[theme];
 };
 
-export default (name: string, gender: Gender, language: Language, theme: StoryTheme) =>
+// Character description helpers
+const hairColorDescriptions: Record<HairColor, string> = {
+  brown: 'brown',
+  black: 'black',
+  blonde: 'golden blonde',
+  red: 'fiery red',
+  blue: 'bright blue',
+  pink: 'bubblegum pink',
+};
+
+const hairStyleDescriptions: Record<HairStyle, string> = {
+  short: 'short',
+  long: 'long flowing',
+  curly: 'bouncy curly',
+  braids: 'neatly braided',
+  ponytail: 'ponytail',
+};
+
+const outfitDescriptions: Record<OutfitStyle, Record<Gender, string>> = {
+  adventurer: {
+    boy: 'adventurer outfit with a leather vest',
+    girl: 'adventurer outfit with a leather vest'
+  },
+  princess: {
+    boy: 'royal prince outfit with a cape',
+    girl: 'beautiful princess dress'
+  },
+  superhero: {
+    boy: 'superhero costume with a cape',
+    girl: 'superhero costume with a cape'
+  },
+  wizard: {
+    boy: 'wizard robe with a pointy hat',
+    girl: 'witch robe with a pointy hat'
+  },
+  explorer: {
+    boy: 'explorer outfit with a safari hat',
+    girl: 'explorer outfit with a safari hat'
+  },
+};
+
+const favoriteColorDescriptions: Record<FavoriteColor, string> = {
+  purple: 'purple',
+  blue: 'blue',
+  pink: 'pink',
+  green: 'green',
+  red: 'red',
+  yellow: 'yellow',
+};
+
+const getCharacterDescription = (
+  name: string,
+  gender: Gender,
+  character?: CharacterCustomization
+): string => {
+  if (!character) {
+    // Fallback to basic description
+    return `a young ${gender === 'boy' ? 'boy' : 'girl'} named ${name}`;
+  }
+
+  const hairColor = hairColorDescriptions[character.hairColor];
+  const hairStyle = hairStyleDescriptions[character.hairStyle];
+  const outfit = outfitDescriptions[character.outfitStyle][gender];
+  const favoriteColor = favoriteColorDescriptions[character.favoriteColor];
+
+  return `a young ${gender === 'boy' ? 'boy' : 'girl'} named ${name} with ${hairStyle} ${hairColor} hair, wearing a ${favoriteColor} ${outfit}`;
+};
+
+export default (name: string, gender: Gender, language: Language, theme: StoryTheme, character?: CharacterCustomization) =>
 ({
   role: 'system',
   content: `You are a world-class children's book narrator specializing in the Hero's Journey.
@@ -141,7 +209,7 @@ export default (name: string, gender: Gender, language: Language, theme: StoryTh
         VISUAL DNA (FOR IMAGEPROMPT):
         - STYLE: "${STYLE}"
         - THEME ELEMENTS: "${getThemeStyle(theme)}"
-        - CHARACTER: The hero is [${name}], ${getGenderDescription(gender)} with [HAIR DESCRIPTION] and [OUTFIT DESCRIPTION]. This description MUST remain identical in every prompt.
+        - CHARACTER: The hero is [${name}], ${getCharacterDescription(name, gender, character)}. This description MUST remain identical in every prompt.
         - PROMPT RULE: You MUST include the "imagePrompt" field in EVERY SINGLE response. If you omit it, the world stops.
         - STRUCTURE: Your "imagePrompt" must always follow this template:
           "
@@ -154,4 +222,3 @@ export default (name: string, gender: Gender, language: Language, theme: StoryTh
         ${getJsonFormatExample(language)}
   `,
 } as const);
-

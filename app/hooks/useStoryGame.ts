@@ -1,7 +1,33 @@
 import { useState, useEffect } from 'react';
-import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
+import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 import { postStory } from '@/services/storyClient';
 // import { useLocalStorage } from './useLocalStorage';
+
+// Default character customization
+const DEFAULT_CHARACTER: CharacterCustomization = {
+  hairColor: 'brown',
+  hairStyle: 'short',
+  outfitStyle: 'adventurer',
+  favoriteColor: 'purple',
+};
+
+// Valid values for character customization (for localStorage validation)
+const VALID_HAIR_COLORS = ['brown', 'black', 'blonde', 'red', 'blue', 'pink'];
+const VALID_HAIR_STYLES = ['short', 'long', 'curly', 'braids', 'ponytail'];
+const VALID_OUTFIT_STYLES = ['adventurer', 'princess', 'superhero', 'wizard', 'explorer'];
+const VALID_FAVORITE_COLORS = ['purple', 'blue', 'pink', 'green', 'red', 'yellow'];
+
+// Validate character from localStorage
+const isValidCharacter = (char: unknown): char is CharacterCustomization => {
+  if (!char || typeof char !== 'object') return false;
+  const c = char as Record<string, unknown>;
+  return (
+    VALID_HAIR_COLORS.includes(c.hairColor as string) &&
+    VALID_HAIR_STYLES.includes(c.hairStyle as string) &&
+    VALID_OUTFIT_STYLES.includes(c.outfitStyle as string) &&
+    VALID_FAVORITE_COLORS.includes(c.favoriteColor as string)
+  );
+};
 
 type GameState = 'START' | 'STORY' | 'TRANSITION';
 
@@ -30,6 +56,7 @@ interface UseStoryGameReturn {
   gender: Gender;
   language: Language;
   theme: StoryTheme;
+  character: CharacterCustomization;
   history: StoryBeat[];
   currentBeat: StoryBeat | null;
   currentPage: number;
@@ -39,6 +66,7 @@ interface UseStoryGameReturn {
   setGender: (gender: Gender) => void;
   setLanguage: (language: Language) => void;
   setTheme: (theme: StoryTheme) => void;
+  setCharacter: (character: CharacterCustomization) => void;
   handleNameSubmit: (e: React.FormEvent) => Promise<void>;
   handleChoice: (choice: string) => Promise<void>;
   handleRestart: () => void;
@@ -51,6 +79,7 @@ export function useStoryGame(): UseStoryGameReturn {
   const [gender, setGender] = useState<Gender>('boy');
   const [language, setLanguage] = useState<Language>('en');
   const [theme, setThemeState] = useState<StoryTheme>('enchanted_forest');
+  const [characterState, setCharacterState] = useState<CharacterCustomization>(DEFAULT_CHARACTER);
   const [history, setHistory] = useState<StoryBeat[]>([]);
   // const [history, setHistory] = useLocalStorage<StoryBeat[]>(
   //   'story-history',
@@ -60,12 +89,26 @@ export function useStoryGame(): UseStoryGameReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [transitionTexts, setTransitionTexts] = useState<string[]>([]);
 
-  // Load theme from localStorage on mount
+  // Load theme and character from localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Load theme
       const savedTheme = localStorage.getItem('story-theme') as StoryTheme | null;
       if (savedTheme && ['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle'].includes(savedTheme)) {
         setThemeState(savedTheme);
+      }
+
+      // Load character
+      try {
+        const savedCharacterStr = localStorage.getItem('story-character');
+        if (savedCharacterStr) {
+          const savedCharacter = JSON.parse(savedCharacterStr);
+          if (isValidCharacter(savedCharacter)) {
+            setCharacterState(savedCharacter);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load character from localStorage:', error);
       }
     }
   }, []);
@@ -75,6 +118,14 @@ export function useStoryGame(): UseStoryGameReturn {
     setThemeState(newTheme);
     if (typeof window !== 'undefined') {
       localStorage.setItem('story-theme', newTheme);
+    }
+  };
+
+  // Save character to localStorage when it changes
+  const setCharacter = (newCharacter: CharacterCustomization) => {
+    setCharacterState(newCharacter);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('story-character', JSON.stringify(newCharacter));
     }
   };
 
@@ -93,7 +144,7 @@ export function useStoryGame(): UseStoryGameReturn {
       setIsLoading(true);
 
       try {
-        const initialBeat = await postStory(name, [], gender, language, theme);
+        const initialBeat = await postStory(name, [], gender, language, theme, characterState);
         setCurrentBeat(initialBeat);
         setGameState('STORY');
         // setHistory([initialBeat]);
@@ -132,7 +183,7 @@ export function useStoryGame(): UseStoryGameReturn {
     ];
     setHistory(updatedHistory);
     try {
-      const nextBeat = await postStory(playerName, updatedHistory, gender, language, theme);
+      const nextBeat = await postStory(playerName, updatedHistory, gender, language, theme, characterState);
       setCurrentBeat(nextBeat);
       setGameState('STORY');
     } catch (error) {
@@ -170,6 +221,7 @@ export function useStoryGame(): UseStoryGameReturn {
     gender,
     language,
     theme,
+    character: characterState,
     history,
     currentBeat,
     currentPage,
@@ -179,6 +231,7 @@ export function useStoryGame(): UseStoryGameReturn {
     setGender,
     setLanguage,
     setTheme,
+    setCharacter,
     handleNameSubmit,
     handleChoice,
     handleRestart,

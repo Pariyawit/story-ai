@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Gender, Language, StoryTheme } from '@/types';
+import { Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 import Card from '../common/Card';
 import Input from '../common/Input';
 import Button from '../common/Button';
+import CharacterWizard from './CharacterWizard';
 
 // Theme configuration with labels
 const THEMES: { id: StoryTheme; emoji: string; labelEn: string; labelTh: string }[] = [
@@ -20,10 +21,12 @@ interface StartScreenProps {
   gender: Gender;
   language: Language;
   theme: StoryTheme;
+  character: CharacterCustomization;
   onNameChange: (name: string) => void;
   onGenderChange: (gender: Gender) => void;
   onLanguageChange: (language: Language) => void;
   onThemeChange: (theme: StoryTheme) => void;
+  onCharacterChange: (character: CharacterCustomization) => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading?: boolean;
 }
@@ -33,14 +36,17 @@ export default function StartScreen({
   gender,
   language,
   theme,
+  character,
   onNameChange,
   onGenderChange,
   onLanguageChange,
   onThemeChange,
+  onCharacterChange,
   onSubmit,
   isLoading = false,
 }: StartScreenProps) {
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
+  const [isCharacterExpanded, setIsCharacterExpanded] = useState(false);
 
   const selectedTheme = THEMES.find(t => t.id === theme) || THEMES[0];
 
@@ -75,8 +81,8 @@ export default function StartScreen({
                   type='button'
                   onClick={() => onGenderChange('boy')}
                   className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${gender === 'boy'
-                      ? 'border-blue-400 bg-blue-100 text-blue-700'
-                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                    ? 'border-blue-400 bg-blue-100 text-blue-700'
+                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                     }`}
                 >
                   {language === 'th' ? '👦 ด.ช.' : '👦 Boy'}
@@ -85,8 +91,8 @@ export default function StartScreen({
                   type='button'
                   onClick={() => onGenderChange('girl')}
                   className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${gender === 'girl'
-                      ? 'border-pink-400 bg-pink-100 text-pink-700'
-                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                    ? 'border-pink-400 bg-pink-100 text-pink-700'
+                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                     }`}
                 >
                   {language === 'th' ? '👧 ด.ญ.' : '👧 Girl'}
@@ -104,8 +110,8 @@ export default function StartScreen({
                   type='button'
                   onClick={() => onLanguageChange('en')}
                   className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${language === 'en'
-                      ? 'border-purple-400 bg-purple-100 text-purple-700'
-                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                    ? 'border-purple-400 bg-purple-100 text-purple-700'
+                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                     }`}
                 >
                   🇺🇸 English
@@ -114,13 +120,43 @@ export default function StartScreen({
                   type='button'
                   onClick={() => onLanguageChange('th')}
                   className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${language === 'th'
-                      ? 'border-purple-400 bg-purple-100 text-purple-700'
-                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                    ? 'border-purple-400 bg-purple-100 text-purple-700'
+                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                     }`}
                 >
                   🇹🇭 ไทย
                 </button>
               </div>
+            </div>
+
+            {/* Character Customization - Collapsible */}
+            <div className='space-y-2'>
+              <button
+                type='button'
+                onClick={() => setIsCharacterExpanded(!isCharacterExpanded)}
+                className='flex w-full items-center justify-between rounded-2xl border-2 border-purple-200 bg-white px-4 py-3 text-left transition-all hover:border-purple-300'
+              >
+                <span className='text-sm font-medium text-purple-700'>
+                  {language === 'th' ? 'ออกแบบตัวละคร' : 'Character Design'}
+                </span>
+                <span className='flex items-center gap-2 text-purple-600'>
+                  <span className='text-lg'>✨ 🎨</span>
+                  <span className={`text-lg transition-transform ${isCharacterExpanded ? 'rotate-180' : ''}`}>
+                    ▼
+                  </span>
+                </span>
+              </button>
+
+              {isCharacterExpanded && (
+                <div className='rounded-2xl border-2 border-purple-100 bg-white/50 p-4'>
+                  <CharacterWizard
+                    character={character}
+                    gender={gender}
+                    language={language}
+                    onChange={onCharacterChange}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Theme Selection - Collapsible */}
@@ -155,8 +191,8 @@ export default function StartScreen({
                         setIsThemeExpanded(false);
                       }}
                       className={`rounded-2xl border-2 p-3 text-center transition-all ${theme === id
-                          ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-pink-100 text-purple-700 shadow-md'
-                          : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300 hover:bg-purple-50'
+                        ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-pink-100 text-purple-700 shadow-md'
+                        : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300 hover:bg-purple-50'
                         }`}
                     >
                       <span className='text-2xl'>{emoji}</span>

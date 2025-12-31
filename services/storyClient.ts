@@ -1,10 +1,17 @@
-import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
+import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 
-export async function postStory(name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme) {
+export async function postStory(
+  name: string,
+  history: StoryBeat[],
+  gender: Gender,
+  language: Language,
+  theme: StoryTheme,
+  character?: CharacterCustomization
+) {
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, history, gender, language, theme }),
+    body: JSON.stringify({ name, history, gender, language, theme, character }),
   });
 
   if (!response.ok) throw new Error('Failed to get next story beat');

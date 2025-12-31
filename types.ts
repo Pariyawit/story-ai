@@ -7,6 +7,19 @@ export type StoryTheme =
   | 'dinosaur_land'
   | 'fairy_tale_castle';
 
+// Character Customization Types
+export type HairColor = 'brown' | 'black' | 'blonde' | 'red' | 'blue' | 'pink';
+export type HairStyle = 'short' | 'long' | 'curly' | 'braids' | 'ponytail';
+export type OutfitStyle = 'adventurer' | 'princess' | 'superhero' | 'wizard' | 'explorer';
+export type FavoriteColor = 'purple' | 'blue' | 'pink' | 'green' | 'red' | 'yellow';
+
+export type CharacterCustomization = {
+  hairColor: HairColor;
+  hairStyle: HairStyle;
+  outfitStyle: OutfitStyle;
+  favoriteColor: FavoriteColor;
+};
+
 export type ChoiceWithTransition = {
   text: string;
   transition: string[];
