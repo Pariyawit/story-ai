@@ -1,18 +1,16 @@
-import { openai } from '../ai';
-import { ImageGenerateParamsNonStreaming } from 'openai/resources';
+import { ImageGenerateParamsNonStreaming } from "openai/resources";
 
-type generateImageArgs = Pick<
-  ImageGenerateParamsNonStreaming,
-  'prompt' | 'size'
->;
+import { openai } from "../ai";
+
+type generateImageArgs = Pick<ImageGenerateParamsNonStreaming, "prompt" | "size">;
 
 export const generateImage = async ({ prompt }: generateImageArgs) => {
   const response = await openai.images.generate({
-    model: 'dall-e-2',
+    model: "dall-e-2",
     n: 1,
     prompt,
-    size: '512x512',
+    size: "512x512",
   });
 
-  return response.data?.[0]?.url ?? '';
+  return response.data?.[0]?.url ?? "";
 };
