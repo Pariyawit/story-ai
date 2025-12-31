@@ -39,6 +39,13 @@ This repository is configured with comprehensive linting and formatting tools to
 - **lint-staged**: Runs linters on staged files only
 - **Behavior**: Automatically formats and lints code before each commit
 
+### 5. Commitlint (Commit Message Linter)
+
+- **Version**: ^18.x
+- **Config**: [commitlint.config.js](commitlint.config.js)
+- **Purpose**: Enforces conventional commit message format
+- **Behavior**: Validates commit messages using commit-msg hook
+
 ## Quick Start for Collaborators
 
 ### First Time Setup
@@ -79,13 +86,19 @@ npm run check
 
 ## What Happens on Commit
 
-1. You run `git commit`
-2. Husky triggers the pre-commit hook
-3. lint-staged runs on your staged files:
-   - ESLint auto-fixes issues
-   - Prettier formats code
-4. If everything passes, commit succeeds
-5. If issues remain, commit is blocked with error messages
+1. You run `git commit -m "feat: your message"`
+2. **Pre-commit hook** runs first:
+   - Husky triggers the pre-commit hook
+   - lint-staged runs on your staged files:
+     - ESLint auto-fixes issues
+     - Prettier formats code
+   - If issues remain, commit is blocked
+3. **Commit-msg hook** runs next:
+   - commitlint validates your commit message
+   - Checks conventional commit format
+   - Ensures header is ≤100 characters
+   - If invalid, commit is blocked with error message
+4. If both hooks pass, commit succeeds
 
 ## Editor Integration
 
@@ -193,7 +206,9 @@ These are pre-existing and don't block commits.
 | `.prettierignore`              | Files to exclude from Prettier |
 | `eslint.config.mjs`            | ESLint rules and plugins       |
 | `.editorconfig`                | Cross-editor consistency       |
+| `commitlint.config.js`         | Commit message linting rules   |
 | `.husky/pre-commit`            | Pre-commit hook script         |
+| `.husky/commit-msg`            | Commit message validation hook |
 | `package.json` (`lint-staged`) | What to run on staged files    |
 | `.vscode/settings.json`        | VS Code specific settings      |
 | `.vscode/extensions.json`      | Recommended VS Code extensions |
@@ -228,11 +243,33 @@ If migrating existing code:
 3. Manually fix remaining warnings
 4. Commit with message: `chore: apply linting and formatting standards`
 
+## Commit Message Format
+
+We enforce conventional commits. Format: `<type>: <subject>`
+
+**Allowed types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `revert`, `ci`, `build`
+
+**Examples**:
+
+```bash
+✅ feat: add user authentication
+✅ fix: resolve memory leak in image loader
+✅ docs: update API documentation
+✅ chore: update dependencies
+
+❌ Add user authentication (missing type)
+❌ Feat: add auth (uppercase type)
+❌ feat: (empty subject)
+❌ feat: add user authentication. (ends with period)
+```
+
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for detailed commit message guidelines.
+
 ## Future Enhancements
 
 Potential additions:
 
-- [ ] Commitlint (enforce commit message format)
+- [x] Commitlint (enforce commit message format) ✅ **COMPLETED**
 - [ ] Stylelint (CSS/Tailwind linting)
 - [ ] GitHub Actions workflow for PR checks
 - [ ] Dangerjs for PR automation

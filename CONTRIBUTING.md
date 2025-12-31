@@ -76,12 +76,18 @@ npm run check
 
 ### Pre-commit Hooks
 
-We use **Husky** and **lint-staged** to automatically lint and format code before each commit. When you commit:
+We use **Husky**, **lint-staged**, and **commitlint** to automatically enforce code quality and commit message standards. When you commit:
 
-1. Staged files will be automatically linted with ESLint
-2. Auto-fixable issues will be corrected
-3. Files will be formatted with Prettier
-4. If issues remain, the commit will be blocked
+1. **Pre-commit hook** (runs before commit is created):
+   - Staged files will be automatically linted with ESLint
+   - Auto-fixable issues will be corrected
+   - Files will be formatted with Prettier
+   - If issues remain, the commit will be blocked
+
+2. **Commit-msg hook** (validates commit message):
+   - Ensures commit messages follow conventional commit format
+   - Blocks commits with invalid message formats
+   - Enforces 100-character header limit
 
 To bypass hooks (use sparingly):
 
@@ -160,23 +166,85 @@ All new features should include tests.
 
 ### Commit Message Convention
 
-We follow conventional commits:
+We enforce **conventional commits** using commitlint. All commit messages must follow this format:
+
+```
+<type>: <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+#### Allowed Types
 
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation changes
 - `style:` - Code style changes (formatting, no logic change)
 - `refactor:` - Code refactoring
+- `perf:` - Performance improvements
 - `test:` - Test additions or changes
 - `chore:` - Build process or auxiliary tool changes
+- `revert:` - Revert previous commit
+- `ci:` - CI/CD changes
+- `build:` - Build system changes
 
-Example:
+#### Rules
 
-```
+- Type must be lowercase
+- Subject is required and cannot be empty
+- Subject must not end with a period
+- Header (type + subject) max 100 characters
+- Body lines max 100 characters
+- Blank line between header and body
+- Blank line between body and footer
+
+#### Valid Examples
+
+```bash
+# Simple commit
 feat: add dark mode theme support
+
+# With body
 fix: resolve image loading issue on mobile
+
+The images were not loading correctly on iOS Safari due to
+incorrect MIME type detection. Updated the image loader to
+properly handle all image formats.
+
+# With breaking change
+feat!: update API response format
+
+BREAKING CHANGE: The API now returns data in a different format.
+Update all API calls to use the new response structure.
+
+# Multiple types of commits
 docs: update README with new installation steps
+test: add unit tests for story generation
+chore: update dependencies to latest versions
 ```
+
+#### Invalid Examples (will be rejected)
+
+```bash
+# Missing type
+Add dark mode support
+
+# Uppercase type
+Feat: add dark mode
+
+# Empty subject
+feat:
+
+# Subject ends with period
+feat: add dark mode.
+
+# Header too long
+feat: add comprehensive dark mode theme support with multiple color schemes and user preferences
+```
+
+**Note**: The commit-msg hook will automatically validate your commit message and prevent commits that don't follow this convention.
 
 ## Common Issues
 
