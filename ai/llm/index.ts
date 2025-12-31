@@ -1,5 +1,4 @@
 import { openai } from '../ai';
-import { zodFunction } from 'openai/helpers/zod';
 import { AIMessage } from '../types';
 
 export const runLLM = async ({ messages }: { messages: AIMessage[] }) => {

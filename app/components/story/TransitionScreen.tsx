@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { Language } from '@/types';
+
 import Card from '../common/Card';
 import SpeakButton from '../common/SpeakButton';
 
@@ -10,20 +12,24 @@ interface TransitionScreenProps {
   language?: Language;
 }
 
-export default function TransitionScreen({
-  transitionTexts,
-  language = 'en',
-}: TransitionScreenProps) {
+export default function TransitionScreen({ transitionTexts, language = 'en' }: TransitionScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [completedTexts, setCompletedTexts] = useState<string[]>([]);
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
 
-  const loadingText = language === 'th' 
-    ? '✨ เวทมนตร์กำลังทำงาน... ✨' 
-    : '✨ Magic is happening... ✨';
+  const loadingText = language === 'th' ? '✨ เวทมนตร์กำลังทำงาน... ✨' : '✨ Magic is happening... ✨';
 
   // Combine all transition texts for TTS
   const fullTransitionText = transitionTexts.join(' ');
+
+  // Reset when transitionTexts changes
+  useEffect(() => {
+    setCurrentIndex(0);
+    setCompletedTexts([]);
+    setDisplayedText('');
+    setIsTyping(true);
+  }, [transitionTexts]);
 
   // Typewriter effect for current sentence
   useEffect(() => {
@@ -44,12 +50,16 @@ export default function TransitionScreen({
       } else {
         setIsTyping(false);
         clearInterval(typingInterval);
-        
+
+        // Add completed text to the array
+        setCompletedTexts((prev) => [...prev, currentText]);
+        setDisplayedText(''); // Clear for next line
+
         // Wait before showing next sentence (only if there are more sentences)
         if (currentIndex < transitionTexts.length - 1) {
           setTimeout(() => {
-            setCurrentIndex(prev => prev + 1);
-          }, 1500); // Wait 1.5 seconds before next sentence
+            setCurrentIndex((prev) => prev + 1);
+          }, 2000); // Wait 2 seconds before next sentence
         }
         // If this is the last sentence, just stay here until API responds
       }
@@ -71,21 +81,29 @@ export default function TransitionScreen({
                   index < currentIndex
                     ? 'bg-purple-500'
                     : index === currentIndex
-                    ? 'bg-purple-400 animate-pulse'
-                    : 'bg-purple-200'
+                      ? 'bg-purple-400 animate-pulse'
+                      : 'bg-purple-200'
                 }`}
               />
             ))}
           </div>
 
-          {/* Animated text */}
-          <div className='min-h-[120px] flex items-center justify-center'>
-            <p className='text-2xl font-medium leading-relaxed text-purple-900'>
-              {displayedText}
-              {isTyping && (
-                <span className='ml-1 inline-block animate-pulse text-purple-400'>|</span>
-              )}
-            </p>
+          {/* Text display area - stacked with spacing */}
+          <div className='min-h-[200px] space-y-4'>
+            {/* Completed lines - appear instantly, no typewriter */}
+            {completedTexts.map((text, index) => (
+              <p key={index} className='text-lg leading-relaxed text-purple-800'>
+                {text}
+              </p>
+            ))}
+
+            {/* Current line being typed - with typewriter effect */}
+            {displayedText && (
+              <p className='text-lg leading-relaxed text-purple-800'>
+                {displayedText}
+                {isTyping && <span className='ml-1 inline-block h-6 w-0.5 animate-pulse bg-purple-600' />}
+              </p>
+            )}
           </div>
 
           {/* Speak button */}

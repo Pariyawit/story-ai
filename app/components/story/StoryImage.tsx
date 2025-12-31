@@ -6,16 +6,12 @@ interface StoryImageProps {
   isLoading: boolean;
 }
 
-export default function StoryImage({
-  imageUrl,
-  imagePrompt,
-  isLoading,
-}: StoryImageProps) {
+export default function StoryImage({ imageUrl, imagePrompt, isLoading }: StoryImageProps) {
   return (
     <div className='w-full p-4 md:w-1/2 md:p-6 lg:p-8'>
       <div className='flex items-center justify-center'>
         <div className='w-full max-w-2xl md:max-w-none'>
-          <div className='relative aspect-[5/4] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-lg'>
+          <div className='relative aspect-square w-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-lg'>
             {imageUrl ? (
               <Image
                 src={imageUrl}

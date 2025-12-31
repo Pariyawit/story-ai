@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+
 import { Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
+
+import Button from '../common/Button';
 import Card from '../common/Card';
 import Input from '../common/Input';
-import Button from '../common/Button';
+
 import CharacterWizard from './CharacterWizard';
 
 // Theme configuration with labels
@@ -48,15 +51,13 @@ export default function StartScreen({
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
   const [isCharacterExpanded, setIsCharacterExpanded] = useState(false);
 
-  const selectedTheme = THEMES.find(t => t.id === theme) || THEMES[0];
+  const selectedTheme = THEMES.find((t) => t.id === theme) || THEMES[0];
 
   return (
     <div className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100'>
       <div className='w-full max-w-md px-8'>
         <Card className='p-8 shadow-lg'>
-          <h1 className='mb-6 text-center text-4xl font-bold text-purple-600'>
-            Story Adventure
-          </h1>
+          <h1 className='mb-6 text-center text-4xl font-bold text-purple-600'>Story Adventure</h1>
           <p className='mb-8 text-center text-lg text-purple-500'>
             {language === 'th' ? 'ชื่อของคุณคืออะไร นักสำรวจผู้กล้าหาญ?' : "What's your name, brave explorer?"}
           </p>
@@ -80,20 +81,22 @@ export default function StartScreen({
                 <button
                   type='button'
                   onClick={() => onGenderChange('boy')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${gender === 'boy'
-                    ? 'border-blue-400 bg-blue-100 text-blue-700'
-                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
-                    }`}
+                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                    gender === 'boy'
+                      ? 'border-blue-400 bg-blue-100 text-blue-700'
+                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                  }`}
                 >
                   {language === 'th' ? '👦 ด.ช.' : '👦 Boy'}
                 </button>
                 <button
                   type='button'
                   onClick={() => onGenderChange('girl')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${gender === 'girl'
-                    ? 'border-pink-400 bg-pink-100 text-pink-700'
-                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
-                    }`}
+                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                    gender === 'girl'
+                      ? 'border-pink-400 bg-pink-100 text-pink-700'
+                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                  }`}
                 >
                   {language === 'th' ? '👧 ด.ญ.' : '👧 Girl'}
                 </button>
@@ -109,20 +112,22 @@ export default function StartScreen({
                 <button
                   type='button'
                   onClick={() => onLanguageChange('en')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${language === 'en'
-                    ? 'border-purple-400 bg-purple-100 text-purple-700'
-                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
-                    }`}
+                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                    language === 'en'
+                      ? 'border-purple-400 bg-purple-100 text-purple-700'
+                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                  }`}
                 >
                   🇺🇸 English
                 </button>
                 <button
                   type='button'
                   onClick={() => onLanguageChange('th')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${language === 'th'
-                    ? 'border-purple-400 bg-purple-100 text-purple-700'
-                    : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
-                    }`}
+                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                    language === 'th'
+                      ? 'border-purple-400 bg-purple-100 text-purple-700'
+                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                  }`}
                 >
                   🇹🇭 ไทย
                 </button>
@@ -141,9 +146,7 @@ export default function StartScreen({
                 </span>
                 <span className='flex items-center gap-2 text-purple-600'>
                   <span className='text-lg'>✨ 🎨</span>
-                  <span className={`text-lg transition-transform ${isCharacterExpanded ? 'rotate-180' : ''}`}>
-                    ▼
-                  </span>
+                  <span className={`text-lg transition-transform ${isCharacterExpanded ? 'rotate-180' : ''}`}>▼</span>
                 </span>
               </button>
 
@@ -174,9 +177,7 @@ export default function StartScreen({
                   <span className='text-sm font-medium'>
                     {language === 'th' ? selectedTheme.labelTh : selectedTheme.labelEn}
                   </span>
-                  <span className={`text-lg transition-transform ${isThemeExpanded ? 'rotate-180' : ''}`}>
-                    ▼
-                  </span>
+                  <span className={`text-lg transition-transform ${isThemeExpanded ? 'rotate-180' : ''}`}>▼</span>
                 </span>
               </button>
 
@@ -190,26 +191,21 @@ export default function StartScreen({
                         onThemeChange(id);
                         setIsThemeExpanded(false);
                       }}
-                      className={`rounded-2xl border-2 p-3 text-center transition-all ${theme === id
-                        ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-pink-100 text-purple-700 shadow-md'
-                        : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300 hover:bg-purple-50'
-                        }`}
+                      className={`rounded-2xl border-2 p-3 text-center transition-all ${
+                        theme === id
+                          ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-pink-100 text-purple-700 shadow-md'
+                          : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300 hover:bg-purple-50'
+                      }`}
                     >
                       <span className='text-2xl'>{emoji}</span>
-                      <p className='mt-1 text-xs font-medium'>
-                        {language === 'th' ? labelTh : labelEn}
-                      </p>
+                      <p className='mt-1 text-xs font-medium'>{language === 'th' ? labelTh : labelEn}</p>
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            <Button
-              type='submit'
-              disabled={!nameInput.trim() || isLoading}
-              fullWidth
-            >
+            <Button type='submit' disabled={!nameInput.trim() || isLoading} fullWidth>
               {language === 'th' ? 'เริ่มการผจญภัย' : 'Start Adventure'}
             </Button>
           </form>
@@ -218,4 +214,3 @@ export default function StartScreen({
     </div>
   );
 }
-

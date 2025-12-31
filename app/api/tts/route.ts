@@ -1,7 +1,8 @@
-import { openai } from '@/ai/ai';
-import { z } from 'zod';
-import { Language } from '@/types';
 import type { SpeechCreateParams } from 'openai/resources/audio/speech';
+import { z } from 'zod';
+
+import { openai } from '@/ai/ai';
+import { Language } from '@/types';
 
 export const dynamic = 'force-dynamic';
 

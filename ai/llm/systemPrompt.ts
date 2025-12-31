@@ -1,4 +1,13 @@
-import { Gender, Language, StoryTheme, CharacterCustomization, HairColor, HairStyle, OutfitStyle, FavoriteColor } from '@/types';
+import {
+  Gender,
+  Language,
+  StoryTheme,
+  CharacterCustomization,
+  HairColor,
+  HairStyle,
+  OutfitStyle,
+  FavoriteColor,
+} from '@/types';
 
 const STYLE =
   "A dreamy watercolor children's book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.";
@@ -71,24 +80,24 @@ const getThemeDescription = (theme: StoryTheme, language: Language): string => {
   const themes = {
     enchanted_forest: {
       en: 'Set in a magical forest with talking animals, wise owls, friendly fairies, ancient trees with faces, and hidden glades full of wonder.',
-      th: 'ในป่าวิเศษที่มีสัตว์พูดได้ นกฮูกฉลาด นางฟ้าใจดี ต้นไม้โบราณมีใบหน้า และทุ่งหญ้าลับเต็มไปด้วยความมหัศจรรย์'
+      th: 'ในป่าวิเศษที่มีสัตว์พูดได้ นกฮูกฉลาด นางฟ้าใจดี ต้นไม้โบราณมีใบหน้า และทุ่งหญ้าลับเต็มไปด้วยความมหัศจรรย์',
     },
     space_adventure: {
       en: 'Set in outer space with colorful planets, friendly aliens, rocket ships, space stations, shooting stars, and cosmic wonders.',
-      th: 'ในอวกาศกว้างใหญ่ มีดาวเคราะห์หลากสี เอเลี่ยนใจดี จรวดอวกาศ สถานีอวกาศ ดาวตก และความมหัศจรรย์ของจักรวาล'
+      th: 'ในอวกาศกว้างใหญ่ มีดาวเคราะห์หลากสี เอเลี่ยนใจดี จรวดอวกาศ สถานีอวกาศ ดาวตก และความมหัศจรรย์ของจักรวาล',
     },
     underwater_kingdom: {
       en: 'Set deep beneath the ocean with coral palaces, singing mermaids, playful dolphins, wise sea turtles, and sparkling treasures.',
-      th: 'ใต้ท้องมหาสมุทรลึก มีวังปะการัง นางเงือกร้องเพลง โลมาขี้เล่น เต่าทะเลฉลาด และสมบัติระยิบระยับ'
+      th: 'ใต้ท้องมหาสมุทรลึก มีวังปะการัง นางเงือกร้องเพลง โลมาขี้เล่น เต่าทะเลฉลาด และสมบัติระยิบระยับ',
     },
     dinosaur_land: {
       en: 'Set in a prehistoric world with gentle giant dinosaurs, erupting volcanoes, lush jungles, and ancient mysteries.',
-      th: 'ในโลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ยักษ์ใจดี ภูเขาไฟปะทุ ป่าเขียวขจี และความลึกลับโบราณ'
+      th: 'ในโลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ยักษ์ใจดี ภูเขาไฟปะทุ ป่าเขียวขจี และความลึกลับโบราณ',
     },
     fairy_tale_castle: {
       en: 'Set in a magical kingdom with towering castles, brave knights, friendly dragons, and enchanted treasures.',
-      th: 'ในอาณาจักรมหัศจรรย์ มีปราสาทสูงตระหง่าน อัศวินกล้าหาญ มังกรใจดี และสมบัติที่ถูกสาปต์'
-    }
+      th: 'ในอาณาจักรมหัศจรรย์ มีปราสาทสูงตระหง่าน อัศวินกล้าหาญ มังกรใจดี และสมบัติที่ถูกสาปต์',
+    },
   };
   return themes[theme][language];
 };
@@ -99,7 +108,7 @@ const getThemeStyle = (theme: StoryTheme): string => {
     space_adventure: 'cosmic nebulas, colorful planets, sparkling stars, retro-futuristic',
     underwater_kingdom: 'coral reefs, bioluminescent creatures, underwater sunbeams, ocean bubbles',
     dinosaur_land: 'lush prehistoric jungle, volcanic mountains, ferns and palms, gentle dinosaurs',
-    fairy_tale_castle: 'medieval fantasy, stone towers, royal banners, dragon-friendly kingdom'
+    fairy_tale_castle: 'medieval fantasy, stone towers, royal banners, dragon-friendly kingdom',
   };
   return styles[theme];
 };
@@ -125,23 +134,23 @@ const hairStyleDescriptions: Record<HairStyle, string> = {
 const outfitDescriptions: Record<OutfitStyle, Record<Gender, string>> = {
   adventurer: {
     boy: 'adventurer outfit with a leather vest',
-    girl: 'adventurer outfit with a leather vest'
+    girl: 'adventurer outfit with a leather vest',
   },
   princess: {
     boy: 'royal prince outfit with a cape',
-    girl: 'beautiful princess dress'
+    girl: 'beautiful princess dress',
   },
   superhero: {
     boy: 'superhero costume with a cape',
-    girl: 'superhero costume with a cape'
+    girl: 'superhero costume with a cape',
   },
   wizard: {
     boy: 'wizard robe with a pointy hat',
-    girl: 'witch robe with a pointy hat'
+    girl: 'witch robe with a pointy hat',
   },
   explorer: {
     boy: 'explorer outfit with a safari hat',
-    girl: 'explorer outfit with a safari hat'
+    girl: 'explorer outfit with a safari hat',
   },
 };
 
@@ -154,11 +163,7 @@ const favoriteColorDescriptions: Record<FavoriteColor, string> = {
   yellow: 'yellow',
 };
 
-const getCharacterDescription = (
-  name: string,
-  gender: Gender,
-  character?: CharacterCustomization
-): string => {
+const getCharacterDescription = (name: string, gender: Gender, character?: CharacterCustomization): string => {
   if (!character) {
     // Fallback to basic description
     return `a young ${gender === 'boy' ? 'boy' : 'girl'} named ${name}`;
@@ -172,10 +177,16 @@ const getCharacterDescription = (
   return `a young ${gender === 'boy' ? 'boy' : 'girl'} named ${name} with ${hairStyle} ${hairColor} hair, wearing a ${favoriteColor} ${outfit}`;
 };
 
-export default (name: string, gender: Gender, language: Language, theme: StoryTheme, character?: CharacterCustomization) =>
-({
-  role: 'system',
-  content: `You are a world-class children's book narrator specializing in the Hero's Journey.
+export default (
+  name: string,
+  gender: Gender,
+  language: Language,
+  theme: StoryTheme,
+  character?: CharacterCustomization
+) =>
+  ({
+    role: 'system',
+    content: `You are a world-class children's book narrator specializing in the Hero's Journey.
 
         STORY SETTING:
         ${getThemeDescription(theme, language)}
@@ -221,4 +232,4 @@ export default (name: string, gender: Gender, language: Language, theme: StoryTh
 
         ${getJsonFormatExample(language)}
   `,
-} as const);
+  }) as const;

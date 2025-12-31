@@ -1,7 +1,9 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ExportPdfButton from './ExportPdfButton';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { StoryBeat } from '@/types';
+
+import ExportPdfButton from './ExportPdfButton';
 
 // Mock jsPDF functions that can be referenced in tests
 const mockAddImage = vi.fn();
@@ -27,19 +29,45 @@ vi.mock('jspdf', () => {
           getHeight: () => 297,
         },
       };
-      addImage(...args: unknown[]) { mockAddImage(...args); }
-      addPage(...args: unknown[]) { mockAddPage(...args); }
-      save(...args: unknown[]) { mockSave(...args); }
-      text(...args: unknown[]) { mockText(...args); }
-      setFont(...args: unknown[]) { mockSetFont(...args); }
-      setFontSize(...args: unknown[]) { mockSetFontSize(...args); }
-      setTextColor(...args: unknown[]) { mockSetTextColor(...args); }
-      setDrawColor(...args: unknown[]) { mockSetDrawColor(...args); }
-      setLineWidth(...args: unknown[]) { mockSetLineWidth(...args); }
-      setFillColor(...args: unknown[]) { mockSetFillColor(...args); }
-      roundedRect(...args: unknown[]) { mockRoundedRect(...args); }
-      line(...args: unknown[]) { mockLine(...args); }
-      getTextWidth(...args: unknown[]) { return mockGetTextWidth(...args); }
+      addImage(...args: unknown[]) {
+        mockAddImage(...args);
+      }
+      addPage(...args: unknown[]) {
+        mockAddPage(...args);
+      }
+      save(...args: unknown[]) {
+        mockSave(...args);
+      }
+      text(...args: unknown[]) {
+        mockText(...args);
+      }
+      setFont(...args: unknown[]) {
+        mockSetFont(...args);
+      }
+      setFontSize(...args: unknown[]) {
+        mockSetFontSize(...args);
+      }
+      setTextColor(...args: unknown[]) {
+        mockSetTextColor(...args);
+      }
+      setDrawColor(...args: unknown[]) {
+        mockSetDrawColor(...args);
+      }
+      setLineWidth(...args: unknown[]) {
+        mockSetLineWidth(...args);
+      }
+      setFillColor(...args: unknown[]) {
+        mockSetFillColor(...args);
+      }
+      roundedRect(...args: unknown[]) {
+        mockRoundedRect(...args);
+      }
+      line(...args: unknown[]) {
+        mockLine(...args);
+      }
+      getTextWidth(...args: unknown[]) {
+        return mockGetTextWidth(...args);
+      }
     },
   };
 });
@@ -109,13 +137,7 @@ describe('ExportPdfButton', () => {
   ];
 
   it('renders the export button', () => {
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithImages}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     expect(button).toBeInTheDocument();
@@ -124,13 +146,7 @@ describe('ExportPdfButton', () => {
   it('shows loading state while exporting', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithImages}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -147,13 +163,7 @@ describe('ExportPdfButton', () => {
   it('fetches images and adds them to PDF when story beats have image URLs', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithImages}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -174,13 +184,7 @@ describe('ExportPdfButton', () => {
   it('handles story beats without images gracefully', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithoutImages}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithoutImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -199,13 +203,7 @@ describe('ExportPdfButton', () => {
   it('handles image fetch failures gracefully', async () => {
     global.fetch = mockFetchResponse(false); // Simulate failed fetch
 
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithImages}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -221,26 +219,14 @@ describe('ExportPdfButton', () => {
   });
 
   it('shows Thai text when language is th', () => {
-    render(
-      <ExportPdfButton
-        history={mockHistoryWithImages}
-        playerName="Test Player"
-        language="th"
-      />
-    );
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='th' />);
 
     const button = screen.getByRole('button', { name: /ดาวน์โหลดหนังสือเรื่องราว \(PDF\)/i });
     expect(button).toBeInTheDocument();
   });
 
   it('disables button when history is empty', () => {
-    render(
-      <ExportPdfButton
-        history={[]}
-        playerName="Test Player"
-        language="en"
-      />
-    );
+    render(<ExportPdfButton history={[]} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     expect(button).toBeDisabled();

@@ -11,6 +11,7 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 ## ✨ Features
 
 ### Core Experience
+
 - 🤖 **AI-Powered Stories**: Uses GPT-4o-mini to generate unique, age-appropriate stories
 - 🎨 **Watercolor Illustrations**: DALL-E 2 creates dreamy, hand-painted style images for each story beat
 - 📖 **Hero's Journey Structure**: 12-step narrative framework for engaging storytelling
@@ -18,6 +19,7 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 - 🎉 **Celebration Screen**: Special ending with congratulations message and restart option
 
 ### Character & Theme Customization
+
 - 👤 **Character Wizard**: Full character customization with:
   - Hair color (brown, black, blonde, red, blue, pink)
   - Hair style (short, long, curly, braids, ponytail)
@@ -27,11 +29,13 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 - 🌍 **Bilingual Support**: Full English and Thai (ภาษาไทย) language support
 
 ### Export & Accessibility
+
 - 📄 **PDF Export**: Download completed stories as beautifully formatted PDF books
 - 🔊 **Text-to-Speech**: Listen to story narration (SpeakButton component)
 - 📱 **Responsive Design**: Works beautifully on mobile, tablet, and desktop
 
 ### Technical Features
+
 - 💾 **Progress Persistence**: LocalStorage saves story history
 - ⚙️ **Configurable**: Toggle image generation on/off to manage costs
 - 🧪 **Test Coverage**: Vitest + React Testing Library for component testing
@@ -46,23 +50,27 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/story-ai.git
 cd story-ai
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory:
+
 ```bash
 OPENAI_API_KEY=sk-your-api-key-here
 ENABLE_IMAGE_GENERATION=true  # Set to false to disable image generation
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -163,13 +171,13 @@ story-ai/
 
 ### Story Themes
 
-| Theme | English Setting | Thai Setting |
-|-------|-----------------|--------------|
-| 🌲 Enchanted Forest | Magical forest with talking animals, fairies | ป่าวิเศษที่มีสัตว์พูดได้ นางฟ้าใจดี |
-| 🚀 Space Adventure | Outer space with planets, aliens, rockets | อวกาศกว้างใหญ่ มีดาวเคราะห์หลากสี |
-| 🐠 Underwater Kingdom | Ocean with mermaids, dolphins, treasures | ใต้ท้องมหาสมุทร มีนางเงือก ปะการัง |
-| 🦕 Dinosaur Land | Prehistoric world with gentle dinosaurs | โลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ |
-| 🏰 Fairy Tale Castle | Magical kingdom with castles, dragons | อาณาจักรมหัศจรรย์ มีปราสาท มังกร |
+| Theme                 | English Setting                              | Thai Setting                        |
+| --------------------- | -------------------------------------------- | ----------------------------------- |
+| 🌲 Enchanted Forest   | Magical forest with talking animals, fairies | ป่าวิเศษที่มีสัตว์พูดได้ นางฟ้าใจดี |
+| 🚀 Space Adventure    | Outer space with planets, aliens, rockets    | อวกาศกว้างใหญ่ มีดาวเคราะห์หลากสี   |
+| 🐠 Underwater Kingdom | Ocean with mermaids, dolphins, treasures     | ใต้ท้องมหาสมุทร มีนางเงือก ปะการัง  |
+| 🦕 Dinosaur Land      | Prehistoric world with gentle dinosaurs      | โลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ |
+| 🏰 Fairy Tale Castle  | Magical kingdom with castles, dragons        | อาณาจักรมหัศจรรย์ มีปราสาท มังกร    |
 
 ## ⚙️ Configuration
 
@@ -186,16 +194,19 @@ ENABLE_IMAGE_GENERATION=true  # Set to false to disable images and reduce cost
 ### Cost Optimization
 
 **With Images Enabled** (default):
+
 - LLM: ~$0.03 per story (12 beats)
 - Images: ~$0.24 per story (12 images × $0.02)
 - **Total: ~$0.27 per story**
 
 **With Images Disabled**:
+
 - LLM: ~$0.03 per story
 - Images: $0.00
 - **Total: ~$0.03 per story (89% savings)**
 
 To disable images during development:
+
 ```bash
 ENABLE_IMAGE_GENERATION=false npm run dev
 ```
@@ -230,6 +241,7 @@ npm run test:coverage
 ```
 
 **Test Files:**
+
 - `ai/story.test.ts` - Story orchestration logic tests
 - `app/components/story/StoryScreen.test.tsx` - StoryScreen component tests
 - `app/components/story/StoryCarousel.test.tsx` - StoryCarousel component tests
@@ -239,6 +251,7 @@ npm run test:coverage
 ### Performance Logging
 
 The app includes performance metrics in the console:
+
 ```
 [PERF] Starting LLM call...
 [PERF] LLM completed in 2500ms
@@ -254,6 +267,7 @@ The app includes performance metrics in the console:
 Generate next story beat based on history.
 
 **Request**:
+
 ```json
 {
   "name": "Alice",
@@ -271,7 +285,7 @@ Generate next story beat based on history.
       "storyText": "Alice found herself in a magical garden...",
       "choices": ["Explore the forest", "Follow the river", "Climb the mountain"],
       "choicesWithTransition": [
-        {"text": "Explore the forest", "transition": ["She walked into the woods...", "The trees sparkled..."]}
+        { "text": "Explore the forest", "transition": ["She walked into the woods...", "The trees sparkled..."] }
       ],
       "imagePrompt": "A young girl with braided blonde hair...",
       "imageUrl": "https://...",
@@ -282,12 +296,13 @@ Generate next story beat based on history.
 ```
 
 **Response**:
+
 ```json
 {
   "storyText": "Alice ventured into the enchanted forest...",
   "choices": ["Talk to the owl", "Pick the glowing flower", "Cross the bridge"],
   "choicesWithTransition": [
-    {"text": "Talk to the owl", "transition": ["She approached the wise owl...", "Its eyes sparkled..."]}
+    { "text": "Talk to the owl", "transition": ["She approached the wise owl...", "Its eyes sparkled..."] }
   ],
   "imagePrompt": "A young girl with braided blonde hair wearing a pink princess dress talking to a wise owl...",
   "imageUrl": "https://..."
@@ -308,6 +323,7 @@ Generate next story beat based on history.
 ### Other Platforms
 
 Build the production bundle:
+
 ```bash
 npm run build
 npm run start

@@ -1,10 +1,8 @@
-import { openai } from '../ai';
 import { ImageGenerateParamsNonStreaming } from 'openai/resources';
 
-type generateImageArgs = Pick<
-  ImageGenerateParamsNonStreaming,
-  'prompt' | 'size'
->;
+import { openai } from '../ai';
+
+type generateImageArgs = Pick<ImageGenerateParamsNonStreaming, 'prompt' | 'size'>;
 
 export const generateImage = async ({ prompt }: generateImageArgs) => {
   const response = await openai.images.generate({

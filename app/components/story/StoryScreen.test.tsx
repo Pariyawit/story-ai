@@ -1,7 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import StoryScreen from './StoryScreen';
+import { describe, it, expect, vi } from 'vitest';
+
 import { StoryBeat } from '@/types';
+
+import StoryScreen from './StoryScreen';
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
@@ -49,11 +51,11 @@ describe('StoryScreen', () => {
     it('shows carousel view by default (Gallery View button is active)', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="en"
+          language='en'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -76,11 +78,11 @@ describe('StoryScreen', () => {
     it('switches to full text view when Full Story button is clicked', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="en"
+          language='en'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -101,11 +103,11 @@ describe('StoryScreen', () => {
     it('can switch back to carousel view from full text view', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="en"
+          language='en'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -127,11 +129,11 @@ describe('StoryScreen', () => {
     it('shows Thai text when language is th', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="th"
+          language='th'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -146,11 +148,11 @@ describe('StoryScreen', () => {
     it('shows PDF export button when story has ended', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="en"
+          language='en'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -165,11 +167,11 @@ describe('StoryScreen', () => {
     it('shows Thai PDF export button when language is th', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={endedCurrentBeat}
           currentPage={3}
           history={mockHistory}
-          language="th"
+          language='th'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}
@@ -177,7 +179,9 @@ describe('StoryScreen', () => {
       );
 
       // Should show the Thai PDF export button
-      const exportButton = screen.getByRole('button', { name: /ดาวน์โหลดหนังสือเรื่องราว \(PDF\)/i });
+      const exportButton = screen.getByRole('button', {
+        name: /ดาวน์โหลดหนังสือเรื่องราว \(PDF\)/i,
+      });
       expect(exportButton).toBeInTheDocument();
     });
   });
@@ -186,11 +190,11 @@ describe('StoryScreen', () => {
     it('shows normal story view without toggle buttons', () => {
       render(
         <StoryScreen
-          playerName="Test Player"
+          playerName='Test Player'
           currentBeat={ongoingCurrentBeat}
           currentPage={2}
           history={mockHistory}
-          language="en"
+          language='en'
           isLoading={false}
           onChoice={vi.fn()}
           onRestart={vi.fn()}

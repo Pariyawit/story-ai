@@ -1,6 +1,7 @@
 'use client';
 
 import { Language } from '@/types';
+
 import Button from '../common/Button';
 
 interface ChoiceButtonsProps {
@@ -38,17 +39,13 @@ export default function ChoiceButtons({
                 {language === 'th' ? 'ยินดีด้วย นักผจญภัยผู้กล้าหาญ!' : 'Congratulations, Brave Adventurer!'}
               </h2>
               <p className='text-lg text-purple-500'>
-                {language === 'th' ? 'คุณได้เสร็จสิ้นการเดินทางมหัศจรรย์แล้ว!' : "You've completed your magical journey!"}
+                {language === 'th'
+                  ? 'คุณได้เสร็จสิ้นการเดินทางมหัศจรรย์แล้ว!'
+                  : "You've completed your magical journey!"}
               </p>
             </div>
 
-            <Button
-              onClick={onRestart}
-              disabled={isLoading}
-              variant='primary'
-              fullWidth
-              className='py-4 text-lg'
-            >
+            <Button onClick={onRestart} disabled={isLoading} variant='primary' fullWidth className='py-4 text-lg'>
               {language === 'th' ? 'จบเรื่อง - เริ่มการผจญภัยใหม่' : 'The End - Start New Adventure'}
             </Button>
           </div>

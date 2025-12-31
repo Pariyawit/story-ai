@@ -1,13 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+
 import { StoryBeat, Language } from '@/types';
-import StoryImage from './StoryImage';
-import StoryText from './StoryText';
-import StoryCarousel from './StoryCarousel';
+
+import Button from '../common/Button';
+
 import ChoiceButtons from './ChoiceButtons';
 import ExportPdfButton from './ExportPdfButton';
-import Button from '../common/Button';
+import StoryCarousel from './StoryCarousel';
+import StoryImage from './StoryImage';
+import StoryText from './StoryText';
 
 type EndViewMode = 'carousel' | 'fullText';
 
@@ -33,7 +36,7 @@ export default function StoryScreen({
   onRestart,
 }: StoryScreenProps) {
   const [endViewMode, setEndViewMode] = useState<EndViewMode>('carousel');
-  
+
   const isStoryEnded = !isLoading && (!currentBeat?.choices || currentBeat.choices.length === 0);
 
   // Combine all story beats into one full story
@@ -42,7 +45,7 @@ export default function StoryScreen({
     if (currentBeat) {
       allBeats.push(currentBeat);
     }
-    return allBeats.map(beat => beat.storyText).join(' ');
+    return allBeats.map((beat) => beat.storyText).join(' ');
   };
 
   // Get full history including current beat for carousel
@@ -64,9 +67,7 @@ export default function StoryScreen({
             <p className='text-sm font-medium text-purple-600'>{playerName}</p>
           </div>
           <div className='rounded-2xl bg-purple-500/90 px-3 py-1 shadow-md backdrop-blur-sm'>
-            <p className='text-sm font-bold text-white'>
-              {language === 'th' ? '📖 สรุป' : '📖 Summary'}
-            </p>
+            <p className='text-sm font-bold text-white'>{language === 'th' ? '📖 สรุป' : '📖 Summary'}</p>
           </div>
         </div>
 
@@ -93,11 +94,7 @@ export default function StoryScreen({
           {/* Carousel View */}
           {endViewMode === 'carousel' && (
             <div className='w-full max-w-4xl'>
-              <StoryCarousel 
-                history={getFullHistory()} 
-                language={language} 
-                startAtEnd={true}
-              />
+              <StoryCarousel history={getFullHistory()} language={language} startAtEnd={true} />
             </div>
           )}
 
@@ -116,12 +113,8 @@ export default function StoryScreen({
           {/* End state actions */}
           <div className='mt-8 w-full max-w-md space-y-4'>
             {/* Export PDF Button */}
-            <ExportPdfButton
-              history={getFullHistory()}
-              playerName={playerName}
-              language={language}
-            />
-            
+            <ExportPdfButton history={getFullHistory()} playerName={playerName} language={language} />
+
             {/* Restart and other options */}
             <ChoiceButtons
               choices={currentBeat?.choices}
@@ -152,14 +145,10 @@ export default function StoryScreen({
       </div>
 
       {/* Left Side: Image */}
-      <StoryImage
-        imageUrl={currentBeat?.imageUrl}
-        imagePrompt={currentBeat?.imagePrompt}
-        isLoading={isLoading}
-      />
+      <StoryImage imageUrl={currentBeat?.imageUrl} imagePrompt={currentBeat?.imagePrompt} isLoading={isLoading} />
 
       {/* Right Side: Story Text and Choices */}
-      <div className='flex w-full flex-col p-4 md:w-1/2 md:p-6 lg:p-8'>
+      <div className='flex w-full flex-col p-4 md:w-1/2 md:p-6 lg:p-8 pt-0'>
         <StoryText text={currentBeat?.storyText} isLoading={isLoading} language={language} />
         <ChoiceButtons
           choices={currentBeat?.choices}

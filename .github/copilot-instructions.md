@@ -15,23 +15,25 @@ Story AI is an AI-powered interactive children's storytelling web application. I
 ## Build & Validation Commands
 
 ### Prerequisites
+
 - Node.js 20 or higher required
 - npm 10.x or higher
 
 ### Essential Commands
 
-| Command | Purpose | Notes |
-|---------|---------|-------|
-| `npm install` | Install dependencies | Always run first after clone or dependency changes |
-| `OPENAI_API_KEY=sk-placeholder npm run build` | Production build | **CRITICAL:** Build fails without `OPENAI_API_KEY` set |
-| `npm run lint` | Run ESLint | May have pre-existing warnings (see Known Issues) |
-| `npm run test` | Run Vitest in watch mode | Interactive test runner |
-| `npm run test:run` | Run tests once | For CI/CD pipelines |
-| `npm run test:coverage` | Run tests with coverage | Generates coverage report |
-| `npm run dev` | Start dev server (port 3000) | Requires valid OpenAI key for full functionality |
-| `npm run start` | Start production server | Run after successful build |
+| Command                                       | Purpose                      | Notes                                                  |
+| --------------------------------------------- | ---------------------------- | ------------------------------------------------------ |
+| `npm install`                                 | Install dependencies         | Always run first after clone or dependency changes     |
+| `OPENAI_API_KEY=sk-placeholder npm run build` | Production build             | **CRITICAL:** Build fails without `OPENAI_API_KEY` set |
+| `npm run lint`                                | Run ESLint                   | May have pre-existing warnings (see Known Issues)      |
+| `npm run test`                                | Run Vitest in watch mode     | Interactive test runner                                |
+| `npm run test:run`                            | Run tests once               | For CI/CD pipelines                                    |
+| `npm run test:coverage`                       | Run tests with coverage      | Generates coverage report                              |
+| `npm run dev`                                 | Start dev server (port 3000) | Requires valid OpenAI key for full functionality       |
+| `npm run start`                               | Start production server      | Run after successful build                             |
 
 ### Build Sequence
+
 1. `npm install` - Install all dependencies
 2. `npm run test:run` - Run tests to verify code integrity
 3. `OPENAI_API_KEY=sk-placeholder npm run build` - Build the application
@@ -46,13 +48,13 @@ The project uses **Vitest** with **React Testing Library** for testing.
 
 ### Test Files
 
-| File | Description |
-|------|-------------|
-| `ai/story.test.ts` | Story orchestration logic, history mapping, choice validation |
-| `app/components/story/StoryScreen.test.tsx` | StoryScreen component rendering and interactions |
-| `app/components/story/StoryCarousel.test.tsx` | Image carousel navigation tests |
-| `app/components/story/ExportPdfButton.test.tsx` | PDF export functionality tests |
-| `vitest.smoke.test.ts` | Basic smoke tests |
+| File                                            | Description                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------- |
+| `ai/story.test.ts`                              | Story orchestration logic, history mapping, choice validation |
+| `app/components/story/StoryScreen.test.tsx`     | StoryScreen component rendering and interactions              |
+| `app/components/story/StoryCarousel.test.tsx`   | Image carousel navigation tests                               |
+| `app/components/story/ExportPdfButton.test.tsx` | PDF export functionality tests                                |
+| `vitest.smoke.test.ts`                          | Basic smoke tests                                             |
 
 ### Running Tests
 
@@ -125,15 +127,15 @@ story-ai/
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `app/page.tsx` | Main entry point, uses `useStoryGame` hook |
-| `app/api/story/route.ts` | API endpoint, validates with Zod, calls `runStory` |
-| `ai/story.ts` | Orchestrates LLM + image generation |
-| `ai/llm/systemPrompt.ts` | Hero's Journey prompt with character customization |
-| `types.ts` | Core types used across frontend and backend |
-| `app/components/story/StartScreen.tsx` | Name, gender, language, theme, character selection |
-| `app/components/story/CharacterWizard.tsx` | Character customization UI (hair, outfit, colors) |
+| File                                       | Purpose                                            |
+| ------------------------------------------ | -------------------------------------------------- |
+| `app/page.tsx`                             | Main entry point, uses `useStoryGame` hook         |
+| `app/api/story/route.ts`                   | API endpoint, validates with Zod, calls `runStory` |
+| `ai/story.ts`                              | Orchestrates LLM + image generation                |
+| `ai/llm/systemPrompt.ts`                   | Hero's Journey prompt with character customization |
+| `types.ts`                                 | Core types used across frontend and backend        |
+| `app/components/story/StartScreen.tsx`     | Name, gender, language, theme, character selection |
+| `app/components/story/CharacterWizard.tsx` | Character customization UI (hair, outfit, colors)  |
 
 ### Path Aliases
 
@@ -147,11 +149,11 @@ TypeScript paths configured: `@/*` → `./*` (from project root)
 // types.ts
 export type Gender = 'boy' | 'girl';
 export type Language = 'th' | 'en';
-export type StoryTheme = 
-  | 'enchanted_forest' 
-  | 'space_adventure' 
-  | 'underwater_kingdom' 
-  | 'dinosaur_land' 
+export type StoryTheme =
+  | 'enchanted_forest'
+  | 'space_adventure'
+  | 'underwater_kingdom'
+  | 'dinosaur_land'
   | 'fairy_tale_castle';
 
 export type HairColor = 'brown' | 'black' | 'blonde' | 'red' | 'blue' | 'pink';
@@ -180,40 +182,40 @@ export type StoryBeat = {
 
 ## Configuration Files
 
-| File | Purpose |
-|------|---------| 
-| `eslint.config.mjs` | ESLint flat config with Next.js core-web-vitals and TypeScript |
-| `tsconfig.json` | TypeScript strict mode, bundler resolution, `@/*` path alias |
-| `next.config.ts` | Image remote patterns for DALL-E blob storage |
-| `postcss.config.mjs` | Tailwind CSS 4 via `@tailwindcss/postcss` |
-| `vitest.config.ts` | Vitest configuration with React plugin and jsdom |
-| `vitest.setup.ts` | Test setup for jest-dom matchers |
-| `.gitignore` | Standard Next.js ignores plus `.env*` files |
+| File                 | Purpose                                                        |
+| -------------------- | -------------------------------------------------------------- |
+| `eslint.config.mjs`  | ESLint flat config with Next.js core-web-vitals and TypeScript |
+| `tsconfig.json`      | TypeScript strict mode, bundler resolution, `@/*` path alias   |
+| `next.config.ts`     | Image remote patterns for DALL-E blob storage                  |
+| `postcss.config.mjs` | Tailwind CSS 4 via `@tailwindcss/postcss`                      |
+| `vitest.config.ts`   | Vitest configuration with React plugin and jsdom               |
+| `vitest.setup.ts`    | Test setup for jest-dom matchers                               |
+| `.gitignore`         | Standard Next.js ignores plus `.env*` files                    |
 
 ---
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENAI_API_KEY` | Yes (for build & runtime) | OpenAI API key for GPT-4o-mini and DALL-E 2 |
-| `ENABLE_IMAGE_GENERATION` | No | Set to `false` to disable DALL-E (default: `true`) |
+| Variable                  | Required                  | Description                                        |
+| ------------------------- | ------------------------- | -------------------------------------------------- |
+| `OPENAI_API_KEY`          | Yes (for build & runtime) | OpenAI API key for GPT-4o-mini and DALL-E 2        |
+| `ENABLE_IMAGE_GENERATION` | No                        | Set to `false` to disable DALL-E (default: `true`) |
 
 ---
 
 ## Feature Summary
 
-| Feature | Status | Key Files |
-|---------|--------|-----------|
-| Hero's Journey (12 beats) | ✅ Implemented | `systemPrompt.ts` |
-| Character Customization | ✅ Implemented | `CharacterWizard.tsx`, `types.ts` |
-| 5 Story Themes | ✅ Implemented | `systemPrompt.ts`, `StartScreen.tsx` |
-| Bilingual (EN/TH) | ✅ Implemented | `systemPrompt.ts`, all UI components |
-| PDF Export | ✅ Implemented | `ExportPdfButton.tsx` |
-| Text-to-Speech | ✅ Implemented | `SpeakButton.tsx` |
-| Story Transitions | ✅ Implemented | `TransitionScreen.tsx` |
-| Story Carousel | ✅ Implemented | `StoryCarousel.tsx` |
-| LocalStorage Persistence | ✅ Implemented | `useLocalStorage.ts` |
+| Feature                   | Status         | Key Files                            |
+| ------------------------- | -------------- | ------------------------------------ |
+| Hero's Journey (12 beats) | ✅ Implemented | `systemPrompt.ts`                    |
+| Character Customization   | ✅ Implemented | `CharacterWizard.tsx`, `types.ts`    |
+| 5 Story Themes            | ✅ Implemented | `systemPrompt.ts`, `StartScreen.tsx` |
+| Bilingual (EN/TH)         | ✅ Implemented | `systemPrompt.ts`, all UI components |
+| PDF Export                | ✅ Implemented | `ExportPdfButton.tsx`                |
+| Text-to-Speech            | ✅ Implemented | `SpeakButton.tsx`                    |
+| Story Transitions         | ✅ Implemented | `TransitionScreen.tsx`               |
+| Story Carousel            | ✅ Implemented | `StoryCarousel.tsx`                  |
+| LocalStorage Persistence  | ✅ Implemented | `useLocalStorage.ts`                 |
 
 ---
 
@@ -230,6 +232,7 @@ export type StoryBeat = {
 ## CI/CD
 
 **No GitHub Actions workflows exist yet.** Recommended to add:
+
 - Build validation on push
 - Test execution on PR
 - ESLint checks

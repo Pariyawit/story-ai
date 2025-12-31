@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
+
 import { postStory } from '@/services/storyClient';
+import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 // import { useLocalStorage } from './useLocalStorage';
 
 // Default character customization
@@ -94,7 +95,12 @@ export function useStoryGame(): UseStoryGameReturn {
     if (typeof window !== 'undefined') {
       // Load theme
       const savedTheme = localStorage.getItem('story-theme') as StoryTheme | null;
-      if (savedTheme && ['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle'].includes(savedTheme)) {
+      if (
+        savedTheme &&
+        ['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle'].includes(
+          savedTheme
+        )
+      ) {
         setThemeState(savedTheme);
       }
 
@@ -164,9 +170,7 @@ export function useStoryGame(): UseStoryGameReturn {
     }
 
     // Find transition texts for the selected choice
-    const selectedTransition = currentBeat.choicesWithTransition?.find(
-      c => c.text === choice
-    );
+    const selectedTransition = currentBeat.choicesWithTransition?.find((c) => c.text === choice);
 
     if (selectedTransition?.transition && selectedTransition.transition.length > 0) {
       setTransitionTexts(selectedTransition.transition);

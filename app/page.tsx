@@ -1,9 +1,9 @@
 'use client';
 
-import { useStoryGame } from './hooks/useStoryGame';
 import StartScreen from './components/story/StartScreen';
 import StoryScreen from './components/story/StoryScreen';
 import TransitionScreen from './components/story/TransitionScreen';
+import { useStoryGame } from './hooks/useStoryGame';
 
 export default function Home() {
   const {

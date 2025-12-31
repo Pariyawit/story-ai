@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { jsPDF } from 'jspdf';
+import { useState } from 'react';
+
 import { StoryBeat, Language } from '@/types';
+
 import Button from '../common/Button';
 
 interface ExportPdfButtonProps {
@@ -45,11 +47,7 @@ async function fetchImageAsBase64(imageUrl: string): Promise<string | null> {
   }
 }
 
-export default function ExportPdfButton({
-  history,
-  playerName,
-  language,
-}: ExportPdfButtonProps) {
+export default function ExportPdfButton({ history, playerName, language }: ExportPdfButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
 
@@ -86,7 +84,7 @@ export default function ExportPdfButton({
       const breakLongWord = (word: string, maxWidth: number): string[] => {
         const parts: string[] = [];
         let remaining = word;
-        
+
         while (remaining.length > 0) {
           let end = remaining.length;
           while (end > 1 && doc.getTextWidth(remaining.substring(0, end)) > maxWidth) {
@@ -95,7 +93,7 @@ export default function ExportPdfButton({
           parts.push(remaining.substring(0, end));
           remaining = remaining.substring(end);
         }
-        
+
         return parts;
       };
 
@@ -170,9 +168,7 @@ export default function ExportPdfButton({
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(100, 100, 100);
-      const subtitleText = language === 'th' 
-        ? 'หนังสือนิทานส่วนตัว' 
-        : 'A Personal Story Book';
+      const subtitleText = language === 'th' ? 'หนังสือนิทานส่วนตัว' : 'A Personal Story Book';
       const subtitleWidth = doc.getTextWidth(subtitleText);
       doc.text(subtitleText, (pageWidth - subtitleWidth) / 2, 140);
 
@@ -180,9 +176,7 @@ export default function ExportPdfButton({
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
       doc.setTextColor(150, 150, 150);
-      const pagesInfo = language === 'th' 
-        ? `${history.length} ฉาก` 
-        : `${history.length} Scenes`;
+      const pagesInfo = language === 'th' ? `${history.length} ฉาก` : `${history.length} Scenes`;
       const pagesInfoWidth = doc.getTextWidth(pagesInfo);
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
@@ -205,9 +199,7 @@ export default function ExportPdfButton({
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(180, 100, 180);
-        const sceneLabel = language === 'th' 
-          ? `ฉากที่ ${index + 1}` 
-          : `Scene ${index + 1}`;
+        const sceneLabel = language === 'th' ? `ฉากที่ ${index + 1}` : `Scene ${index + 1}`;
         doc.text(sceneLabel, PDF_MARGIN, yPosition);
         yPosition += 10;
 
@@ -222,14 +214,14 @@ export default function ExportPdfButton({
           // Calculate image dimensions to fit within content width with a fixed height
           const imageWidth = contentWidth;
           const imageHeight = IMAGE_HEIGHT;
-          
+
           // Check if we need a new page for the image
           if (yPosition + imageHeight > pageHeight - BOTTOM_MARGIN_FOR_CONTENT) {
             doc.addPage();
             addPageDecoration();
             yPosition = PAGE_TOP_POSITION;
           }
-          
+
           // Extract image format from data URL (e.g., "data:image/png;base64,..." -> "PNG")
           // Default to JPEG if format cannot be determined
           let imageFormat = 'JPEG';
@@ -237,15 +229,8 @@ export default function ExportPdfButton({
           if (formatMatch) {
             imageFormat = formatMatch[1].toUpperCase();
           }
-          
-          doc.addImage(
-            imageData,
-            imageFormat,
-            PDF_MARGIN,
-            yPosition,
-            imageWidth,
-            imageHeight
-          );
+
+          doc.addImage(imageData, imageFormat, PDF_MARGIN, yPosition, imageWidth, imageHeight);
           yPosition += imageHeight + IMAGE_MARGIN_BOTTOM;
         }
 
@@ -253,7 +238,7 @@ export default function ExportPdfButton({
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(14);
         doc.setTextColor(60, 60, 80);
-        
+
         const storyLines = wrapText(beat.storyText, contentWidth, 14);
         const lineHeight = 7;
 
@@ -318,9 +303,7 @@ export default function ExportPdfButton({
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
       doc.setTextColor(100, 100, 120);
-      const congratsText = language === 'th'
-        ? 'ขอบคุณที่ร่วมผจญภัยไปด้วยกัน!'
-        : 'Thank you for joining the adventure!';
+      const congratsText = language === 'th' ? 'ขอบคุณที่ร่วมผจญภัยไปด้วยกัน!' : 'Thank you for joining the adventure!';
       const congratsWidth = doc.getTextWidth(congratsText);
       doc.text(congratsText, (pageWidth - congratsWidth) / 2, 145);
 
@@ -328,24 +311,17 @@ export default function ExportPdfButton({
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(180, 100, 180);
-      const creditText = language === 'th'
-        ? `สร้างสรรค์โดย ${playerName}`
-        : `Created by ${playerName}`;
+      const creditText = language === 'th' ? `สร้างสรรค์โดย ${playerName}` : `Created by ${playerName}`;
       const creditWidth = doc.getTextWidth(creditText);
       doc.text(creditText, (pageWidth - creditWidth) / 2, 165);
 
       // Save the PDF
-      const fileName = language === 'th'
-        ? `การผจญภัยของ-${playerName}.pdf`
-        : `${playerName}'s-Adventure.pdf`;
+      const fileName = language === 'th' ? `การผจญภัยของ-${playerName}.pdf` : `${playerName}'s-Adventure.pdf`;
       doc.save(fileName);
-
     } catch (error) {
       console.error('Failed to generate PDF:', error);
       setExportError(
-        language === 'th' 
-          ? 'ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง' 
-          : 'Failed to create PDF. Please try again.'
+        language === 'th' ? 'ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง' : 'Failed to create PDF. Please try again.'
       );
     } finally {
       setIsExporting(false);
@@ -353,7 +329,7 @@ export default function ExportPdfButton({
   };
 
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <Button
         onClick={generatePdf}
         disabled={isExporting || history.length === 0}
@@ -363,14 +339,14 @@ export default function ExportPdfButton({
         className='py-4 text-lg'
       >
         {isExporting
-          ? (language === 'th' ? '⏳ กำลังสร้าง PDF...' : '⏳ Creating PDF...')
-          : (language === 'th' ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)' : '📥 Download Story Book (PDF)')}
+          ? language === 'th'
+            ? '⏳ กำลังสร้าง PDF...'
+            : '⏳ Creating PDF...'
+          : language === 'th'
+            ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)'
+            : '📥 Download Story Book (PDF)'}
       </Button>
-      {exportError && (
-        <p className="mt-2 text-center text-sm text-red-500">
-          {exportError}
-        </p>
-      )}
+      {exportError && <p className='mt-2 text-center text-sm text-red-500'>{exportError}</p>}
     </div>
   );
 }
