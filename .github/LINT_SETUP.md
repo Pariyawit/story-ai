@@ -11,7 +11,7 @@ This repository is configured with comprehensive linting and formatting tools to
 - **Version**: ^3.7.4
 - **Config**: [.prettierrc](.prettierrc)
 - **Key Settings**:
-  - Max line length: 100 characters
+  - Max line length: 120 characters
   - Tab width: 2 spaces
   - Semicolons: Required
   - Quotes: Double quotes
@@ -96,7 +96,7 @@ npm run check
 3. **Commit-msg hook** runs next:
    - commitlint validates your commit message
    - Checks conventional commit format
-   - Ensures header is ≤100 characters
+   - Ensures header is ≤120 characters
    - If invalid, commit is blocked with error message
 4. If both hooks pass, commit succeeds
 
@@ -114,7 +114,7 @@ Settings are pre-configured in [.vscode/settings.json](.vscode/settings.json):
 
 - Format on save: ✅
 - ESLint auto-fix on save: ✅
-- 100-character ruler: ✅
+- 120-character ruler: ✅
 
 ### Other Editors
 

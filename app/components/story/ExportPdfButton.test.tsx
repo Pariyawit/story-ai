@@ -137,7 +137,7 @@ describe('ExportPdfButton', () => {
   ];
 
   it('renders the export button', () => {
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     expect(button).toBeInTheDocument();
@@ -146,7 +146,7 @@ describe('ExportPdfButton', () => {
   it('shows loading state while exporting', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -163,7 +163,7 @@ describe('ExportPdfButton', () => {
   it('fetches images and adds them to PDF when story beats have image URLs', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -184,7 +184,7 @@ describe('ExportPdfButton', () => {
   it('handles story beats without images gracefully', async () => {
     global.fetch = mockFetchResponse(true);
 
-    render(<ExportPdfButton history={mockHistoryWithoutImages} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={mockHistoryWithoutImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -203,7 +203,7 @@ describe('ExportPdfButton', () => {
   it('handles image fetch failures gracefully', async () => {
     global.fetch = mockFetchResponse(false); // Simulate failed fetch
 
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -219,14 +219,14 @@ describe('ExportPdfButton', () => {
   });
 
   it('shows Thai text when language is th', () => {
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName="Test Player" language="th" />);
+    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='th' />);
 
     const button = screen.getByRole('button', { name: /ดาวน์โหลดหนังสือเรื่องราว \(PDF\)/i });
     expect(button).toBeInTheDocument();
   });
 
   it('disables button when history is empty', () => {
-    render(<ExportPdfButton history={[]} playerName="Test Player" language="en" />);
+    render(<ExportPdfButton history={[]} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     expect(button).toBeDisabled();

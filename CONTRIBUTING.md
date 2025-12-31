@@ -45,7 +45,7 @@ We use **Prettier** for code formatting and **ESLint** for code quality. All cod
 
 #### Key Rules
 
-- **Line Length**: Maximum 100 characters
+- **Line Length**: Maximum 120 characters
 - **Indentation**: 2 spaces (no tabs)
 - **Quotes**: Double quotes for strings
 - **Semicolons**: Always use semicolons
@@ -87,7 +87,7 @@ We use **Husky**, **lint-staged**, and **commitlint** to automatically enforce c
 2. **Commit-msg hook** (validates commit message):
    - Ensures commit messages follow conventional commit format
    - Blocks commits with invalid message formats
-   - Enforces 100-character header limit
+   - Enforces 120-character header limit
 
 To bypass hooks (use sparingly):
 
@@ -109,7 +109,7 @@ The project includes VS Code settings that will:
 
 - Format on save automatically
 - Run ESLint auto-fix on save
-- Show a ruler at 100 characters
+- Show a ruler at 120 characters
 - Ensure consistent line endings
 
 #### Other Editors
@@ -195,8 +195,8 @@ We enforce **conventional commits** using commitlint. All commit messages must f
 - Type must be lowercase
 - Subject is required and cannot be empty
 - Subject must not end with a period
-- Header (type + subject) max 100 characters
-- Body lines max 100 characters
+- Header (type + subject) max 120 characters
+- Body lines max 120 characters
 - Blank line between header and body
 - Blank line between body and footer
 

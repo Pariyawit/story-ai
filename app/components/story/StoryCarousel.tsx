@@ -28,8 +28,8 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
 
   if (history.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <p className="text-lg text-gray-500">{language === 'th' ? 'ยังไม่มีเรื่องราว' : 'No story yet'}</p>
+      <div className='flex h-64 items-center justify-center'>
+        <p className='text-lg text-gray-500'>{language === 'th' ? 'ยังไม่มีเรื่องราว' : 'No story yet'}</p>
       </div>
     );
   }
@@ -37,10 +37,10 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
   const currentBeat = history[currentIndex];
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
+    <div className='flex w-full flex-col items-center gap-6'>
       {/* Page indicator */}
-      <div className="rounded-full bg-purple-500/90 px-4 py-2 shadow-md">
-        <p className="text-sm font-bold text-white">
+      <div className='rounded-full bg-purple-500/90 px-4 py-2 shadow-md'>
+        <p className='text-sm font-bold text-white'>
           {language === 'th'
             ? `ฉาก ${currentIndex + 1} / ${history.length}`
             : `Scene ${currentIndex + 1} / ${history.length}`}
@@ -48,55 +48,55 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
       </div>
 
       {/* Main carousel container */}
-      <div className="relative w-full max-w-4xl">
+      <div className='relative w-full max-w-4xl'>
         {/* Navigation arrows */}
         <button
           onClick={goToPrevious}
-          className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
-          aria-label="Previous"
+          className='absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white'
+          aria-label='Previous'
         >
-          <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className='h-6 w-6 text-purple-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
           </svg>
         </button>
 
         <button
           onClick={goToNext}
-          className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white"
-          aria-label="Next"
+          className='absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-3 shadow-lg backdrop-blur-sm transition-all hover:scale-110 hover:bg-white'
+          aria-label='Next'
         >
-          <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg className='h-6 w-6 text-purple-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
           </svg>
         </button>
 
         {/* Image container */}
-        <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-2xl">
-          <div className="relative aspect-[16/10] w-full">
+        <div className='overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-2xl'>
+          <div className='relative aspect-[16/10] w-full'>
             {currentBeat.imageUrl ? (
               <Image
                 src={currentBeat.imageUrl}
                 alt={currentBeat.imagePrompt || `Scene ${currentIndex + 1}`}
                 fill
-                className="object-cover transition-opacity duration-300"
-                sizes="(max-width: 768px) 100vw, 800px"
+                className='object-cover transition-opacity duration-300'
+                sizes='(max-width: 768px) 100vw, 800px'
                 priority
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center">
-                <p className="text-xl text-purple-700">{language === 'th' ? 'ไม่มีรูปภาพ' : 'No image'}</p>
+              <div className='flex h-full w-full items-center justify-center'>
+                <p className='text-xl text-purple-700'>{language === 'th' ? 'ไม่มีรูปภาพ' : 'No image'}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Story text for current scene */}
-        <div className="mt-6 rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur-sm">
-          <p className="text-lg leading-relaxed text-gray-800">{currentBeat.storyText}</p>
+        <div className='mt-6 rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur-sm'>
+          <p className='text-lg leading-relaxed text-gray-800'>{currentBeat.storyText}</p>
           {currentBeat.selected && (
-            <div className="mt-4 flex items-center gap-2">
-              <span className="text-purple-500">▸</span>
-              <span className="text-sm italic text-purple-600">
+            <div className='mt-4 flex items-center gap-2'>
+              <span className='text-purple-500'>▸</span>
+              <span className='text-sm italic text-purple-600'>
                 {language === 'th' ? 'คุณเลือก:' : 'You chose:'} {currentBeat.selected}
               </span>
             </div>
@@ -105,7 +105,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
       </div>
 
       {/* Dot indicators */}
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className='flex flex-wrap justify-center gap-2'>
         {history.map((_, index) => (
           <button
             key={index}
@@ -119,7 +119,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
       </div>
 
       {/* Keyboard navigation hint */}
-      <p className="text-sm text-gray-400">
+      <p className='text-sm text-gray-400'>
         {language === 'th' ? 'ใช้ลูกศรซ้าย/ขวา หรือกดจุดเพื่อเลือกฉาก' : 'Use arrow keys or click dots to navigate'}
       </p>
     </div>

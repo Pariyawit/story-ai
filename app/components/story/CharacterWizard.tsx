@@ -63,24 +63,24 @@ export default function CharacterWizard({ character, gender, language, onChange 
   };
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       {/* Section Title */}
-      <div className="text-center">
-        <span className="text-xl">✨</span>
-        <span className="ml-2 text-sm font-medium text-purple-600">
+      <div className='text-center'>
+        <span className='text-xl'>✨</span>
+        <span className='ml-2 text-sm font-medium text-purple-600'>
           {language === 'th' ? 'ออกแบบตัวละครของคุณ' : 'Design Your Character'}
         </span>
-        <span className="ml-2 text-xl">✨</span>
+        <span className='ml-2 text-xl'>✨</span>
       </div>
 
       {/* Hair Color */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-purple-700">{language === 'th' ? 'สีผม' : 'Hair Color'}</label>
-        <div className="grid grid-cols-6 gap-2">
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-purple-700'>{language === 'th' ? 'สีผม' : 'Hair Color'}</label>
+        <div className='grid grid-cols-6 gap-2'>
           {hairColorOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
               key={id}
-              type="button"
+              type='button'
               onClick={() => updateField('hairColor', id)}
               title={language === 'th' ? labelTh : labelEn}
               className={`flex items-center justify-center rounded-xl p-2 text-xl transition-all ${
@@ -96,15 +96,15 @@ export default function CharacterWizard({ character, gender, language, onChange 
       </div>
 
       {/* Hair Style */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-purple-700">
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-purple-700'>
           {language === 'th' ? 'ทรงผม' : 'Hair Style'}
         </label>
-        <div className="grid grid-cols-5 gap-2">
+        <div className='grid grid-cols-5 gap-2'>
           {hairStyleOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
               key={id}
-              type="button"
+              type='button'
               onClick={() => updateField('hairStyle', id)}
               className={`flex flex-col items-center rounded-xl border-2 p-2 transition-all ${
                 character.hairStyle === id
@@ -112,21 +112,21 @@ export default function CharacterWizard({ character, gender, language, onChange 
                   : 'border-purple-200 bg-white/70 hover:border-purple-300 hover:bg-white'
               }`}
             >
-              <span className="text-xl">{emoji}</span>
-              <span className="mt-1 text-xs font-medium text-purple-600">{language === 'th' ? labelTh : labelEn}</span>
+              <span className='text-xl'>{emoji}</span>
+              <span className='mt-1 text-xs font-medium text-purple-600'>{language === 'th' ? labelTh : labelEn}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Outfit Style */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-purple-700">{language === 'th' ? 'ชุด' : 'Outfit'}</label>
-        <div className="grid grid-cols-5 gap-2">
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-purple-700'>{language === 'th' ? 'ชุด' : 'Outfit'}</label>
+        <div className='grid grid-cols-5 gap-2'>
           {outfitStyleOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
               key={id}
-              type="button"
+              type='button'
               onClick={() => updateField('outfitStyle', id)}
               className={`flex flex-col items-center rounded-xl border-2 p-2 transition-all ${
                 character.outfitStyle === id
@@ -134,23 +134,23 @@ export default function CharacterWizard({ character, gender, language, onChange 
                   : 'border-purple-200 bg-white/70 hover:border-purple-300 hover:bg-white'
               }`}
             >
-              <span className="text-xl">{emoji}</span>
-              <span className="mt-1 text-xs font-medium text-purple-600">{language === 'th' ? labelTh : labelEn}</span>
+              <span className='text-xl'>{emoji}</span>
+              <span className='mt-1 text-xs font-medium text-purple-600'>{language === 'th' ? labelTh : labelEn}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Favorite Color */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-purple-700">
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-purple-700'>
           {language === 'th' ? 'สีโปรด (สำหรับชุด)' : 'Favorite Color (for outfit)'}
         </label>
-        <div className="grid grid-cols-6 gap-2">
+        <div className='grid grid-cols-6 gap-2'>
           {favoriteColorOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
               key={id}
-              type="button"
+              type='button'
               onClick={() => updateField('favoriteColor', id)}
               title={language === 'th' ? labelTh : labelEn}
               className={`flex items-center justify-center rounded-xl p-2 text-xl transition-all ${

@@ -69,11 +69,11 @@ export default function TransitionScreen({ transitionTexts, language = 'en' }: T
   }, [currentIndex, transitionTexts]);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 p-4">
-      <div className="w-full max-w-2xl">
-        <Card className="text-center">
+    <div className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-50 p-4'>
+      <div className='w-full max-w-2xl'>
+        <Card className='text-center'>
           {/* Progress dots */}
-          <div className="mb-6 flex justify-center gap-2">
+          <div className='mb-6 flex justify-center gap-2'>
             {transitionTexts.map((_, index) => (
               <div
                 key={index}
@@ -89,36 +89,36 @@ export default function TransitionScreen({ transitionTexts, language = 'en' }: T
           </div>
 
           {/* Text display area - stacked with spacing */}
-          <div className="min-h-[200px] space-y-4">
+          <div className='min-h-[200px] space-y-4'>
             {/* Completed lines - appear instantly, no typewriter */}
             {completedTexts.map((text, index) => (
-              <p key={index} className="text-lg leading-relaxed text-purple-800">
+              <p key={index} className='text-lg leading-relaxed text-purple-800'>
                 {text}
               </p>
             ))}
 
             {/* Current line being typed - with typewriter effect */}
             {displayedText && (
-              <p className="text-lg leading-relaxed text-purple-800">
+              <p className='text-lg leading-relaxed text-purple-800'>
                 {displayedText}
-                {isTyping && <span className="ml-1 inline-block h-6 w-0.5 animate-pulse bg-purple-600" />}
+                {isTyping && <span className='ml-1 inline-block h-6 w-0.5 animate-pulse bg-purple-600' />}
               </p>
             )}
           </div>
 
           {/* Speak button */}
-          <div className="mt-4 flex justify-center">
+          <div className='mt-4 flex justify-center'>
             <SpeakButton text={fullTransitionText} language={language} />
           </div>
 
           {/* Loading indicator */}
-          <div className="mt-6 flex flex-col items-center gap-2">
-            <div className="flex gap-1">
-              <div className="h-2 w-2 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: '0ms' }} />
-              <div className="h-2 w-2 animate-bounce rounded-full bg-pink-400" style={{ animationDelay: '150ms' }} />
-              <div className="h-2 w-2 animate-bounce rounded-full bg-purple-400" style={{ animationDelay: '300ms' }} />
+          <div className='mt-6 flex flex-col items-center gap-2'>
+            <div className='flex gap-1'>
+              <div className='h-2 w-2 animate-bounce rounded-full bg-purple-400' style={{ animationDelay: '0ms' }} />
+              <div className='h-2 w-2 animate-bounce rounded-full bg-pink-400' style={{ animationDelay: '150ms' }} />
+              <div className='h-2 w-2 animate-bounce rounded-full bg-purple-400' style={{ animationDelay: '300ms' }} />
             </div>
-            <p className="text-sm text-purple-500">{loadingText}</p>
+            <p className='text-sm text-purple-500'>{loadingText}</p>
           </div>
         </Card>
       </div>

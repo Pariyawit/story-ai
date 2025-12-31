@@ -28,24 +28,24 @@ export default function ChoiceButtons({
   ];
 
   return (
-    <div className="mt-4 flex w-full flex-shrink-0 items-center justify-center">
-      <div className="w-full space-y-4">
+    <div className='mt-4 flex w-full flex-shrink-0 items-center justify-center'>
+      <div className='w-full space-y-4'>
         {/* END STATE: Show celebration + restart button */}
         {isStoryEnded && (
-          <div className="space-y-6">
-            <div className="space-y-2 text-center">
-              <div className="text-6xl">🎉✨🌟</div>
-              <h2 className="text-2xl font-bold text-purple-600">
+          <div className='space-y-6'>
+            <div className='space-y-2 text-center'>
+              <div className='text-6xl'>🎉✨🌟</div>
+              <h2 className='text-2xl font-bold text-purple-600'>
                 {language === 'th' ? 'ยินดีด้วย นักผจญภัยผู้กล้าหาญ!' : 'Congratulations, Brave Adventurer!'}
               </h2>
-              <p className="text-lg text-purple-500">
+              <p className='text-lg text-purple-500'>
                 {language === 'th'
                   ? 'คุณได้เสร็จสิ้นการเดินทางมหัศจรรย์แล้ว!'
                   : "You've completed your magical journey!"}
               </p>
             </div>
 
-            <Button onClick={onRestart} disabled={isLoading} variant="primary" fullWidth className="py-4 text-lg">
+            <Button onClick={onRestart} disabled={isLoading} variant='primary' fullWidth className='py-4 text-lg'>
               {language === 'th' ? 'จบเรื่อง - เริ่มการผจญภัยใหม่' : 'The End - Start New Adventure'}
             </Button>
           </div>
@@ -59,7 +59,7 @@ export default function ChoiceButtons({
               key={index}
               onClick={() => onChoice(choice)}
               disabled={isLoading}
-              variant="gradient"
+              variant='gradient'
               gradientColors={gradientColors[index % gradientColors.length]}
               fullWidth
             >

@@ -329,14 +329,14 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
   };
 
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <Button
         onClick={generatePdf}
         disabled={isExporting || history.length === 0}
-        variant="gradient"
-        gradientColors="from-green-400 to-teal-400 hover:from-green-500 hover:to-teal-500"
+        variant='gradient'
+        gradientColors='from-green-400 to-teal-400 hover:from-green-500 hover:to-teal-500'
         fullWidth
-        className="py-4 text-lg"
+        className='py-4 text-lg'
       >
         {isExporting
           ? language === 'th'
@@ -346,7 +346,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
             ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)'
             : '📥 Download Story Book (PDF)'}
       </Button>
-      {exportError && <p className="mt-2 text-center text-sm text-red-500">{exportError}</p>}
+      {exportError && <p className='mt-2 text-center text-sm text-red-500'>{exportError}</p>}
     </div>
   );
 }

@@ -12,11 +12,11 @@ export default function LoadingSpinner({ size = 'md', color = 'border-purple-600
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-4">
+    <div className='flex flex-col items-center justify-center py-4'>
       <div
         className={`${sizeClasses[size]} animate-spin rounded-full border-purple-200 ${color.startsWith('border-t-') ? color : `border-t-${color.replace('border-', '')}`}`}
       ></div>
-      {message && <p className="mt-2 text-sm text-purple-600">{message}</p>}
+      {message && <p className='mt-2 text-sm text-purple-600'>{message}</p>}
     </div>
   );
 }
