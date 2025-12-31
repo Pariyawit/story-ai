@@ -22,29 +22,17 @@ const IMAGE_HEIGHT = 80; // Height in mm for images in PDF
 const IMAGE_MARGIN_BOTTOM = 10; // Margin below image
 
 /**
- * Fetches an image from a URL and converts it to a base64 data URL.
- * Returns null if the image cannot be fetched.
+ * Returns the image URL if it's already a base64 data URL.
+ * Since images now come as base64 directly from the server, this is just a pass-through.
+ * Returns null for non-base64 URLs (legacy/fallback case).
  */
-async function fetchImageAsBase64(imageUrl: string): Promise<string | null> {
-  try {
-    const response = await fetch(imageUrl);
-    if (!response.ok) {
-      return null;
-    }
-    const blob = await response.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result as string);
-      };
-      reader.onerror = () => {
-        resolve(null);
-      };
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
+function getImageDataUrl(imageUrl: string): string | null {
+  if (imageUrl.startsWith('data:')) {
+    return imageUrl;
   }
+  // Legacy URLs are no longer supported - images should always be base64
+  console.warn('Non-base64 image URL encountered - this should not happen with current API');
+  return null;
 }
 
 export default function ExportPdfButton({ history, playerName, language }: ExportPdfButtonProps) {
@@ -180,11 +168,10 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       const pagesInfoWidth = doc.getTextWidth(pagesInfo);
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
-      // Pre-fetch all images as base64 data
-      const imageDataPromises = history.map((beat) =>
-        beat.imageUrl ? fetchImageAsBase64(beat.imageUrl) : Promise.resolve(null)
+      // Get image data - images are now base64 data URLs from the server
+      const imageDataArray = history.map((beat) =>
+        beat.imageUrl ? getImageDataUrl(beat.imageUrl) : null
       );
-      const imageDataArray = await Promise.all(imageDataPromises);
 
       // Story pages
       for (let index = 0; index < history.length; index++) {
