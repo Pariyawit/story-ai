@@ -1,10 +1,8 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
-type Role = "system" | "user" | "assistant";
+type Role = 'system' | 'user' | 'assistant';
 
-export type AIMessage =
-  | OpenAI.Chat.Completions.ChatCompletionAssistantMessageParam
-  | { role: Role; content: string };
+export type AIMessage = OpenAI.Chat.Completions.ChatCompletionAssistantMessageParam | { role: Role; content: string };
 // | { role: 'tool'; content: string; tool_call_id: string };
 
 export interface ToolFn<A = unknown, T = unknown> {

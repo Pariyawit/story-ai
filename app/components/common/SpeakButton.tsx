@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from 'react';
 
-import { fetchSpeech } from "@/services/ttsClient";
-import { Language } from "@/types";
+import { fetchSpeech } from '@/services/ttsClient';
+import { Language } from '@/types';
 
 interface SpeakButtonProps {
   text: string;
@@ -11,7 +11,7 @@ interface SpeakButtonProps {
   className?: string;
 }
 
-export default function SpeakButton({ text, language, className = "" }: SpeakButtonProps) {
+export default function SpeakButton({ text, language, className = '' }: SpeakButtonProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -75,7 +75,7 @@ export default function SpeakButton({ text, language, className = "" }: SpeakBut
       audio.onerror = (event) => {
         setIsPlaying(false);
         const mediaError = audio.error;
-        console.error("Audio playback error:", {
+        console.error('Audio playback error:', {
           event,
           code: mediaError?.code,
           message: mediaError?.message,
@@ -85,16 +85,15 @@ export default function SpeakButton({ text, language, className = "" }: SpeakBut
       await audio.play();
       setIsPlaying(true);
     } catch (error) {
-      console.error("Failed to play speech:", error);
+      console.error('Failed to play speech:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const buttonLabel =
-    language === "th" ? (isPlaying ? "🔇 หยุด" : "🔊 ฟัง") : isPlaying ? "🔇 Stop" : "🔊 Listen";
+  const buttonLabel = language === 'th' ? (isPlaying ? '🔇 หยุด' : '🔊 ฟัง') : isPlaying ? '🔇 Stop' : '🔊 Listen';
 
-  const loadingLabel = language === "th" ? "⏳ กำลังโหลด..." : "⏳ Loading...";
+  const loadingLabel = language === 'th' ? '⏳ กำลังโหลด...' : '⏳ Loading...';
 
   return (
     <button
@@ -102,14 +101,10 @@ export default function SpeakButton({ text, language, className = "" }: SpeakBut
       disabled={isLoading || !text}
       className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium 
         transition-all duration-200
-        ${
-          isPlaying
-            ? "bg-pink-500 text-white hover:bg-pink-600"
-            : "bg-purple-100 text-purple-700 hover:bg-purple-200"
-        }
+        ${isPlaying ? 'bg-pink-500 text-white hover:bg-pink-600' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'}
         disabled:cursor-not-allowed disabled:opacity-50
         ${className}`}
-      aria-label={isPlaying ? "Stop narration" : "Play narration"}
+      aria-label={isPlaying ? 'Stop narration' : 'Play narration'}
     >
       {isLoading ? loadingLabel : buttonLabel}
     </button>

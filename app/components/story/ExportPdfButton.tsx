@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { jsPDF } from "jspdf";
-import { useState } from "react";
+import { jsPDF } from 'jspdf';
+import { useState } from 'react';
 
-import { StoryBeat, Language } from "@/types";
+import { StoryBeat, Language } from '@/types';
 
-import Button from "../common/Button";
+import Button from '../common/Button';
 
 interface ExportPdfButtonProps {
   history: StoryBeat[];
@@ -58,9 +58,9 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
     try {
       // Create a new PDF document with A4 size in portrait mode
       const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
       });
 
       const pageWidth = doc.internal.pageSize.getWidth();
@@ -72,12 +72,12 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         // Soft purple border for children's book feel
         doc.setDrawColor(180, 150, 200);
         doc.setLineWidth(2);
-        doc.roundedRect(10, 10, pageWidth - 20, pageHeight - 20, 5, 5, "S");
+        doc.roundedRect(10, 10, pageWidth - 20, pageHeight - 20, 5, 5, 'S');
 
         // Inner decorative line
         doc.setDrawColor(220, 200, 240);
         doc.setLineWidth(0.5);
-        doc.roundedRect(15, 15, pageWidth - 30, pageHeight - 30, 3, 3, "S");
+        doc.roundedRect(15, 15, pageWidth - 30, pageHeight - 30, 3, 3, 'S');
       };
 
       // Helper function to break a long word that exceeds maxWidth
@@ -100,9 +100,9 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       // Helper function to wrap text with support for long words
       const wrapText = (text: string, maxWidth: number, fontSize: number): string[] => {
         doc.setFontSize(fontSize);
-        const words = text.split(" ");
+        const words = text.split(' ');
         const lines: string[] = [];
-        let currentLine = "";
+        let currentLine = '';
 
         words.forEach((word) => {
           // Check if the word itself is too long
@@ -110,7 +110,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
             // First, push the current line if it exists
             if (currentLine) {
               lines.push(currentLine);
-              currentLine = "";
+              currentLine = '';
             }
             // Break the long word into parts
             const wordParts = breakLongWord(word, maxWidth);
@@ -146,10 +146,10 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       addPageDecoration();
 
       // Title
-      doc.setFont("helvetica", "bold");
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(32);
       doc.setTextColor(128, 90, 150);
-      const titleText = language === "th" ? "การผจญภัยของ" : "The Adventure of";
+      const titleText = language === 'th' ? 'การผจญภัยของ' : 'The Adventure of';
       const titleWidth = doc.getTextWidth(titleText);
       doc.text(titleText, (pageWidth - titleWidth) / 2, 80);
 
@@ -162,21 +162,21 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       // Decorative stars
       doc.setFontSize(24);
       doc.setTextColor(255, 200, 100);
-      doc.text("✨ 🌟 ✨", pageWidth / 2 - 20, 120);
+      doc.text('✨ 🌟 ✨', pageWidth / 2 - 20, 120);
 
       // Story book subtitle
-      doc.setFont("helvetica", "italic");
+      doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(100, 100, 100);
-      const subtitleText = language === "th" ? "หนังสือนิทานส่วนตัว" : "A Personal Story Book";
+      const subtitleText = language === 'th' ? 'หนังสือนิทานส่วนตัว' : 'A Personal Story Book';
       const subtitleWidth = doc.getTextWidth(subtitleText);
       doc.text(subtitleText, (pageWidth - subtitleWidth) / 2, 140);
 
       // Total pages info
-      doc.setFont("helvetica", "normal");
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
       doc.setTextColor(150, 150, 150);
-      const pagesInfo = language === "th" ? `${history.length} ฉาก` : `${history.length} Scenes`;
+      const pagesInfo = language === 'th' ? `${history.length} ฉาก` : `${history.length} Scenes`;
       const pagesInfoWidth = doc.getTextWidth(pagesInfo);
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
@@ -196,10 +196,10 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         let yPosition = PAGE_TOP_POSITION;
 
         // Scene number header
-        doc.setFont("helvetica", "bold");
+        doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(180, 100, 180);
-        const sceneLabel = language === "th" ? `ฉากที่ ${index + 1}` : `Scene ${index + 1}`;
+        const sceneLabel = language === 'th' ? `ฉากที่ ${index + 1}` : `Scene ${index + 1}`;
         doc.text(sceneLabel, PDF_MARGIN, yPosition);
         yPosition += 10;
 
@@ -224,7 +224,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
 
           // Extract image format from data URL (e.g., "data:image/png;base64,..." -> "PNG")
           // Default to JPEG if format cannot be determined
-          let imageFormat = "JPEG";
+          let imageFormat = 'JPEG';
           const formatMatch = imageData.match(/^data:image\/(\w+);/);
           if (formatMatch) {
             imageFormat = formatMatch[1].toUpperCase();
@@ -235,7 +235,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         }
 
         // Story text - wrapped nicely
-        doc.setFont("helvetica", "normal");
+        doc.setFont('helvetica', 'normal');
         doc.setFontSize(14);
         doc.setTextColor(60, 60, 80);
 
@@ -266,17 +266,17 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
 
           // Choice box
           doc.setFillColor(245, 240, 250);
-          doc.roundedRect(PDF_MARGIN, yPosition - 5, contentWidth, 20, 3, 3, "F");
+          doc.roundedRect(PDF_MARGIN, yPosition - 5, contentWidth, 20, 3, 3, 'F');
 
-          doc.setFont("helvetica", "italic");
+          doc.setFont('helvetica', 'italic');
           doc.setFontSize(12);
           doc.setTextColor(128, 90, 150);
-          const choiceLabel = language === "th" ? "คุณเลือก: " : "You chose: ";
+          const choiceLabel = language === 'th' ? 'คุณเลือก: ' : 'You chose: ';
           doc.text(choiceLabel + beat.selected, PDF_MARGIN + 5, yPosition + 7);
         }
 
         // Page number at bottom
-        doc.setFont("helvetica", "normal");
+        doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
         doc.setTextColor(180, 180, 180);
         const pageNum = `${index + 2}`; // +2 because title page is 1
@@ -288,47 +288,40 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.addPage();
       addPageDecoration();
 
-      doc.setFont("helvetica", "bold");
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(36);
       doc.setTextColor(200, 100, 150);
-      const endText = language === "th" ? "จบ" : "The End";
+      const endText = language === 'th' ? 'จบ' : 'The End';
       const endTextWidth = doc.getTextWidth(endText);
       doc.text(endText, (pageWidth - endTextWidth) / 2, 100);
 
       // Decorative elements
       doc.setFontSize(28);
-      doc.text("🎉 ✨ 🌟 ✨ 🎉", pageWidth / 2 - 35, 120);
+      doc.text('🎉 ✨ 🌟 ✨ 🎉', pageWidth / 2 - 35, 120);
 
       // Congratulations message
-      doc.setFont("helvetica", "normal");
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
       doc.setTextColor(100, 100, 120);
-      const congratsText =
-        language === "th"
-          ? "ขอบคุณที่ร่วมผจญภัยไปด้วยกัน!"
-          : "Thank you for joining the adventure!";
+      const congratsText = language === 'th' ? 'ขอบคุณที่ร่วมผจญภัยไปด้วยกัน!' : 'Thank you for joining the adventure!';
       const congratsWidth = doc.getTextWidth(congratsText);
       doc.text(congratsText, (pageWidth - congratsWidth) / 2, 145);
 
       // Player name credit
-      doc.setFont("helvetica", "italic");
+      doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(180, 100, 180);
-      const creditText =
-        language === "th" ? `สร้างสรรค์โดย ${playerName}` : `Created by ${playerName}`;
+      const creditText = language === 'th' ? `สร้างสรรค์โดย ${playerName}` : `Created by ${playerName}`;
       const creditWidth = doc.getTextWidth(creditText);
       doc.text(creditText, (pageWidth - creditWidth) / 2, 165);
 
       // Save the PDF
-      const fileName =
-        language === "th" ? `การผจญภัยของ-${playerName}.pdf` : `${playerName}'s-Adventure.pdf`;
+      const fileName = language === 'th' ? `การผจญภัยของ-${playerName}.pdf` : `${playerName}'s-Adventure.pdf`;
       doc.save(fileName);
     } catch (error) {
-      console.error("Failed to generate PDF:", error);
+      console.error('Failed to generate PDF:', error);
       setExportError(
-        language === "th"
-          ? "ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง"
-          : "Failed to create PDF. Please try again."
+        language === 'th' ? 'ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง' : 'Failed to create PDF. Please try again.'
       );
     } finally {
       setIsExporting(false);
@@ -346,12 +339,12 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         className="py-4 text-lg"
       >
         {isExporting
-          ? language === "th"
-            ? "⏳ กำลังสร้าง PDF..."
-            : "⏳ Creating PDF..."
-          : language === "th"
-            ? "📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)"
-            : "📥 Download Story Book (PDF)"}
+          ? language === 'th'
+            ? '⏳ กำลังสร้าง PDF...'
+            : '⏳ Creating PDF...'
+          : language === 'th'
+            ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)'
+            : '📥 Download Story Book (PDF)'}
       </Button>
       {exportError && <p className="mt-2 text-center text-sm text-red-500">{exportError}</p>}
     </div>

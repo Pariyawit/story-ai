@@ -28,23 +28,27 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/story-ai.git
 cd story-ai
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory:
+
 ```bash
 OPENAI_API_KEY=sk-your-api-key-here
 ENABLE_IMAGE_GENERATION=true  # Set to false to disable image generation
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -144,16 +148,19 @@ ENABLE_IMAGE_GENERATION=true  # Set to false to disable images and reduce cost
 ### Cost Optimization
 
 **With Images Enabled** (default):
+
 - LLM: ~$0.03 per story (12 beats)
 - Images: ~$0.24 per story (12 images × $0.02)
 - **Total: ~$0.27 per story**
 
 **With Images Disabled**:
+
 - LLM: ~$0.03 per story
 - Images: $0.00
 - **Total: ~$0.03 per story (89% savings)**
 
 To disable images during development:
+
 ```bash
 ENABLE_IMAGE_GENERATION=false npm run dev
 ```
@@ -161,16 +168,19 @@ ENABLE_IMAGE_GENERATION=false npm run dev
 ## 🎨 Design System
 
 ### Colors
+
 - **Primary**: Purple (#9333EA) to Pink (#EC4899) gradient
 - **Background**: Yellow (#FFFBEB) → Pink (#FCE7F3) → Purple (#FAF5FF)
 - **Accent**: Rose, Blue, Cyan gradients for choice buttons
 
 ### Typography
+
 - **Font Family**: Geist Sans (primary), Geist Mono (code)
 - **Story Text**: lg (18px) for readability
 - **Choices**: lg (18px) bold
 
 ### Components
+
 - **Buttons**: Rounded-3xl with gradient backgrounds
 - **Cards**: Glass morphism (white/80 + backdrop blur)
 - **Images**: 5:4 aspect ratio, rounded-3xl
@@ -190,6 +200,7 @@ npm run lint     # Run ESLint
 ### Performance Logging
 
 The app includes performance metrics in the console:
+
 ```
 [PERF] Starting LLM call...
 [PERF] LLM completed in 2500ms
@@ -205,6 +216,7 @@ The app includes performance metrics in the console:
 **Cause**: Sequential LLM + image generation blocking the response
 
 **Solution**: Already implemented performance logging. Future optimization:
+
 - Separate image generation endpoint
 - Stream LLM response for progressive rendering
 - Background image generation
@@ -220,6 +232,7 @@ The app includes performance metrics in the console:
 Generate next story beat based on history.
 
 **Request**:
+
 ```json
 {
   "name": "Alice",
@@ -236,6 +249,7 @@ Generate next story beat based on history.
 ```
 
 **Response**:
+
 ```json
 {
   "storyText": "Alice ventured into the enchanted forest...",
@@ -259,6 +273,7 @@ Generate next story beat based on history.
 ### Other Platforms
 
 Build the production bundle:
+
 ```bash
 npm run build
 npm run start

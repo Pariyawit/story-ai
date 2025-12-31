@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 interface StoryImageProps {
   imageUrl?: string;
@@ -15,7 +15,7 @@ export default function StoryImage({ imageUrl, imagePrompt, isLoading }: StoryIm
             {imageUrl ? (
               <Image
                 src={imageUrl}
-                alt={imagePrompt || "Story scene"}
+                alt={imagePrompt || 'Story scene'}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -24,7 +24,7 @@ export default function StoryImage({ imageUrl, imagePrompt, isLoading }: StoryIm
             ) : (
               <div className="flex h-full w-full items-center justify-center p-8 text-center">
                 <p className="text-xl font-medium text-purple-700">
-                  {isLoading ? "Generating story..." : "No image available"}
+                  {isLoading ? 'Generating story...' : 'No image available'}
                 </p>
               </div>
             )}

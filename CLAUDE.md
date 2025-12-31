@@ -47,7 +47,7 @@ This project enforces strict code quality standards using automated tools:
 
 ### Linting & Formatting
 
-- **Prettier**: Code formatting (100-char line limit, 2 spaces, double quotes, LF endings)
+- **Prettier**: Code formatting (100-char line limit, 2 spaces, single quotes, LF endings)
 - **ESLint**: Code quality rules (TypeScript, React best practices, import ordering)
 - **EditorConfig**: Cross-editor consistency
 
@@ -339,8 +339,8 @@ The system prompt (`ai/llm/systemPrompt.ts`) is dynamically constructed:
 TypeScript configured with `@/*` → `./` mapping. Always use:
 
 ```typescript
-import { StoryBeat } from "@/types"; // Correct
-import { StoryBeat } from "../types"; // Avoid
+import { StoryBeat } from '@/types'; // Correct
+import { StoryBeat } from '../types'; // Avoid
 ```
 
 ### 5. Performance Considerations

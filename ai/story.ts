@@ -1,9 +1,9 @@
-import { StoryBeat, Gender, Language, StoryTheme } from "@/types";
+import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
 
-import { generateImage } from "./generateImage";
-import { runLLM } from "./llm";
-import systemPrompt from "./llm/systemPrompt";
-import { AIMessage } from "./types";
+import { generateImage } from './generateImage';
+import { runLLM } from './llm';
+import systemPrompt from './llm/systemPrompt';
+import { AIMessage } from './types';
 
 // Patterns that indicate placeholder/hallucinated choices
 export const PLACEHOLDER_PATTERNS = [
@@ -29,10 +29,7 @@ export const validateChoices = (choices: string[] | undefined): boolean => {
 
   const placeholderChoices = choices.filter(isPlaceholderChoice);
   if (placeholderChoices.length > 0) {
-    console.warn(
-      "[WARN] Detected placeholder choices that may indicate LLM hallucination:",
-      placeholderChoices
-    );
+    console.warn('[WARN] Detected placeholder choices that may indicate LLM hallucination:', placeholderChoices);
     return false;
   }
   return true;
@@ -49,17 +46,16 @@ export const mapHistory = (
   const messages: AIMessage[] = [systemPrompt(name, gender, language, theme)];
 
   history.forEach((storyBeat, index) => {
-    const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } =
-      storyBeat;
+    const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } = storyBeat;
 
     messages.push({
-      role: "assistant",
+      role: 'assistant',
       content: JSON.stringify({ storyText, choices, choicesWithTransition, imagePrompt, imageUrl }),
     });
 
     if (selected) {
       messages.push({
-        role: "user",
+        role: 'user',
         content: JSON.stringify({ selected, beat: index + 1 }),
       });
     }
@@ -67,7 +63,7 @@ export const mapHistory = (
   return messages;
 };
 
-const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== "false";
+const ENABLE_IMAGE_GENERATION = process.env.ENABLE_IMAGE_GENERATION !== 'false';
 
 export const runStory = async (
   name: string,
@@ -79,7 +75,7 @@ export const runStory = async (
   const startTime = Date.now();
 
   // map history to llm message
-  console.log("[PERF] Starting LLM call...");
+  console.log('[PERF] Starting LLM call...');
   const llmStart = Date.now();
   const result = await runLLM({ messages: mapHistory(name, history, gender, language, theme) });
   const llmDuration = Date.now() - llmStart;
@@ -94,13 +90,13 @@ export const runStory = async (
   // Validate choices for placeholder patterns
   const choicesValid = validateChoices(content.choices);
   if (!choicesValid) {
-    console.warn("[WARN] Proceeding with potentially invalid choices");
+    console.warn('[WARN] Proceeding with potentially invalid choices');
   }
 
   // Generate image if enabled and prompt exists
   if (ENABLE_IMAGE_GENERATION && content.imagePrompt) {
     try {
-      console.log("[PERF] Starting image generation...");
+      console.log('[PERF] Starting image generation...');
       const imageStart = Date.now();
       const imageUrl = await generateImage({ prompt: content.imagePrompt });
       const imageDuration = Date.now() - imageStart;
@@ -113,15 +109,13 @@ export const runStory = async (
 
       return { ...content, imageUrl };
     } catch (error) {
-      console.error("Image generation failed, continuing without image:", error);
+      console.error('Image generation failed, continuing without image:', error);
       return { ...content, imageUrl: undefined };
     }
   }
 
   const totalDuration = Date.now() - startTime;
-  console.log(
-    `[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: disabled)`
-  );
+  console.log(`[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: disabled)`);
 
   return { ...content, imageUrl: undefined };
 };

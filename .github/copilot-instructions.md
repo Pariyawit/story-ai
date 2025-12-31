@@ -15,24 +15,27 @@ Story AI is an AI-powered interactive children's storytelling web application. I
 ## Build & Validation Commands
 
 ### Prerequisites
+
 - Node.js 20 or higher required
 - npm 10.x or higher
 
 ### Essential Commands
 
-| Command | Purpose | Notes |
-|---------|---------|-------|
-| `npm install` | Install dependencies | Always run first after clone or dependency changes |
-| `OPENAI_API_KEY=sk-placeholder npm run build` | Production build | **CRITICAL:** Build fails without `OPENAI_API_KEY` set |
-| `npm run lint` | Run ESLint | Currently has pre-existing warnings/errors (see Known Issues) |
-| `npm run dev` | Start dev server (port 3000) | Requires valid OpenAI key for full functionality |
-| `npm run start` | Start production server | Run after successful build |
+| Command                                       | Purpose                      | Notes                                                         |
+| --------------------------------------------- | ---------------------------- | ------------------------------------------------------------- |
+| `npm install`                                 | Install dependencies         | Always run first after clone or dependency changes            |
+| `OPENAI_API_KEY=sk-placeholder npm run build` | Production build             | **CRITICAL:** Build fails without `OPENAI_API_KEY` set        |
+| `npm run lint`                                | Run ESLint                   | Currently has pre-existing warnings/errors (see Known Issues) |
+| `npm run dev`                                 | Start dev server (port 3000) | Requires valid OpenAI key for full functionality              |
+| `npm run start`                               | Start production server      | Run after successful build                                    |
 
 ### Build Sequence
+
 1. `npm install` - Install all dependencies
 2. `OPENAI_API_KEY=sk-placeholder npm run build` - Build the application
 
 **Important:** The build command **MUST** have `OPENAI_API_KEY` environment variable set, even with a placeholder value. Without it, the build fails with:
+
 ```
 Error: Missing credentials. Please pass an `apiKey`, or set the `OPENAI_API_KEY` environment variable.
 ```
@@ -98,22 +101,22 @@ TypeScript paths configured: `@/*` → `./*` (from project root)
 
 ## Configuration Files
 
-| File | Purpose |
-|------|---------|
-| `eslint.config.mjs` | ESLint flat config with Next.js core-web-vitals and TypeScript |
-| `tsconfig.json` | TypeScript strict mode, bundler resolution, `@/*` path alias |
-| `next.config.ts` | Image remote patterns for DALL-E blob storage |
-| `postcss.config.mjs` | Tailwind CSS 4 via `@tailwindcss/postcss` |
-| `.gitignore` | Standard Next.js ignores plus `.env*` files |
+| File                 | Purpose                                                        |
+| -------------------- | -------------------------------------------------------------- |
+| `eslint.config.mjs`  | ESLint flat config with Next.js core-web-vitals and TypeScript |
+| `tsconfig.json`      | TypeScript strict mode, bundler resolution, `@/*` path alias   |
+| `next.config.ts`     | Image remote patterns for DALL-E blob storage                  |
+| `postcss.config.mjs` | Tailwind CSS 4 via `@tailwindcss/postcss`                      |
+| `.gitignore`         | Standard Next.js ignores plus `.env*` files                    |
 
 ---
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENAI_API_KEY` | Yes (for build & runtime) | OpenAI API key for GPT-4o-mini and DALL-E 2 |
-| `ENABLE_IMAGE_GENERATION` | No | Set to `false` to disable DALL-E (default: `true`) |
+| Variable                  | Required                  | Description                                        |
+| ------------------------- | ------------------------- | -------------------------------------------------- |
+| `OPENAI_API_KEY`          | Yes (for build & runtime) | OpenAI API key for GPT-4o-mini and DALL-E 2        |
+| `ENABLE_IMAGE_GENERATION` | No                        | Set to `false` to disable DALL-E (default: `true`) |
 
 ---
 

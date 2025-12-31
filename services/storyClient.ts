@@ -1,6 +1,12 @@
 import { StoryBeat, Gender, Language, StoryTheme } from '@/types';
 
-export async function postStory(name: string, history: StoryBeat[], gender: Gender, language: Language, theme: StoryTheme) {
+export async function postStory(
+  name: string,
+  history: StoryBeat[],
+  gender: Gender,
+  language: Language,
+  theme: StoryTheme
+) {
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

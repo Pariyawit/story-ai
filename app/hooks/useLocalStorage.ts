@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
   // Use lazy initialization to read from localStorage only once
@@ -16,7 +16,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T)
     (value: T) => {
       try {
         setStoredValue(value);
-        if (typeof value !== "undefined" && value !== null) {
+        if (typeof value !== 'undefined' && value !== null) {
           localStorage.setItem(key, JSON.stringify(value));
         }
       } catch (error) {

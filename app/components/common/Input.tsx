@@ -23,7 +23,7 @@ export default function Input({
 }: InputProps) {
   return (
     <div>
-      <label htmlFor={id} className='sr-only'>
+      <label htmlFor={id} className="sr-only">
         {label}
       </label>
       <input

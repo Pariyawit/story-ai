@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { runStory } from "@/ai/story";
+import { runStory } from '@/ai/story';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 // Zod schema for ChoiceWithTransition
 const choiceWithTransitionSchema = z.object({
@@ -22,17 +22,11 @@ const storyBeatSchema = z.object({
 
 // Zod schema for request body
 const requestSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, 'Name is required'),
   history: z.array(storyBeatSchema),
-  gender: z.enum(["boy", "girl"]),
-  language: z.enum(["th", "en"]),
-  theme: z.enum([
-    "enchanted_forest",
-    "space_adventure",
-    "underwater_kingdom",
-    "dinosaur_land",
-    "fairy_tale_castle",
-  ]),
+  gender: z.enum(['boy', 'girl']),
+  language: z.enum(['th', 'en']),
+  theme: z.enum(['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle']),
 });
 
 export async function POST(request: Request) {
@@ -53,7 +47,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return Response.json(
         {
-          error: "Validation failed",
+          error: 'Validation failed',
           details: error.issues,
         },
         { status: 400 }
@@ -63,8 +57,8 @@ export async function POST(request: Request) {
     // Handle other errors
     return Response.json(
       {
-        error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
