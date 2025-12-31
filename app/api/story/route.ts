@@ -20,6 +20,14 @@ const storyBeatSchema = z.object({
   selected: z.string().optional(),
 });
 
+// Zod schema for CharacterCustomization
+const characterSchema = z.object({
+  hairColor: z.enum(['brown', 'black', 'blonde', 'red', 'blue', 'pink']),
+  hairStyle: z.enum(['short', 'long', 'curly', 'braids', 'ponytail']),
+  outfitStyle: z.enum(['adventurer', 'princess', 'superhero', 'wizard', 'explorer']),
+  favoriteColor: z.enum(['purple', 'blue', 'pink', 'green', 'red', 'yellow']),
+});
+
 // Zod schema for request body
 const requestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -27,6 +35,7 @@ const requestSchema = z.object({
   gender: z.enum(['boy', 'girl']),
   language: z.enum(['th', 'en']),
   theme: z.enum(['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle']),
+  character: characterSchema.optional(),
 });
 
 export async function POST(request: Request) {
@@ -35,11 +44,11 @@ export async function POST(request: Request) {
 
     const validatedData = requestSchema.parse(body);
 
-    const { name, history, gender, language, theme } = validatedData;
+    const { name, history, gender, language, theme, character } = validatedData;
 
     // if history is empty
     // Mock response for now
-    const data = await runStory(name, history, gender, language, theme);
+    const data = await runStory(name, history, gender, language, theme, character);
 
     return Response.json(data, { status: 200 });
   } catch (error) {

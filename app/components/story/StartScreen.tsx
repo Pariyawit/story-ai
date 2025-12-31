@@ -2,22 +2,19 @@
 
 import { useState } from 'react';
 
-import { Gender, Language, StoryTheme } from '@/types';
+import { Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 
 import Button from '../common/Button';
 import Card from '../common/Card';
 import Input from '../common/Input';
 
+import CharacterWizard from './CharacterWizard';
+
 // Theme configuration with labels
 const THEMES: { id: StoryTheme; emoji: string; labelEn: string; labelTh: string }[] = [
   { id: 'enchanted_forest', emoji: '🌳', labelEn: 'Enchanted Forest', labelTh: 'ป่าวิเศษ' },
   { id: 'space_adventure', emoji: '🚀', labelEn: 'Space Adventure', labelTh: 'ผจญภัยอวกาศ' },
-  {
-    id: 'underwater_kingdom',
-    emoji: '🌊',
-    labelEn: 'Underwater Kingdom',
-    labelTh: 'อาณาจักรใต้น้ำ',
-  },
+  { id: 'underwater_kingdom', emoji: '🌊', labelEn: 'Underwater Kingdom', labelTh: 'อาณาจักรใต้น้ำ' },
   { id: 'dinosaur_land', emoji: '🦕', labelEn: 'Dinosaur Land', labelTh: 'ดินแดนไดโนเสาร์' },
   { id: 'fairy_tale_castle', emoji: '🏰', labelEn: 'Fairy Tale Castle', labelTh: 'ปราสาทเทพนิยาย' },
 ];
@@ -27,10 +24,12 @@ interface StartScreenProps {
   gender: Gender;
   language: Language;
   theme: StoryTheme;
+  character: CharacterCustomization;
   onNameChange: (name: string) => void;
   onGenderChange: (gender: Gender) => void;
   onLanguageChange: (language: Language) => void;
   onThemeChange: (theme: StoryTheme) => void;
+  onCharacterChange: (character: CharacterCustomization) => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading?: boolean;
 }
@@ -40,14 +39,17 @@ export default function StartScreen({
   gender,
   language,
   theme,
+  character,
   onNameChange,
   onGenderChange,
   onLanguageChange,
   onThemeChange,
+  onCharacterChange,
   onSubmit,
   isLoading = false,
 }: StartScreenProps) {
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
+  const [isCharacterExpanded, setIsCharacterExpanded] = useState(false);
 
   const selectedTheme = THEMES.find((t) => t.id === theme) || THEMES[0];
 
@@ -130,6 +132,34 @@ export default function StartScreen({
                   🇹🇭 ไทย
                 </button>
               </div>
+            </div>
+
+            {/* Character Customization - Collapsible */}
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setIsCharacterExpanded(!isCharacterExpanded)}
+                className="flex w-full items-center justify-between rounded-2xl border-2 border-purple-200 bg-white px-4 py-3 text-left transition-all hover:border-purple-300"
+              >
+                <span className="text-sm font-medium text-purple-700">
+                  {language === 'th' ? 'ออกแบบตัวละคร' : 'Character Design'}
+                </span>
+                <span className="flex items-center gap-2 text-purple-600">
+                  <span className="text-lg">✨ 🎨</span>
+                  <span className={`text-lg transition-transform ${isCharacterExpanded ? 'rotate-180' : ''}`}>▼</span>
+                </span>
+              </button>
+
+              {isCharacterExpanded && (
+                <div className="rounded-2xl border-2 border-purple-100 bg-white/50 p-4">
+                  <CharacterWizard
+                    character={character}
+                    gender={gender}
+                    language={language}
+                    onChange={onCharacterChange}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Theme Selection - Collapsible */}

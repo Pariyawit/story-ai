@@ -83,8 +83,8 @@ const mockFetchResponse = (ok: boolean, blobContent?: Blob) => {
 // Create a mock FileReader class
 class MockFileReader {
   result: string | null = null;
-  onloadend: ((this: FileReader, ev: ProgressEvent<FileReader>) => unknown) | null = null;
-  onerror: ((this: FileReader, ev: ProgressEvent<FileReader>) => unknown) | null = null;
+  onloadend: ((ev: ProgressEvent<FileReader>) => unknown) | null = null;
+  onerror: ((ev: ProgressEvent<FileReader>) => unknown) | null = null;
 
   readAsDataURL(): void {
     setTimeout(() => {

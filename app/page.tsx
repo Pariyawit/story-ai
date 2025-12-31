@@ -13,6 +13,7 @@ export default function Home() {
     gender,
     language,
     theme,
+    character,
     history,
     currentBeat,
     currentPage,
@@ -22,6 +23,7 @@ export default function Home() {
     setGender,
     setLanguage,
     setTheme,
+    setCharacter,
     handleNameSubmit,
     handleChoice,
     handleRestart,
@@ -34,10 +36,12 @@ export default function Home() {
         gender={gender}
         language={language}
         theme={theme}
+        character={character}
         onNameChange={setNameInput}
         onGenderChange={setGender}
         onLanguageChange={setLanguage}
         onThemeChange={setTheme}
+        onCharacterChange={setCharacter}
         onSubmit={handleNameSubmit}
         isLoading={isLoading}
       />
