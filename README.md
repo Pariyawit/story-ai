@@ -59,7 +59,7 @@ cd story-ai
 2. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Create a `.env` file in the root directory:
@@ -72,7 +72,7 @@ ENABLE_IMAGE_GENERATION=true  # Set to false to disable image generation
 4. Run the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -208,7 +208,7 @@ ENABLE_IMAGE_GENERATION=true  # Set to false to disable images and reduce cost
 To disable images during development:
 
 ```bash
-ENABLE_IMAGE_GENERATION=false npm run dev
+ENABLE_IMAGE_GENERATION=false pnpm run dev
 ```
 
 ## 🛠️ Development
@@ -216,13 +216,13 @@ ENABLE_IMAGE_GENERATION=false npm run dev
 ### Scripts
 
 ```bash
-npm run dev           # Start development server
-npm run build         # Production build
-npm run start         # Start production server
-npm run lint          # Run ESLint
-npm run test          # Run Vitest in watch mode
-npm run test:run      # Run tests once
-npm run test:coverage # Run tests with coverage report
+pnpm run dev           # Start development server
+pnpm run build         # Production build
+pnpm run start         # Start production server
+pnpm run lint          # Run ESLint
+pnpm run test          # Run Vitest in watch mode
+pnpm run test:run      # Run tests once
+pnpm run test:coverage # Run tests with coverage report
 ```
 
 ### Testing
@@ -231,13 +231,13 @@ The project uses **Vitest** with **React Testing Library** for component testing
 
 ```bash
 # Run all tests
-npm run test
+pnpm run test
 
 # Run tests once (CI mode)
-npm run test:run
+pnpm run test:run
 
 # Run with coverage
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 **Test Files:**
@@ -325,8 +325,8 @@ Generate next story beat based on history.
 Build the production bundle:
 
 ```bash
-npm run build
-npm run start
+pnpm run build
+pnpm run start
 ```
 
 ## 🤝 Contributing

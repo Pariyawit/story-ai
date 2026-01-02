@@ -19,24 +19,24 @@ Story AI is an AI-powered interactive children's storytelling application that c
 
 ```bash
 # Development
-npm run dev                    # Start dev server at localhost:3000
+pnpm run dev                   # Start dev server at localhost:3000
 
 # Building (CRITICAL: Requires OPENAI_API_KEY)
-OPENAI_API_KEY=sk-placeholder npm run build  # Production build
-npm run start                  # Start production server after build
+OPENAI_API_KEY=sk-placeholder pnpm run build  # Production build
+pnpm run start                 # Start production server after build
 
 # Testing
-npm run test                   # Run tests in watch mode
-npm run test:run              # Run tests once
-npm run test:coverage         # Run tests with coverage report
+pnpm run test                  # Run tests in watch mode
+pnpm run test:run              # Run tests once
+pnpm run test:coverage         # Run tests with coverage report
 
 # Code Quality & Formatting
-npm run lint                  # Run ESLint
-npm run lint:fix              # Auto-fix linting errors
-npm run format                # Format all files with Prettier
-npm run format:check          # Check formatting without making changes
-npm run typecheck             # TypeScript type checking
-npm run check                 # Run all checks (typecheck + lint + format)
+pnpm run lint                  # Run ESLint
+pnpm run lint:fix              # Auto-fix linting errors
+pnpm run format                # Format all files with Prettier
+pnpm run format:check          # Check formatting without making changes
+pnpm run typecheck             # TypeScript type checking
+pnpm run check                 # Run all checks (typecheck + lint + format)
 ```
 
 **Build Warning:** The build command **MUST** have `OPENAI_API_KEY` set (even with placeholder value), otherwise build fails with "Missing credentials" error.
@@ -368,9 +368,9 @@ Vitest configured with:
 **Run tests:**
 
 ```bash
-npm run test              # Watch mode
-npm run test:run          # Single run
-npm run test:coverage     # With coverage report
+pnpm run test              # Watch mode
+pnpm run test:run          # Single run
+pnpm run test:coverage     # With coverage report
 ```
 
 Test files: `**/*.{test,spec}.{ts,tsx}`
@@ -442,7 +442,7 @@ These warnings are configured to warn (not error) and do not affect functionalit
 
 ## Development Workflow
 
-1. Start dev server: `npm run dev`
+1. Start dev server: `pnpm run dev`
 2. Navigate to `http://localhost:3000`
 3. Enter name, select gender/language/theme
 4. Story generates (watch server console for performance logs)

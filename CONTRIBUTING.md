@@ -7,7 +7,7 @@ Thank you for contributing to Story AI! This guide will help you set up your dev
 ### Prerequisites
 
 - Node.js 20.x or later
-- npm 10.x or later
+- pnpm 9.x or later
 - Git
 
 ### Initial Setup
@@ -22,7 +22,7 @@ Thank you for contributing to Story AI! This guide will help you set up your dev
 2. Install dependencies:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Create a `.env` file in the root directory:
@@ -34,7 +34,7 @@ Thank you for contributing to Story AI! This guide will help you set up your dev
 
 4. Start the development server:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 ## Code Standards
@@ -57,22 +57,22 @@ We use **Prettier** for code formatting and **ESLint** for code quality. All cod
 
 ```bash
 # Check for linting errors
-npm run lint
+pnpm run lint
 
 # Auto-fix linting errors
-npm run lint:fix
+pnpm run lint:fix
 
 # Format all files with Prettier
-npm run format
+pnpm run format
 
 # Check formatting without making changes
-npm run format:check
+pnpm run format:check
 
 # Type-check TypeScript
-npm run typecheck
+pnpm run typecheck
 
 # Run all checks (typecheck + lint + format)
-npm run check
+pnpm run check
 ```
 
 ### Pre-commit Hooks
@@ -125,13 +125,13 @@ Install plugins for:
 
 ```bash
 # Run tests in watch mode
-npm run test
+pnpm run test
 
 # Run tests once
-npm run test:run
+pnpm run test:run
 
 # Run tests with coverage
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 All new features should include tests.
@@ -254,7 +254,7 @@ feat: add comprehensive dark mode theme support with multiple color schemes and 
 If the pre-commit hook isn't working:
 
 ```bash
-npm run prepare
+pnpm run prepare
 ```
 
 ### ESLint Errors
@@ -263,10 +263,10 @@ If you encounter ESLint errors:
 
 ```bash
 # Try auto-fixing first
-npm run lint:fix
+pnpm run lint:fix
 
 # If that doesn't work, check the error messages and fix manually
-npm run lint
+pnpm run lint
 ```
 
 ### Prettier Formatting Conflicts
@@ -275,7 +275,7 @@ If your editor and Prettier disagree:
 
 1. Ensure you have the latest `.prettierrc` from the repository
 2. Restart your editor
-3. Run `npm run format` to format all files
+3. Run `pnpm run format` to format all files
 
 ## Getting Help
 

@@ -17,26 +17,26 @@ Story AI is an AI-powered interactive children's storytelling web application. I
 ### Prerequisites
 
 - Node.js 20 or higher required
-- npm 10.x or higher
+- pnpm 9.x or higher
 
 ### Essential Commands
 
-| Command                                       | Purpose                      | Notes                                                  |
-| --------------------------------------------- | ---------------------------- | ------------------------------------------------------ |
-| `npm install`                                 | Install dependencies         | Always run first after clone or dependency changes     |
-| `OPENAI_API_KEY=sk-placeholder npm run build` | Production build             | **CRITICAL:** Build fails without `OPENAI_API_KEY` set |
-| `npm run lint`                                | Run ESLint                   | May have pre-existing warnings (see Known Issues)      |
-| `npm run test`                                | Run Vitest in watch mode     | Interactive test runner                                |
-| `npm run test:run`                            | Run tests once               | For CI/CD pipelines                                    |
-| `npm run test:coverage`                       | Run tests with coverage      | Generates coverage report                              |
-| `npm run dev`                                 | Start dev server (port 3000) | Requires valid OpenAI key for full functionality       |
-| `npm run start`                               | Start production server      | Run after successful build                             |
+| Command                                        | Purpose                      | Notes                                                  |
+| ---------------------------------------------- | ---------------------------- | ------------------------------------------------------ |
+| `pnpm install`                                 | Install dependencies         | Always run first after clone or dependency changes     |
+| `OPENAI_API_KEY=sk-placeholder pnpm run build` | Production build             | **CRITICAL:** Build fails without `OPENAI_API_KEY` set |
+| `pnpm run lint`                                | Run ESLint                   | May have pre-existing warnings (see Known Issues)      |
+| `pnpm run test`                                | Run Vitest in watch mode     | Interactive test runner                                |
+| `pnpm run test:run`                            | Run tests once               | For CI/CD pipelines                                    |
+| `pnpm run test:coverage`                       | Run tests with coverage      | Generates coverage report                              |
+| `pnpm run dev`                                 | Start dev server (port 3000) | Requires valid OpenAI key for full functionality       |
+| `pnpm run start`                               | Start production server      | Run after successful build                             |
 
 ### Build Sequence
 
-1. `npm install` - Install all dependencies
-2. `npm run test:run` - Run tests to verify code integrity
-3. `OPENAI_API_KEY=sk-placeholder npm run build` - Build the application
+1. `pnpm install` - Install all dependencies
+2. `pnpm run test:run` - Run tests to verify code integrity
+3. `OPENAI_API_KEY=sk-placeholder pnpm run build` - Build the application
 
 **Important:** The build command **MUST** have `OPENAI_API_KEY` environment variable set, even with a placeholder value. Without it, the build fails.
 
@@ -59,9 +59,9 @@ The project uses **Vitest** with **React Testing Library** for testing.
 ### Running Tests
 
 ```bash
-npm run test          # Watch mode (development)
-npm run test:run      # Single run (CI)
-npm run test:coverage # With coverage report
+pnpm run test          # Watch mode (development)
+pnpm run test:run      # Single run (CI)
+pnpm run test:coverage # With coverage report
 ```
 
 ---
