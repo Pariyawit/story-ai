@@ -8,10 +8,13 @@ export async function postStory(
   theme: StoryTheme,
   character?: CharacterCustomization
 ): Promise<StoryBeat> {
+  // Sanitize history to remove heavy imageData
+  const sanitizedHistory = history.map(({ imageData, ...beat }) => beat);
+
   const response = await fetch('/api/story', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, history, gender, language, theme, character }),
+    body: JSON.stringify({ name, history: sanitizedHistory, gender, language, theme, character }),
   });
 
   if (!response.ok) throw new Error('Failed to get next story beat');
