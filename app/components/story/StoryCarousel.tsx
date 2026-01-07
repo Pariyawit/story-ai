@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { t } from '@/lib/i18n';
 import { StoryBeat, Language } from '@/types';
 
 interface StoryCarouselProps {
@@ -29,9 +30,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
   if (history.length === 0) {
     return (
       <div className='flex h-64 items-center justify-center'>
-        <p className='text-lg text-gray-500'>
-          {language === 'th' ? 'ยังไม่มีเรื่องราว' : language === 'singlish' ? 'No story yet leh' : 'No story yet'}
-        </p>
+        <p className='text-lg text-gray-500'>{t('carousel.noStory', language)}</p>
       </div>
     );
   }
@@ -43,11 +42,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
       {/* Page indicator */}
       <div className='rounded-full bg-purple-500/90 px-4 py-2 shadow-md'>
         <p className='text-sm font-bold text-white'>
-          {language === 'th'
-            ? `ฉาก ${currentIndex + 1} / ${history.length}`
-            : language === 'singlish'
-              ? `Scene ${currentIndex + 1} / ${history.length} lah`
-              : `Scene ${currentIndex + 1} / ${history.length}`}
+          {t('carousel.sceneIndicator', language, { current: currentIndex + 1, total: history.length })}
         </p>
       </div>
 
@@ -88,9 +83,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
               />
             ) : (
               <div className='flex h-full w-full items-center justify-center'>
-                <p className='text-xl text-purple-700'>
-                  {language === 'th' ? 'ไม่มีรูปภาพ' : language === 'singlish' ? 'No image leh' : 'No image'}
-                </p>
+                <p className='text-xl text-purple-700'>{t('carousel.noImage', language)}</p>
               </div>
             )}
           </div>
@@ -103,8 +96,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
             <div className='mt-4 flex items-center gap-2'>
               <span className='text-purple-500'>▸</span>
               <span className='text-sm italic text-purple-600'>
-                {language === 'th' ? 'คุณเลือก:' : language === 'singlish' ? 'You chose lor:' : 'You chose:'}{' '}
-                {currentBeat.selected}
+                {t('carousel.youChose', language)} {currentBeat.selected}
               </span>
             </div>
           )}
@@ -126,13 +118,7 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
       </div>
 
       {/* Keyboard navigation hint */}
-      <p className='text-sm text-gray-400'>
-        {language === 'th'
-          ? 'ใช้ลูกศรซ้าย/ขวา หรือกดจุดเพื่อเลือกฉาก'
-          : language === 'singlish'
-            ? 'Use arrow keys or click dots to navigate lah'
-            : 'Use arrow keys or click dots to navigate'}
-      </p>
+      <p className='text-sm text-gray-400'>{t('carousel.navHint', language)}</p>
     </div>
   );
 }

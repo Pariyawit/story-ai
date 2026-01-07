@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { getInitialTransitionTexts } from '@/lib/i18n/prompts';
+import { getUrlParams } from '@/lib/urlParams';
 import { postStory } from '@/services/storyClient';
 import { StoryBeat, Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 // import { useLocalStorage } from './useLocalStorage';
@@ -31,32 +33,6 @@ const isValidCharacter = (char: unknown): char is CharacterCustomization => {
 };
 
 type GameState = 'START' | 'STORY' | 'TRANSITION';
-
-// Initial transition texts shown when starting a new adventure
-const getInitialTransitionTexts = (playerName: string, language: Language): string[] => {
-  if (language === 'th') {
-    return [
-      `🌟 สวัสดี ${playerName}! การผจญภัยของเธอกำลังจะเริ่มต้น...`,
-      '📚 หนังสือวิเศษกำลังเปิดหน้าใหม่ให้เธอ...',
-      '✨ โลกแห่งจินตนาการกำลังรอเธออยู่!',
-      '🎭 เตรียมพร้อมสำหรับการเดินทางที่น่าตื่นเต้น...',
-    ];
-  }
-  if (language === 'singlish') {
-    return [
-      `🌟 Wah, hello ${playerName}! Your adventure starting already lah...`,
-      '📚 A magic book opening just for you leh...',
-      '✨ A world of imagination waiting for you sia!',
-      '🎭 Get ready for one shiok journey...',
-    ];
-  }
-  return [
-    `🌟 Hello ${playerName}! Your adventure is about to begin...`,
-    '📚 A magical book is opening its pages just for you...',
-    '✨ A world of imagination awaits!',
-    '🎭 Get ready for an exciting journey...',
-  ];
-};
 
 interface UseStoryGameReturn {
   gameState: GameState;
@@ -98,21 +74,39 @@ export function useStoryGame(): UseStoryGameReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [transitionTexts, setTransitionTexts] = useState<string[]>([]);
 
-  // Load theme and character from localStorage on mount
+  // Load settings from URL params (priority) and localStorage (fallback) on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Load theme
-      const savedTheme = localStorage.getItem('story-theme') as StoryTheme | null;
-      if (
-        savedTheme &&
-        ['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle'].includes(
-          savedTheme
-        )
-      ) {
-        setThemeState(savedTheme);
+      // Get URL params first (they take priority)
+      const urlParams = getUrlParams();
+
+      // Apply URL params if present
+      if (urlParams.name) {
+        setNameInput(urlParams.name);
+      }
+      if (urlParams.gender) {
+        setGender(urlParams.gender);
+      }
+      if (urlParams.language) {
+        setLanguage(urlParams.language);
       }
 
-      // Load character
+      // Load theme: URL param > localStorage > default
+      if (urlParams.theme) {
+        setThemeState(urlParams.theme);
+      } else {
+        const savedTheme = localStorage.getItem('story-theme') as StoryTheme | null;
+        if (
+          savedTheme &&
+          ['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle'].includes(
+            savedTheme
+          )
+        ) {
+          setThemeState(savedTheme);
+        }
+      }
+
+      // Load character from localStorage (no URL param support for complex objects)
       try {
         const savedCharacterStr = localStorage.getItem('story-character');
         if (savedCharacterStr) {

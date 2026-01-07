@@ -3,6 +3,7 @@
 import { jsPDF } from 'jspdf';
 import { useState } from 'react';
 
+import { t } from '@/lib/i18n';
 import { StoryBeat, Language } from '@/types';
 
 import Button from '../common/Button';
@@ -137,8 +138,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(32);
       doc.setTextColor(128, 90, 150);
-      const titleText =
-        language === 'th' ? 'การผจญภัยของ' : language === 'singlish' ? 'The Shiok Adventure of' : 'The Adventure of';
+      const titleText = t('pdf.title', language);
       const titleWidth = doc.getTextWidth(titleText);
       doc.text(titleText, (pageWidth - titleWidth) / 2, 80);
 
@@ -157,12 +157,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(100, 100, 100);
-      const subtitleText =
-        language === 'th'
-          ? 'หนังสือนิทานส่วนตัว'
-          : language === 'singlish'
-            ? 'A Personal Story Book lor'
-            : 'A Personal Story Book';
+      const subtitleText = t('pdf.subtitle', language);
       const subtitleWidth = doc.getTextWidth(subtitleText);
       doc.text(subtitleText, (pageWidth - subtitleWidth) / 2, 140);
 
@@ -170,12 +165,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
       doc.setTextColor(150, 150, 150);
-      const pagesInfo =
-        language === 'th'
-          ? `${history.length} ฉาก`
-          : language === 'singlish'
-            ? `${history.length} Scenes leh`
-            : `${history.length} Scenes`;
+      const pagesInfo = t('pdf.scenesCount', language, { count: history.length });
       const pagesInfoWidth = doc.getTextWidth(pagesInfo);
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
@@ -195,12 +185,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(180, 100, 180);
-        const sceneLabel =
-          language === 'th'
-            ? `ฉากที่ ${index + 1}`
-            : language === 'singlish'
-              ? `Scene ${index + 1} lah`
-              : `Scene ${index + 1}`;
+        const sceneLabel = t('pdf.sceneLabel', language, { index: index + 1 });
         doc.text(sceneLabel, PDF_MARGIN, yPosition);
         yPosition += 10;
 
@@ -272,8 +257,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
           doc.setFont('helvetica', 'italic');
           doc.setFontSize(12);
           doc.setTextColor(128, 90, 150);
-          const choiceLabel =
-            language === 'th' ? 'คุณเลือก: ' : language === 'singlish' ? 'You chose lor: ' : 'You chose: ';
+          const choiceLabel = t('pdf.choiceLabel', language);
           doc.text(choiceLabel + beat.selected, PDF_MARGIN + 5, yPosition + 7);
         }
 
@@ -293,7 +277,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(36);
       doc.setTextColor(200, 100, 150);
-      const endText = language === 'th' ? 'จบ' : language === 'singlish' ? 'The End lah!' : 'The End';
+      const endText = t('pdf.endText', language);
       const endTextWidth = doc.getTextWidth(endText);
       doc.text(endText, (pageWidth - endTextWidth) / 2, 100);
 
@@ -305,12 +289,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(14);
       doc.setTextColor(100, 100, 120);
-      const congratsText =
-        language === 'th'
-          ? 'ขอบคุณที่ร่วมผจญภัยไปด้วยกัน!'
-          : language === 'singlish'
-            ? 'Thanks for joining the adventure lah!'
-            : 'Thank you for joining the adventure!';
+      const congratsText = t('pdf.congratsText', language);
       const congratsWidth = doc.getTextWidth(congratsText);
       doc.text(congratsText, (pageWidth - congratsWidth) / 2, 145);
 
@@ -318,12 +297,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(16);
       doc.setTextColor(180, 100, 180);
-      const creditText =
-        language === 'th'
-          ? `สร้างสรรค์โดย ${playerName}`
-          : language === 'singlish'
-            ? `Created by ${playerName} one`
-            : `Created by ${playerName}`;
+      const creditText = t('pdf.creditText', language, { name: playerName });
       const creditWidth = doc.getTextWidth(creditText);
       doc.text(creditText, (pageWidth - creditWidth) / 2, 165);
 
@@ -337,13 +311,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.save(fileName);
     } catch (error) {
       console.error('Failed to generate PDF:', error);
-      setExportError(
-        language === 'th'
-          ? 'ไม่สามารถสร้าง PDF ได้ กรุณาลองใหม่อีกครั้ง'
-          : language === 'singlish'
-            ? 'Alamak! Cannot create PDF. Try again lah.'
-            : 'Failed to create PDF. Please try again.'
-      );
+      setExportError(t('pdf.errorText', language));
     } finally {
       setIsExporting(false);
     }
@@ -359,17 +327,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
         fullWidth
         className='py-4 text-lg'
       >
-        {isExporting
-          ? language === 'th'
-            ? '⏳ กำลังสร้าง PDF...'
-            : language === 'singlish'
-              ? '⏳ Creating PDF leh...'
-              : '⏳ Creating PDF...'
-          : language === 'th'
-            ? '📥 ดาวน์โหลดหนังสือเรื่องราว (PDF)'
-            : language === 'singlish'
-              ? '📥 Download Story Book lah (PDF)'
-              : '📥 Download Story Book (PDF)'}
+        {isExporting ? t('pdf.creatingButton', language) : t('pdf.downloadButton', language)}
       </Button>
       {exportError && <p className='mt-2 text-center text-sm text-red-500'>{exportError}</p>}
     </div>

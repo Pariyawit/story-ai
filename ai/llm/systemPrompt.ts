@@ -1,3 +1,4 @@
+import { getLanguageInstruction, getChoiceRules, getJsonFormatExample } from '@/lib/i18n/prompts';
 import {
   Gender,
   Language,
@@ -11,96 +12,6 @@ import {
 
 const STYLE =
   "A dreamy watercolor children's book illustration in soft hand-painted style, with visible paper texture and layered watercolor washes. Gentle pastel colors, soft glowing light, and a magical bedtime atmosphere. Characters have round, cute storybook faces with big eyes and warm expressions. The scene looks like it was painted on textured watercolor paper with soft edges, subtle paint pooling, and natural brush strokes. Whimsical, calm, and magical.";
-
-const getLanguageInstruction = (language: Language): string => {
-  if (language === 'th') {
-    return 'Tell the story in simple Thai language suitable for young children (เขียนเรื่องเป็นภาษาไทยง่ายๆ เหมาะสำหรับเด็กเล็ก).';
-  }
-  if (language === 'singlish') {
-    return `Tell the story in simple English with natural Singlish (Singapore English) expressions.
-Use predominantly English but sprinkle in Singlish words and particles SUBTLY.
-Common Singlish particles to use naturally: "lah" (emphasis), "leh" (softer/uncertain), "lor" (resignation), "meh" (questioning), "sia" (exclamation).
-Common Singlish words: "wah" (wow), "shiok" (great/delicious), "alamak" (oh no), "steady" (reliable), "can" (yes).
-Example: "Wah, the forest so magical lah! You want to explore, can?"
-Keep it child-friendly and maintain story flow.`;
-  }
-  return 'Tell story in a simple English suitable for kindergarten.';
-};
-
-const getChoiceRules = (language: Language): string => {
-  if (language === 'th') {
-    return `CHOICE RULES:
-        - Each choice MUST be written in simple Thai language (ภาษาไทยง่ายๆ)
-        - Each choice MUST be a specific, actionable option for the child (e.g., "ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูก")
-        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
-        - Choices must relate directly to the current story scene
-        - Use simple, exciting Thai verbs that children understand
-        - For each choice, provide 3-4 short transition sentences that describe what happens when the child picks that choice
-        - Transition sentences should build excitement and bridge to the next scene`;
-  }
-  if (language === 'singlish') {
-    return `CHOICE RULES:
-        - Each choice MUST be written primarily in English with subtle Singlish expressions
-        - Each choice MUST be a specific, actionable option (e.g., "Follow the butterfly lah", "Wah, let's open the door", "Talk to the owl lor")
-        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
-        - Choices must relate directly to the current story scene
-        - Use simple, exciting verbs that children understand
-        - Add Singlish particles (lah, leh, lor) naturally - not in every choice, keep it subtle
-        - For each choice, provide 3-4 short transition sentences with light Singlish flavor
-        - Transition sentences should build excitement and bridge to the next scene`;
-  }
-  return `CHOICE RULES:
-        - Each choice MUST be written in simple English
-        - Each choice MUST be a specific, actionable option for the child (e.g., "Follow the butterfly", "Open the magic door", "Talk to the friendly owl")
-        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
-        - Choices must relate directly to the current story scene
-        - Use simple, exciting verbs that children understand
-        - For each choice, provide 3-4 short transition sentences that describe what happens when the child picks that choice
-        - Transition sentences should build excitement and bridge to the next scene`;
-};
-
-const getJsonFormatExample = (language: Language): string => {
-  if (language === 'th') {
-    return `STRICT JSON FORMAT:
-        You must respond ONLY with this JSON structure. No prose before or after.
-        {
-          "storyText": "ข้อความของเรื่องในขั้นตอนปัจจุบัน (ภาษาไทย)",
-          "choices": ["ตามผีเสื้อไป", "เปิดประตูวิเศษ", "คุยกับนกฮูกใจดี"],
-          "choicesWithTransition": [
-            {"text": "ตามผีเสื้อไป", "transition": ["เธอวิ่งตามผีเสื้อสีรุ้ง...", "ปีกของมันเปล่งแสงวิเศษ...", "มันพาเธอไปยังสวนลับ..."]},
-            {"text": "เปิดประตูวิเศษ", "transition": ["เธอหมุนลูกบิดประตู...", "แสงสว่างวาบออกมา...", "ดินแดนมหัศจรรย์ปรากฏ..."]},
-            {"text": "คุยกับนกฮูกใจดี", "transition": ["เธอเดินเข้าไปหานกฮูก...", "ตาโตของมันเป็นประกาย...", "มันกระซิบความลับ..."]}
-          ],
-          "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
-        }`;
-  }
-  if (language === 'singlish') {
-    return `STRICT JSON FORMAT:
-        You must respond ONLY with this JSON structure. No prose before or after.
-        {
-          "storyText": "Wah, the forest so magical lah! The trees all sparkling one. You see something shiny behind the bushes.",
-          "choices": ["Follow the butterfly lah", "Wah open the magic door", "Talk to the owl lor"],
-          "choicesWithTransition": [
-            {"text": "Follow the butterfly lah", "transition": ["You chase the pretty butterfly...", "Wah its wings so shiok! Got sparkles one...", "It brings you to a secret garden..."]},
-            {"text": "Wah open the magic door", "transition": ["You turn the doorknob slowly leh...", "Alamak! Bright light everywhere...", "A wonderful land appears sia!"]},
-            {"text": "Talk to the owl lor", "transition": ["You walk up to the owl...", "Its big eyes look at you...", "The owl whispers a secret leh..."]}
-          ],
-          "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
-        }`;
-  }
-  return `STRICT JSON FORMAT:
-        You must respond ONLY with this JSON structure. No prose before or after.
-        {
-          "storyText": "The text of the current story step.",
-          "choices": ["Follow the butterfly", "Open the magic door", "Talk to the friendly owl"],
-          "choicesWithTransition": [
-            {"text": "Follow the butterfly", "transition": ["You chase the rainbow butterfly...", "Its wings shimmer with magic...", "It leads you to a secret garden..."]},
-            {"text": "Open the magic door", "transition": ["You turn the golden doorknob...", "Bright light bursts through...", "A wonderful land appears..."]},
-            {"text": "Talk to the friendly owl", "transition": ["You walk up to the wise owl...", "Its big eyes sparkle...", "It whispers a secret..."]}
-          ],
-          "imagePrompt": "The detailed prompt for this specific scene."
-        }`;
-};
 
 const getGenderDescription = (gender: Gender): string => {
   if (gender === 'boy') {

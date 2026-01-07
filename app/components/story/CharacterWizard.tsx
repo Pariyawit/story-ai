@@ -1,5 +1,6 @@
 'use client';
 
+import { t } from '@/lib/i18n';
 import { CharacterCustomization, HairColor, HairStyle, OutfitStyle, FavoriteColor, Language, Gender } from '@/types';
 
 interface CharacterWizardProps {
@@ -67,15 +68,13 @@ export default function CharacterWizard({ character, gender, language, onChange 
       {/* Section Title */}
       <div className='text-center'>
         <span className='text-xl'>✨</span>
-        <span className='ml-2 text-sm font-medium text-purple-600'>
-          {language === 'th' ? 'ออกแบบตัวละครของคุณ' : 'Design Your Character'}
-        </span>
+        <span className='ml-2 text-sm font-medium text-purple-600'>{t('character.designTitle', language)}</span>
         <span className='ml-2 text-xl'>✨</span>
       </div>
 
       {/* Hair Color */}
       <div className='space-y-2'>
-        <label className='block text-sm font-medium text-purple-700'>{language === 'th' ? 'สีผม' : 'Hair Color'}</label>
+        <label className='block text-sm font-medium text-purple-700'>{t('character.hairColor', language)}</label>
         <div className='grid grid-cols-6 gap-2'>
           {hairColorOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
@@ -97,9 +96,7 @@ export default function CharacterWizard({ character, gender, language, onChange 
 
       {/* Hair Style */}
       <div className='space-y-2'>
-        <label className='block text-sm font-medium text-purple-700'>
-          {language === 'th' ? 'ทรงผม' : 'Hair Style'}
-        </label>
+        <label className='block text-sm font-medium text-purple-700'>{t('character.hairStyle', language)}</label>
         <div className='grid grid-cols-5 gap-2'>
           {hairStyleOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
@@ -121,7 +118,7 @@ export default function CharacterWizard({ character, gender, language, onChange 
 
       {/* Outfit Style */}
       <div className='space-y-2'>
-        <label className='block text-sm font-medium text-purple-700'>{language === 'th' ? 'ชุด' : 'Outfit'}</label>
+        <label className='block text-sm font-medium text-purple-700'>{t('character.outfit', language)}</label>
         <div className='grid grid-cols-5 gap-2'>
           {outfitStyleOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button
@@ -143,9 +140,7 @@ export default function CharacterWizard({ character, gender, language, onChange 
 
       {/* Favorite Color */}
       <div className='space-y-2'>
-        <label className='block text-sm font-medium text-purple-700'>
-          {language === 'th' ? 'สีโปรด (สำหรับชุด)' : 'Favorite Color (for outfit)'}
-        </label>
+        <label className='block text-sm font-medium text-purple-700'>{t('character.favoriteColor', language)}</label>
         <div className='grid grid-cols-6 gap-2'>
           {favoriteColorOptions.map(({ id, emoji, labelEn, labelTh }) => (
             <button

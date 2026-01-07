@@ -1,0 +1,115 @@
+# Story AI - LLM Context
+
+> A concise overview for LLMs working with this codebase.
+
+## What is this?
+
+AI-powered interactive children's storytelling app. Creates personalized adventures using GPT-4o-mini for narrative and DALL-E 2 for watercolor illustrations. Children follow the Hero's Journey through 12 story beats, making choices that shape their adventure.
+
+## Tech Stack
+
+- Next.js 16.1.1 (App Router)
+- React 19.2.3, TypeScript 5.x
+- Tailwind CSS 4.x
+- Vitest + React Testing Library
+- pnpm package manager
+
+## Key Commands
+
+```bash
+pnpm install                                    # Install dependencies
+pnpm run dev                                    # Start dev server (localhost:3000)
+pnpm run test:run                               # Run tests once
+pnpm run lint                                   # Run ESLint
+pnpm run typecheck                              # TypeScript check
+OPENAI_API_KEY=sk-placeholder pnpm run build    # Production build
+```
+
+**Important:** Build requires `OPENAI_API_KEY` environment variable.
+
+## Project Structure
+
+```
+app/                          # Next.js App Router
+├── api/story/route.ts        # Story generation endpoint
+├── api/tts/route.ts          # Text-to-speech endpoint
+├── components/story/         # Story UI components
+├── hooks/useStoryGame.ts     # Main game state
+ai/                           # AI integration
+├── story.ts                  # Story orchestration
+├── llm/systemPrompt.ts       # Hero's Journey prompt
+lib/i18n/                     # Internationalization
+├── index.ts                  # t() translation function
+├── locales/                  # en.ts, th.ts, singlish.ts
+├── prompts/                  # AI prompts per language
+lib/urlParams.ts              # URL query param parsing
+types.ts                      # Core types
+```
+
+## Core Types
+
+```typescript
+type Language = 'en' | 'th' | 'singlish';
+type Gender = 'boy' | 'girl';
+type StoryTheme = 'enchanted_forest' | 'space_adventure' | 'underwater_kingdom' | 'dinosaur_land' | 'fairy_tale_castle';
+
+type StoryBeat = {
+  storyText: string;
+  choices: string[];
+  choicesWithTransition?: { text: string; transition: string[] }[];
+  imagePrompt: string;
+  imageUrl?: string;
+  selected?: string;
+};
+```
+
+## i18n System
+
+Centralized translations in `lib/i18n/`:
+
+```typescript
+import { t } from '@/lib/i18n';
+t('choiceButtons.congratsTitle', language);           // Simple
+t('pdf.creditText', language, { name: playerName });  // Interpolation
+```
+
+~90 translation keys with compile-time validation via `TranslationKey` type.
+
+## Adding a Language
+
+1. Create `lib/i18n/locales/{code}.ts`
+2. Export from `lib/i18n/locales/index.ts`
+3. Add to `locales` in `lib/i18n/index.ts`
+4. Add prompts in `lib/i18n/prompts/*.ts`
+5. Update `Language` type in `types.ts`
+6. Update Zod schemas in API routes
+
+## Singlish
+
+Singapore English variant using mostly English with subtle expressions:
+- Particles: "lah", "leh", "lor", "sia"
+- Words: "wah", "shiok", "alamak", "can"
+
+## URL Parameters
+
+Preload start screen via URL: `?name=Alex&gender=girl&language=singlish&theme=space_adventure`
+
+All params optional. Invalid values fallback to defaults.
+
+## Testing
+
+```bash
+pnpm run test:run              # All tests
+pnpm run test:run lib/i18n     # i18n tests only
+pnpm run test:run ai           # AI tests only
+```
+
+## Documentation
+
+- `CLAUDE.md` - Detailed technical documentation
+- `.github/copilot-instructions.md` - AI assistant instructions
+- `docs/internal/` - Task tracking and analysis
+
+---
+
+Last updated: January 8, 2026
