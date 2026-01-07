@@ -42,6 +42,14 @@ const getInitialTransitionTexts = (playerName: string, language: Language): stri
       '🎭 เตรียมพร้อมสำหรับการเดินทางที่น่าตื่นเต้น...',
     ];
   }
+  if (language === 'singlish') {
+    return [
+      `🌟 Wah, hello ${playerName}! Your adventure starting already lah...`,
+      '📚 A magic book opening just for you leh...',
+      '✨ A world of imagination waiting for you sia!',
+      '🎭 Get ready for one shiok journey...',
+    ];
+  }
   return [
     `🌟 Hello ${playerName}! Your adventure is about to begin...`,
     '📚 A magical book is opening its pages just for you...',

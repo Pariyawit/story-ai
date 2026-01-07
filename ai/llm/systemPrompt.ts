@@ -16,6 +16,14 @@ const getLanguageInstruction = (language: Language): string => {
   if (language === 'th') {
     return 'Tell the story in simple Thai language suitable for young children (เขียนเรื่องเป็นภาษาไทยง่ายๆ เหมาะสำหรับเด็กเล็ก).';
   }
+  if (language === 'singlish') {
+    return `Tell the story in simple English with natural Singlish (Singapore English) expressions.
+Use predominantly English but sprinkle in Singlish words and particles SUBTLY.
+Common Singlish particles to use naturally: "lah" (emphasis), "leh" (softer/uncertain), "lor" (resignation), "meh" (questioning), "sia" (exclamation).
+Common Singlish words: "wah" (wow), "shiok" (great/delicious), "alamak" (oh no), "steady" (reliable), "can" (yes).
+Example: "Wah, the forest so magical lah! You want to explore, can?"
+Keep it child-friendly and maintain story flow.`;
+  }
   return 'Tell story in a simple English suitable for kindergarten.';
 };
 
@@ -28,6 +36,17 @@ const getChoiceRules = (language: Language): string => {
         - Choices must relate directly to the current story scene
         - Use simple, exciting Thai verbs that children understand
         - For each choice, provide 3-4 short transition sentences that describe what happens when the child picks that choice
+        - Transition sentences should build excitement and bridge to the next scene`;
+  }
+  if (language === 'singlish') {
+    return `CHOICE RULES:
+        - Each choice MUST be written primarily in English with subtle Singlish expressions
+        - Each choice MUST be a specific, actionable option (e.g., "Follow the butterfly lah", "Wah, let's open the door", "Talk to the owl lor")
+        - NEVER use generic placeholders like "Choice A", "Choice B", "Choice C"
+        - Choices must relate directly to the current story scene
+        - Use simple, exciting verbs that children understand
+        - Add Singlish particles (lah, leh, lor) naturally - not in every choice, keep it subtle
+        - For each choice, provide 3-4 short transition sentences with light Singlish flavor
         - Transition sentences should build excitement and bridge to the next scene`;
   }
   return `CHOICE RULES:
@@ -51,6 +70,20 @@ const getJsonFormatExample = (language: Language): string => {
             {"text": "ตามผีเสื้อไป", "transition": ["เธอวิ่งตามผีเสื้อสีรุ้ง...", "ปีกของมันเปล่งแสงวิเศษ...", "มันพาเธอไปยังสวนลับ..."]},
             {"text": "เปิดประตูวิเศษ", "transition": ["เธอหมุนลูกบิดประตู...", "แสงสว่างวาบออกมา...", "ดินแดนมหัศจรรย์ปรากฏ..."]},
             {"text": "คุยกับนกฮูกใจดี", "transition": ["เธอเดินเข้าไปหานกฮูก...", "ตาโตของมันเป็นประกาย...", "มันกระซิบความลับ..."]}
+          ],
+          "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
+        }`;
+  }
+  if (language === 'singlish') {
+    return `STRICT JSON FORMAT:
+        You must respond ONLY with this JSON structure. No prose before or after.
+        {
+          "storyText": "Wah, the forest so magical lah! The trees all sparkling one. You see something shiny behind the bushes.",
+          "choices": ["Follow the butterfly lah", "Wah open the magic door", "Talk to the owl lor"],
+          "choicesWithTransition": [
+            {"text": "Follow the butterfly lah", "transition": ["You chase the pretty butterfly...", "Wah its wings so shiok! Got sparkles one...", "It brings you to a secret garden..."]},
+            {"text": "Wah open the magic door", "transition": ["You turn the doorknob slowly leh...", "Alamak! Bright light everywhere...", "A wonderful land appears sia!"]},
+            {"text": "Talk to the owl lor", "transition": ["You walk up to the owl...", "Its big eyes look at you...", "The owl whispers a secret leh..."]}
           ],
           "imagePrompt": "The detailed prompt for this specific scene (in English for image generation)."
         }`;
@@ -99,7 +132,8 @@ const getThemeDescription = (theme: StoryTheme, language: Language): string => {
       th: 'ในอาณาจักรมหัศจรรย์ มีปราสาทสูงตระหง่าน อัศวินกล้าหาญ มังกรใจดี และสมบัติที่ถูกสาปต์',
     },
   };
-  return themes[theme][language];
+  // Singlish uses English theme descriptions - the language instruction handles the Singlish flavor
+  return themes[theme][language === 'th' ? 'th' : 'en'];
 };
 
 const getThemeStyle = (theme: StoryTheme): string => {

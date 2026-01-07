@@ -1,5 +1,5 @@
 export type Gender = 'boy' | 'girl';
-export type Language = 'th' | 'en';
+export type Language = 'th' | 'en' | 'singlish';
 export type StoryTheme =
   | 'enchanted_forest'
   | 'space_adventure'

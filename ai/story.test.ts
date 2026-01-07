@@ -224,6 +224,14 @@ describe('mapHistory', () => {
     expect(messages[0].content).toContain('สมชาย');
   });
 
+  it('handles Singlish language correctly', () => {
+    const messages = mapHistory('Alex', [], 'boy', 'singlish', 'enchanted_forest');
+    expect(messages[0].role).toBe('system');
+    expect(messages[0].content).toContain('Alex');
+    // Singlish-specific instructions should be present
+    expect(messages[0].content).toContain('Singlish');
+  });
+
   it('handles girl gender correctly', () => {
     const messages = mapHistory('Alice', [], 'girl', 'en', 'enchanted_forest');
     expect(messages[0].content).toContain('girl');

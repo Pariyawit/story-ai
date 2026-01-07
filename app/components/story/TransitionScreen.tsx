@@ -18,7 +18,12 @@ export default function TransitionScreen({ transitionTexts, language = 'en' }: T
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
 
-  const loadingText = language === 'th' ? '✨ เวทมนตร์กำลังทำงาน... ✨' : '✨ Magic is happening... ✨';
+  const loadingText =
+    language === 'th'
+      ? '✨ เวทมนตร์กำลังทำงาน... ✨'
+      : language === 'singlish'
+        ? '✨ Magic happening sia... ✨'
+        : '✨ Magic is happening... ✨';
 
   // Combine all transition texts for TTS
   const fullTransitionText = transitionTexts.join(' ');
