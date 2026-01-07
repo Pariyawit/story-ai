@@ -153,12 +153,13 @@ The `useStoryGame` hook manages three game states:
 
 ### Multilingual Support
 
-The app supports English (`en`) and Thai (`th`):
+The app supports English (`en`), Thai (`th`), and Singlish (`singlish`):
 
 - Language selection in StartScreen
 - System prompt adapts based on language
 - All UI text (buttons, labels, celebration messages) localized
 - Choice validation rules language-specific
+- Singlish uses predominantly English with subtle Singapore English expressions ("lah", "leh", "shiok", etc.)
 
 ### Theme System
 
@@ -417,9 +418,10 @@ The 12-step structure is hardcoded in the system prompt. To change:
    - Add to `getLanguageInstruction()`
    - Add to `getChoiceRules()`
    - Add to `getJsonFormatExample()`
-   - Add translations to `getThemeDescription()`
+   - Update `getThemeDescription()` if translations needed
 3. Update all UI components with localized strings
-4. Update Zod schema in API route
+4. Update Zod schemas in API routes (`app/api/story/route.ts`, `app/api/tts/route.ts`)
+5. Configure TTS voice selection if needed (`app/api/tts/route.ts`)
 
 ## Known Issues
 

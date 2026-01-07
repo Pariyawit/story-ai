@@ -12,7 +12,7 @@ type TTSVoice = SpeechCreateParams['voice'];
 // Zod schema for request body
 const requestSchema = z.object({
   text: z.string().min(1, 'Text is required'),
-  language: z.enum(['th', 'en']),
+  language: z.enum(['th', 'en', 'singlish']),
 });
 
 // Voice selection based on language for baby story telling

@@ -33,7 +33,7 @@ const requestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   history: z.array(storyBeatSchema),
   gender: z.enum(['boy', 'girl']),
-  language: z.enum(['th', 'en']),
+  language: z.enum(['th', 'en', 'singlish']),
   theme: z.enum(['enchanted_forest', 'space_adventure', 'underwater_kingdom', 'dinosaur_land', 'fairy_tale_castle']),
   character: characterSchema.optional(),
 });

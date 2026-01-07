@@ -108,11 +108,11 @@ export default function StartScreen({
               <label className='block text-sm font-medium text-purple-700'>
                 {language === 'th' ? 'ภาษา' : 'Language'}
               </label>
-              <div className='flex gap-3'>
+              <div className='grid grid-cols-3 gap-2'>
                 <button
                   type='button'
                   onClick={() => onLanguageChange('en')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                  className={`rounded-2xl border-2 px-3 py-3 text-sm font-medium transition-all ${
                     language === 'en'
                       ? 'border-purple-400 bg-purple-100 text-purple-700'
                       : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
@@ -123,13 +123,24 @@ export default function StartScreen({
                 <button
                   type='button'
                   onClick={() => onLanguageChange('th')}
-                  className={`flex-1 rounded-2xl border-2 px-4 py-3 text-lg font-medium transition-all ${
+                  className={`rounded-2xl border-2 px-3 py-3 text-sm font-medium transition-all ${
                     language === 'th'
                       ? 'border-purple-400 bg-purple-100 text-purple-700'
                       : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                   }`}
                 >
                   🇹🇭 ไทย
+                </button>
+                <button
+                  type='button'
+                  onClick={() => onLanguageChange('singlish')}
+                  className={`rounded-2xl border-2 px-3 py-3 text-sm font-medium transition-all ${
+                    language === 'singlish'
+                      ? 'border-purple-400 bg-purple-100 text-purple-700'
+                      : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
+                  }`}
+                >
+                  🇸🇬 Singlish
                 </button>
               </div>
             </div>

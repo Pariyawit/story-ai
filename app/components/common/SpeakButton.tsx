@@ -91,9 +91,21 @@ export default function SpeakButton({ text, language, className = '' }: SpeakBut
     }
   };
 
-  const buttonLabel = language === 'th' ? (isPlaying ? '🔇 หยุด' : '🔊 ฟัง') : isPlaying ? '🔇 Stop' : '🔊 Listen';
+  const buttonLabel =
+    language === 'th'
+      ? isPlaying
+        ? '🔇 หยุด'
+        : '🔊 ฟัง'
+      : language === 'singlish'
+        ? isPlaying
+          ? '🔇 Stop lah'
+          : '🔊 Listen leh'
+        : isPlaying
+          ? '🔇 Stop'
+          : '🔊 Listen';
 
-  const loadingLabel = language === 'th' ? '⏳ กำลังโหลด...' : '⏳ Loading...';
+  const loadingLabel =
+    language === 'th' ? '⏳ กำลังโหลด...' : language === 'singlish' ? '⏳ Loading lah...' : '⏳ Loading...';
 
   return (
     <button

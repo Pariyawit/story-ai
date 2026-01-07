@@ -29,7 +29,9 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
   if (history.length === 0) {
     return (
       <div className='flex h-64 items-center justify-center'>
-        <p className='text-lg text-gray-500'>{language === 'th' ? 'ยังไม่มีเรื่องราว' : 'No story yet'}</p>
+        <p className='text-lg text-gray-500'>
+          {language === 'th' ? 'ยังไม่มีเรื่องราว' : language === 'singlish' ? 'No story yet leh' : 'No story yet'}
+        </p>
       </div>
     );
   }
@@ -43,7 +45,9 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
         <p className='text-sm font-bold text-white'>
           {language === 'th'
             ? `ฉาก ${currentIndex + 1} / ${history.length}`
-            : `Scene ${currentIndex + 1} / ${history.length}`}
+            : language === 'singlish'
+              ? `Scene ${currentIndex + 1} / ${history.length} lah`
+              : `Scene ${currentIndex + 1} / ${history.length}`}
         </p>
       </div>
 
@@ -84,7 +88,9 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
               />
             ) : (
               <div className='flex h-full w-full items-center justify-center'>
-                <p className='text-xl text-purple-700'>{language === 'th' ? 'ไม่มีรูปภาพ' : 'No image'}</p>
+                <p className='text-xl text-purple-700'>
+                  {language === 'th' ? 'ไม่มีรูปภาพ' : language === 'singlish' ? 'No image leh' : 'No image'}
+                </p>
               </div>
             )}
           </div>
@@ -97,7 +103,8 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
             <div className='mt-4 flex items-center gap-2'>
               <span className='text-purple-500'>▸</span>
               <span className='text-sm italic text-purple-600'>
-                {language === 'th' ? 'คุณเลือก:' : 'You chose:'} {currentBeat.selected}
+                {language === 'th' ? 'คุณเลือก:' : language === 'singlish' ? 'You chose lor:' : 'You chose:'}{' '}
+                {currentBeat.selected}
               </span>
             </div>
           )}
@@ -120,7 +127,11 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
 
       {/* Keyboard navigation hint */}
       <p className='text-sm text-gray-400'>
-        {language === 'th' ? 'ใช้ลูกศรซ้าย/ขวา หรือกดจุดเพื่อเลือกฉาก' : 'Use arrow keys or click dots to navigate'}
+        {language === 'th'
+          ? 'ใช้ลูกศรซ้าย/ขวา หรือกดจุดเพื่อเลือกฉาก'
+          : language === 'singlish'
+            ? 'Use arrow keys or click dots to navigate lah'
+            : 'Use arrow keys or click dots to navigate'}
       </p>
     </div>
   );
