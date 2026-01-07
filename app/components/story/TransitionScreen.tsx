@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
+import { t } from '@/lib/i18n';
 import { Language } from '@/types';
 
 import Card from '../common/Card';
@@ -18,12 +19,7 @@ export default function TransitionScreen({ transitionTexts, language = 'en' }: T
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
 
-  const loadingText =
-    language === 'th'
-      ? '✨ เวทมนตร์กำลังทำงาน... ✨'
-      : language === 'singlish'
-        ? '✨ Magic happening sia... ✨'
-        : '✨ Magic is happening... ✨';
+  const loadingText = t('transition.loading', language);
 
   // Combine all transition texts for TTS
   const fullTransitionText = transitionTexts.join(' ');

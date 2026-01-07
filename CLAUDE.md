@@ -151,15 +151,42 @@ The `useStoryGame` hook manages three game states:
 - `currentPage`: Computed as `history.length + 1` (1-based indexing for UI)
 - Theme preference persists in localStorage across restarts
 
-### Multilingual Support
+### Multilingual Support (i18n)
 
-The app supports English (`en`), Thai (`th`), and Singlish (`singlish`):
+The app supports English (`en`), Thai (`th`), and Singlish (`singlish`) via a centralized translation system in `lib/i18n/`.
 
-- Language selection in StartScreen
-- System prompt adapts based on language
-- All UI text (buttons, labels, celebration messages) localized
-- Choice validation rules language-specific
-- Singlish uses predominantly English with subtle Singapore English expressions ("lah", "leh", "shiok", etc.)
+#### Translation System
+
+```typescript
+import { t } from '@/lib/i18n';
+
+// Simple translation
+t('choiceButtons.congratsTitle', language);
+// => "Congratulations, Brave Adventurer!" (en)
+// => "ยินดีด้วย นักผจญภัยผู้กล้าหาญ!" (th)
+
+// With interpolation
+t('pdf.creditText', language, { name: playerName });
+// => "Created by Alex" (en)
+// => "สร้างสรรค์โดย Alex" (th)
+```
+
+#### Key Directories
+
+- `lib/i18n/locales/` - UI translations (en.ts, th.ts, singlish.ts)
+- `lib/i18n/prompts/` - AI prompt translations (instructions, choiceRules, jsonExamples, transitions)
+- `lib/i18n/types.ts` - TranslationKey type (compile-time key validation)
+
+#### Adding a New Language
+
+1. Create `lib/i18n/locales/{code}.ts` with all TranslationKey entries
+2. Add export to `lib/i18n/locales/index.ts`
+3. Add to `locales` object in `lib/i18n/index.ts`
+4. Create AI prompt entries in `lib/i18n/prompts/*.ts`
+5. Update `Language` type in `types.ts`
+6. Update Zod schemas in `app/api/story/route.ts` and `app/api/tts/route.ts`
+
+Singlish uses predominantly English with subtle Singapore English expressions ("lah", "leh", "shiok", etc.).
 
 ### Theme System
 

@@ -26,7 +26,7 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
   - Outfit style (adventurer, princess, superhero, wizard, explorer)
   - Favorite color influence on outfit
 - 🏰 **5 Story Themes**: Enchanted Forest, Space Adventure, Underwater Kingdom, Dinosaur Land, Fairy Tale Castle
-- 🌍 **Bilingual Support**: Full English and Thai (ภาษาไทย) language support
+- 🌍 **Trilingual Support**: English, Thai (ภาษาไทย), and Singlish (Singapore English)
 
 ### Export & Accessibility
 
@@ -37,6 +37,7 @@ An AI-powered interactive storytelling app for kids that creates personalized ad
 ### Technical Features
 
 - 💾 **Progress Persistence**: LocalStorage saves story history
+- 🔗 **Shareable Links**: Preload name, gender, language, theme via URL parameters
 - ⚙️ **Configurable**: Toggle image generation on/off to manage costs
 - 🧪 **Test Coverage**: Vitest + React Testing Library for component testing
 
@@ -132,8 +133,15 @@ story-ai/
 │   ├── story.test.ts             # Story logic tests
 │   ├── types.ts                  # AI message types
 │   └── ai.ts                     # OpenAI client
+├── lib/
+│   └── i18n/                     # Internationalization system
+│       ├── index.ts              # t() translation function
+│       ├── types.ts              # TranslationKey type definitions
+│       ├── locales/              # Translation files (en, th, singlish)
+│       └── prompts/              # AI prompt translations per language
 ├── services/
-│   └── storyClient.ts            # API client
+│   ├── storyClient.ts            # Story API client
+│   └── ttsClient.ts              # Text-to-speech API client
 ├── docs/
 │   └── internal/                 # Internal documentation and task tracking
 ├── types.ts                      # Core types (StoryBeat, CharacterCustomization, etc.)
@@ -179,6 +187,8 @@ story-ai/
 | 🦕 Dinosaur Land      | Prehistoric world with gentle dinosaurs      | โลกยุคก่อนประวัติศาสตร์ มีไดโนเสาร์ |
 | 🏰 Fairy Tale Castle  | Magical kingdom with castles, dragons        | อาณาจักรมหัศจรรย์ มีปราสาท มังกร    |
 
+> **Note:** Singlish stories use predominantly English with subtle Singapore English expressions ("lah", "leh", "shiok", etc.).
+
 ## ⚙️ Configuration
 
 ### Environment Variables
@@ -210,6 +220,23 @@ To disable images during development:
 ```bash
 ENABLE_IMAGE_GENERATION=false pnpm run dev
 ```
+
+### URL Parameters (Shareable Links)
+
+Preload the start screen with custom settings using URL query parameters:
+
+```
+https://your-app.com/?name=Alex&gender=girl&language=singlish&theme=space_adventure
+```
+
+| Parameter  | Values                                                                                            | Default            |
+| ---------- | ------------------------------------------------------------------------------------------------- | ------------------ |
+| `name`     | Any string (max 50 chars, HTML sanitized)                                                         | Empty              |
+| `gender`   | `boy`, `girl`                                                                                     | `boy`              |
+| `language` | `en`, `th`, `singlish`                                                                            | `en`               |
+| `theme`    | `enchanted_forest`, `space_adventure`, `underwater_kingdom`, `dinosaur_land`, `fairy_tale_castle` | `enchanted_forest` |
+
+All parameters are optional. Invalid values are silently ignored and fall back to defaults.
 
 ## 🛠️ Development
 

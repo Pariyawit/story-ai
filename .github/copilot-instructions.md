@@ -115,8 +115,15 @@ story-ai/
 │   ├── generateImage/
 │   │   └── index.ts              # DALL-E 2 image generation
 │   └── types.ts                  # AI message types
+├── lib/
+│   └── i18n/                     # Internationalization system
+│       ├── index.ts              # t() translation function
+│       ├── types.ts              # TranslationKey type (compile-time validation)
+│       ├── locales/              # Translation files (en.ts, th.ts, singlish.ts)
+│       └── prompts/              # AI prompt translations per language
 ├── services/
-│   └── storyClient.ts            # Frontend API client
+│   ├── storyClient.ts            # Story API client
+│   └── ttsClient.ts              # Text-to-speech API client
 ├── docs/
 │   └── internal/                 # Internal documentation and task files
 ├── types.ts                      # Core shared types
@@ -148,7 +155,7 @@ TypeScript paths configured: `@/*` → `./*` (from project root)
 ```typescript
 // types.ts
 export type Gender = 'boy' | 'girl';
-export type Language = 'th' | 'en';
+export type Language = 'th' | 'en' | 'singlish';
 export type StoryTheme =
   | 'enchanted_forest'
   | 'space_adventure'
@@ -205,17 +212,17 @@ export type StoryBeat = {
 
 ## Feature Summary
 
-| Feature                   | Status         | Key Files                            |
-| ------------------------- | -------------- | ------------------------------------ |
-| Hero's Journey (12 beats) | ✅ Implemented | `systemPrompt.ts`                    |
-| Character Customization   | ✅ Implemented | `CharacterWizard.tsx`, `types.ts`    |
-| 5 Story Themes            | ✅ Implemented | `systemPrompt.ts`, `StartScreen.tsx` |
-| Bilingual (EN/TH)         | ✅ Implemented | `systemPrompt.ts`, all UI components |
-| PDF Export                | ✅ Implemented | `ExportPdfButton.tsx`                |
-| Text-to-Speech            | ✅ Implemented | `SpeakButton.tsx`                    |
-| Story Transitions         | ✅ Implemented | `TransitionScreen.tsx`               |
-| Story Carousel            | ✅ Implemented | `StoryCarousel.tsx`                  |
-| LocalStorage Persistence  | ✅ Implemented | `useLocalStorage.ts`                 |
+| Feature                     | Status         | Key Files                            |
+| --------------------------- | -------------- | ------------------------------------ |
+| Hero's Journey (12 beats)   | ✅ Implemented | `systemPrompt.ts`                    |
+| Character Customization     | ✅ Implemented | `CharacterWizard.tsx`, `types.ts`    |
+| 5 Story Themes              | ✅ Implemented | `systemPrompt.ts`, `StartScreen.tsx` |
+| Trilingual (EN/TH/Singlish) | ✅ Implemented | `lib/i18n/`, all UI components       |
+| PDF Export                  | ✅ Implemented | `ExportPdfButton.tsx`                |
+| Text-to-Speech              | ✅ Implemented | `SpeakButton.tsx`                    |
+| Story Transitions           | ✅ Implemented | `TransitionScreen.tsx`               |
+| Story Carousel              | ✅ Implemented | `StoryCarousel.tsx`                  |
+| LocalStorage Persistence    | ✅ Implemented | `useLocalStorage.ts`                 |
 
 ---
 
@@ -226,6 +233,51 @@ export type StoryBeat = {
 3. **Image Optimization**: Uses `next/image` with remote patterns for OpenAI blob storage
 4. **Character Consistency**: Character description is injected into system prompt and must remain identical across all image prompts
 5. **Theme Integration**: Each theme has both narrative description (for story) and visual style (for images)
+
+---
+
+## Internationalization (i18n)
+
+The project uses a centralized translation system in `lib/i18n/`:
+
+### Translation Function
+
+```typescript
+import { t } from '@/lib/i18n';
+
+// Simple translation
+t('startScreen.title', language);
+
+// With interpolation
+t('pdf.creditText', language, { name: playerName });
+```
+
+### Key Files
+
+| File                           | Purpose                                             |
+| ------------------------------ | --------------------------------------------------- |
+| `lib/i18n/index.ts`            | `t()` function and `createTranslator()`             |
+| `lib/i18n/types.ts`            | `TranslationKey` type (compile-time key validation) |
+| `lib/i18n/locales/en.ts`       | English translations (~90 keys)                     |
+| `lib/i18n/locales/th.ts`       | Thai translations                                   |
+| `lib/i18n/locales/singlish.ts` | Singlish translations                               |
+| `lib/i18n/prompts/`            | AI prompt translations per language                 |
+
+### Adding a New Language
+
+1. Create `lib/i18n/locales/{code}.ts` with all TranslationKey entries
+2. Add export to `lib/i18n/locales/index.ts`
+3. Add to `locales` object in `lib/i18n/index.ts`
+4. Create prompt entries in `lib/i18n/prompts/*.ts`
+5. Update `Language` type in `types.ts`
+6. Update Zod schemas in `app/api/story/route.ts` and `app/api/tts/route.ts`
+
+### Singlish Language
+
+Singlish uses predominantly English with subtle Singapore English expressions:
+
+- Particles: "lah" (emphasis), "leh" (softer), "lor" (resignation), "sia" (exclamation)
+- Expressions: "wah" (wow), "shiok" (great), "alamak" (oh no)
 
 ---
 
@@ -240,5 +292,3 @@ export type StoryBeat = {
 ---
 
 ## Trust These Instructions
-
-These instructions have been validated by analyzing the actual repository structure and code as of December 31, 2024. If a command fails or behavior differs from what is documented, first verify the command exactly as written before exploring alternatives.

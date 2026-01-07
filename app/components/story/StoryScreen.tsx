@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { t } from '@/lib/i18n';
 import { StoryBeat, Language } from '@/types';
 
 import Button from '../common/Button';
@@ -67,9 +68,7 @@ export default function StoryScreen({
             <p className='text-sm font-medium text-purple-600'>{playerName}</p>
           </div>
           <div className='rounded-2xl bg-purple-500/90 px-3 py-1 shadow-md backdrop-blur-sm'>
-            <p className='text-sm font-bold text-white'>
-              {language === 'th' ? '📖 สรุป' : language === 'singlish' ? '📖 Summary lah' : '📖 Summary'}
-            </p>
+            <p className='text-sm font-bold text-white'>{t('storyScreen.summary', language)}</p>
           </div>
         </div>
 
@@ -82,22 +81,14 @@ export default function StoryScreen({
               variant={endViewMode === 'carousel' ? 'primary' : 'outline'}
               className='px-4 py-2'
             >
-              {language === 'th'
-                ? '🎠 ดูแกลเลอรี'
-                : language === 'singlish'
-                  ? '🎠 Gallery View lah'
-                  : '🎠 Gallery View'}
+              {t('storyScreen.galleryView', language)}
             </Button>
             <Button
               onClick={() => setEndViewMode('fullText')}
               variant={endViewMode === 'fullText' ? 'primary' : 'outline'}
               className='px-4 py-2'
             >
-              {language === 'th'
-                ? '📖 อ่านเรื่องทั้งหมด'
-                : language === 'singlish'
-                  ? '📖 Full Story leh'
-                  : '📖 Full Story'}
+              {t('storyScreen.fullStory', language)}
             </Button>
           </div>
 
@@ -114,13 +105,7 @@ export default function StoryScreen({
               <StoryText
                 text={getFullStory()}
                 isLoading={isLoading}
-                title={
-                  language === 'th'
-                    ? '📖 เรื่องราวทั้งหมด'
-                    : language === 'singlish'
-                      ? '📖 The Complete Story lah'
-                      : '📖 The Complete Story'
-                }
+                title={t('storyScreen.completeStory', language)}
                 language={language}
               />
             </div>
@@ -155,11 +140,7 @@ export default function StoryScreen({
         </div>
         <div className='rounded-2xl bg-purple-500/90 px-3 py-1 shadow-md backdrop-blur-sm'>
           <p className='text-sm font-bold text-white'>
-            {language === 'th'
-              ? `หน้า ${currentPage}/12`
-              : language === 'singlish'
-                ? `Page ${currentPage}/12 leh`
-                : `Page ${currentPage}/12`}
+            {t('storyScreen.pageIndicator', language, { current: currentPage })}
           </p>
         </div>
       </div>

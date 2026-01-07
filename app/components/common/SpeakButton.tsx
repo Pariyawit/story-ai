@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 
+import { t } from '@/lib/i18n';
 import { fetchSpeech } from '@/services/ttsClient';
 import { Language } from '@/types';
 
@@ -91,21 +92,9 @@ export default function SpeakButton({ text, language, className = '' }: SpeakBut
     }
   };
 
-  const buttonLabel =
-    language === 'th'
-      ? isPlaying
-        ? '🔇 หยุด'
-        : '🔊 ฟัง'
-      : language === 'singlish'
-        ? isPlaying
-          ? '🔇 Stop lah'
-          : '🔊 Listen leh'
-        : isPlaying
-          ? '🔇 Stop'
-          : '🔊 Listen';
+  const buttonLabel = isPlaying ? t('speak.stop', language) : t('speak.listen', language);
 
-  const loadingLabel =
-    language === 'th' ? '⏳ กำลังโหลด...' : language === 'singlish' ? '⏳ Loading lah...' : '⏳ Loading...';
+  const loadingLabel = t('speak.loading', language);
 
   return (
     <button

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { t, TranslationKey } from '@/lib/i18n';
 import { Gender, Language, StoryTheme, CharacterCustomization } from '@/types';
 
 import Button from '../common/Button';
@@ -10,13 +11,13 @@ import Input from '../common/Input';
 
 import CharacterWizard from './CharacterWizard';
 
-// Theme configuration with labels
-const THEMES: { id: StoryTheme; emoji: string; labelEn: string; labelTh: string }[] = [
-  { id: 'enchanted_forest', emoji: '🌳', labelEn: 'Enchanted Forest', labelTh: 'ป่าวิเศษ' },
-  { id: 'space_adventure', emoji: '🚀', labelEn: 'Space Adventure', labelTh: 'ผจญภัยอวกาศ' },
-  { id: 'underwater_kingdom', emoji: '🌊', labelEn: 'Underwater Kingdom', labelTh: 'อาณาจักรใต้น้ำ' },
-  { id: 'dinosaur_land', emoji: '🦕', labelEn: 'Dinosaur Land', labelTh: 'ดินแดนไดโนเสาร์' },
-  { id: 'fairy_tale_castle', emoji: '🏰', labelEn: 'Fairy Tale Castle', labelTh: 'ปราสาทเทพนิยาย' },
+// Theme configuration with translation keys
+const THEMES: { id: StoryTheme; emoji: string; labelKey: TranslationKey }[] = [
+  { id: 'enchanted_forest', emoji: '🌳', labelKey: 'theme.enchantedForest' },
+  { id: 'space_adventure', emoji: '🚀', labelKey: 'theme.spaceAdventure' },
+  { id: 'underwater_kingdom', emoji: '🌊', labelKey: 'theme.underwaterKingdom' },
+  { id: 'dinosaur_land', emoji: '🦕', labelKey: 'theme.dinosaurLand' },
+  { id: 'fairy_tale_castle', emoji: '🏰', labelKey: 'theme.fairyTaleCastle' },
 ];
 
 interface StartScreenProps {
@@ -58,24 +59,21 @@ export default function StartScreen({
       <div className='w-full max-w-md px-8'>
         <Card className='p-8 shadow-lg'>
           <h1 className='mb-6 text-center text-4xl font-bold text-purple-600'>Story Adventure</h1>
-          <p className='mb-8 text-center text-lg text-purple-500'>
-            {language === 'th' ? 'ชื่อของคุณคืออะไร นักสำรวจผู้กล้าหาญ?' : "What's your name, brave explorer?"}
-          </p>
+          <p className='mb-8 text-center text-lg text-purple-500'>{t('startScreen.subtitle', language)}</p>
 
           <form onSubmit={onSubmit} className='space-y-4'>
             <Input
               id='name-input'
-              label={language === 'th' ? 'ชื่อของคุณ' : 'Your name'}
+              label={t('startScreen.nameLabel', language)}
               value={nameInput}
               onChange={onNameChange}
-              placeholder={language === 'th' ? 'ใส่ชื่อของคุณ...' : 'Enter your name...'}
+              placeholder={t('startScreen.namePlaceholder', language)}
               autoFocus
             />
 
-            {/* Gender Selection */}
             <div className='space-y-2'>
               <label className='block text-sm font-medium text-purple-700'>
-                {language === 'th' ? 'เพศ' : 'Gender'}
+                {t('startScreen.genderLabel', language)}
               </label>
               <div className='flex gap-3'>
                 <button
@@ -87,7 +85,7 @@ export default function StartScreen({
                       : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                   }`}
                 >
-                  {language === 'th' ? '👦 ด.ช.' : '👦 Boy'}
+                  {t('startScreen.genderBoy', language)}
                 </button>
                 <button
                   type='button'
@@ -98,15 +96,14 @@ export default function StartScreen({
                       : 'border-purple-200 bg-white text-purple-600 hover:border-purple-300'
                   }`}
                 >
-                  {language === 'th' ? '👧 ด.ญ.' : '👧 Girl'}
+                  {t('startScreen.genderGirl', language)}
                 </button>
               </div>
             </div>
 
-            {/* Language Selection */}
             <div className='space-y-2'>
               <label className='block text-sm font-medium text-purple-700'>
-                {language === 'th' ? 'ภาษา' : 'Language'}
+                {t('startScreen.languageLabel', language)}
               </label>
               <div className='grid grid-cols-3 gap-2'>
                 <button
@@ -153,7 +150,7 @@ export default function StartScreen({
                 className='flex w-full items-center justify-between rounded-2xl border-2 border-purple-200 bg-white px-4 py-3 text-left transition-all hover:border-purple-300'
               >
                 <span className='text-sm font-medium text-purple-700'>
-                  {language === 'th' ? 'ออกแบบตัวละคร' : 'Character Design'}
+                  {t('startScreen.characterDesign', language)}
                 </span>
                 <span className='flex items-center gap-2 text-purple-600'>
                   <span className='text-lg'>✨ 🎨</span>
@@ -180,21 +177,17 @@ export default function StartScreen({
                 onClick={() => setIsThemeExpanded(!isThemeExpanded)}
                 className='flex w-full items-center justify-between rounded-2xl border-2 border-purple-200 bg-white px-4 py-3 text-left transition-all hover:border-purple-300'
               >
-                <span className='text-sm font-medium text-purple-700'>
-                  {language === 'th' ? 'โลกแห่งเรื่องราว' : 'Story World'}
-                </span>
+                <span className='text-sm font-medium text-purple-700'>{t('startScreen.storyWorld', language)}</span>
                 <span className='flex items-center gap-2 text-purple-600'>
                   <span className='text-xl'>{selectedTheme.emoji}</span>
-                  <span className='text-sm font-medium'>
-                    {language === 'th' ? selectedTheme.labelTh : selectedTheme.labelEn}
-                  </span>
+                  <span className='text-sm font-medium'>{t(selectedTheme.labelKey, language)}</span>
                   <span className={`text-lg transition-transform ${isThemeExpanded ? 'rotate-180' : ''}`}>▼</span>
                 </span>
               </button>
 
               {isThemeExpanded && (
                 <div className='grid grid-cols-2 gap-2 pt-2 md:grid-cols-3'>
-                  {THEMES.map(({ id, emoji, labelEn, labelTh }) => (
+                  {THEMES.map(({ id, emoji, labelKey }) => (
                     <button
                       key={id}
                       type='button'
@@ -209,7 +202,7 @@ export default function StartScreen({
                       }`}
                     >
                       <span className='text-2xl'>{emoji}</span>
-                      <p className='mt-1 text-xs font-medium'>{language === 'th' ? labelTh : labelEn}</p>
+                      <p className='mt-1 text-xs font-medium'>{t(labelKey, language)}</p>
                     </button>
                   ))}
                 </div>
@@ -217,7 +210,7 @@ export default function StartScreen({
             </div>
 
             <Button type='submit' disabled={!nameInput.trim() || isLoading} fullWidth>
-              {language === 'th' ? 'เริ่มการผจญภัย' : 'Start Adventure'}
+              {t('startScreen.startAdventure', language)}
             </Button>
           </form>
         </Card>
