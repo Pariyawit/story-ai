@@ -187,9 +187,9 @@ export function useStoryGame(): UseStoryGameReturn {
         selected: choice,
       },
     ];
-    setHistory(updatedHistory);
     try {
       const nextBeat = await postStory(playerName, updatedHistory, gender, language, theme, characterState);
+      setHistory(updatedHistory); // Only update history on success
       setCurrentBeat(nextBeat);
       setGameState('STORY');
     } catch (error) {
