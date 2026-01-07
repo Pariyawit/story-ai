@@ -27,9 +27,9 @@ const IMAGE_MARGIN_BOTTOM = 10; // Margin below image
  * Since images now come as base64 directly from the server, this is just a pass-through.
  * Returns null for non-base64 URLs (legacy/fallback case).
  */
-function getImageDataUrl(imageUrl: string): string | null {
-  if (imageUrl.startsWith('data:')) {
-    return imageUrl;
+function getImageDataUrl(imageData: string): string | null {
+  if (imageData.startsWith('data:')) {
+    return imageData;
   }
   // Legacy URLs are no longer supported - images should always be base64
   console.warn('Non-base64 image URL encountered - this should not happen with current API');
@@ -43,6 +43,9 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
   const generatePdf = async () => {
     setIsExporting(true);
     setExportError(null);
+
+    // Give UI a chance to update to loading state
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     try {
       // Create a new PDF document with A4 size in portrait mode
@@ -170,7 +173,7 @@ export default function ExportPdfButton({ history, playerName, language }: Expor
       doc.text(pagesInfo, (pageWidth - pagesInfoWidth) / 2, 155);
 
       // Get image data - images are now base64 data URLs from the server
-      const imageDataArray = history.map((beat) => (beat.imageUrl ? getImageDataUrl(beat.imageUrl) : null));
+      const imageDataArray = history.map((beat) => (beat.imageData ? getImageDataUrl(beat.imageData) : null));
 
       // Story pages
       for (let index = 0; index < history.length; index++) {

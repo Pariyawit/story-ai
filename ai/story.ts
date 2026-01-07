@@ -47,11 +47,11 @@ export const mapHistory = (
   const messages: AIMessage[] = [systemPrompt(name, gender, language, theme, character)];
 
   history.forEach((storyBeat, index) => {
-    const { storyText, choices, choicesWithTransition, selected, imagePrompt, imageUrl } = storyBeat;
+    const { storyText, choices, choicesWithTransition, selected, imagePrompt } = storyBeat;
 
     messages.push({
       role: 'assistant',
-      content: JSON.stringify({ storyText, choices, choicesWithTransition, imagePrompt, imageUrl }),
+      content: JSON.stringify({ storyText, choices, choicesWithTransition, imagePrompt }),
     });
 
     if (selected) {
@@ -100,7 +100,7 @@ export const runStory = async (
     try {
       console.log('[PERF] Starting image generation...');
       const imageStart = Date.now();
-      const imageUrl = await generateImage({ prompt: content.imagePrompt });
+      const imageData = await generateImage({ prompt: content.imagePrompt });
       const imageDuration = Date.now() - imageStart;
       console.log(`[PERF] Image generation completed in ${imageDuration}ms`);
 
@@ -109,15 +109,15 @@ export const runStory = async (
         `[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: ${imageDuration}ms)`
       );
 
-      return { ...content, imageUrl };
+      return { ...content, imageData };
     } catch (error) {
       console.error('Image generation failed, continuing without image:', error);
-      return { ...content, imageUrl: undefined };
+      return { ...content, imageData: undefined };
     }
   }
 
   const totalDuration = Date.now() - startTime;
   console.log(`[PERF] Total runStory duration: ${totalDuration}ms (LLM: ${llmDuration}ms, Image: disabled)`);
 
-  return { ...content, imageUrl: undefined };
+  return { ...content, imageData: undefined };
 };

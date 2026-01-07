@@ -1,20 +1,21 @@
 import Image from 'next/image';
 
 interface StoryImageProps {
-  imageUrl?: string;
-  imagePrompt?: string;
+  imageData?: string;
+  imagePrompt: string;
   isLoading: boolean;
 }
 
-export default function StoryImage({ imageUrl, imagePrompt, isLoading }: StoryImageProps) {
+export default function StoryImage({ imageData, imagePrompt, isLoading }: StoryImageProps) {
+  // Renamed from imageUrl
   return (
     <div className='w-full p-4 md:w-1/2 md:p-6 lg:p-8'>
       <div className='flex items-center justify-center'>
         <div className='w-full max-w-2xl md:max-w-none'>
           <div className='relative aspect-square w-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-lg'>
-            {imageUrl ? (
+            {imageData ? ( // Renamed from imageUrl
               <Image
-                src={imageUrl}
+                src={imageData} // Renamed from imageUrl
                 alt={imagePrompt || 'Story scene'}
                 fill
                 className='object-cover'

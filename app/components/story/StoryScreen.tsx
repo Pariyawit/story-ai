@@ -146,7 +146,11 @@ export default function StoryScreen({
       </div>
 
       {/* Left Side: Image */}
-      <StoryImage imageUrl={currentBeat?.imageUrl} imagePrompt={currentBeat?.imagePrompt} isLoading={isLoading} />
+      <StoryImage
+        imageData={currentBeat?.imageData}
+        imagePrompt={currentBeat?.imagePrompt || ''}
+        isLoading={isLoading}
+      />
 
       {/* Right Side: Story Text and Choices */}
       <div className='flex w-full flex-col p-4 md:w-1/2 md:p-6 lg:p-8 pt-0'>

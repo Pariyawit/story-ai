@@ -29,7 +29,7 @@ export type StoryBeat = {
   storyText: string;
   choices: string[];
   choicesWithTransition?: ChoiceWithTransition[];
-  imageUrl?: string;
+  imageData?: string;
   imagePrompt: string;
   selected?: string;
 };

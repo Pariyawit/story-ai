@@ -71,16 +71,18 @@ export default function StoryCarousel({ history, language, startAtEnd = false }:
 
         {/* Image container */}
         <div className='overflow-hidden rounded-3xl bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 shadow-2xl'>
-          <div className='relative aspect-[16/10] w-full'>
-            {currentBeat.imageUrl ? (
-              <Image
-                src={currentBeat.imageUrl}
-                alt={currentBeat.imagePrompt || `Scene ${currentIndex + 1}`}
-                fill
-                className='object-cover transition-opacity duration-300'
-                sizes='(max-width: 768px) 100vw, 800px'
-                priority
-              />
+          <div className='relative aspect-square w-full'>
+            {currentBeat.imageData ? (
+              <div className='relative h-full w-full'>
+                <Image
+                  src={currentBeat.imageData}
+                  alt={currentBeat.imagePrompt || `Scene ${currentIndex + 1}`}
+                  fill
+                  className='object-cover transition-opacity duration-300'
+                  sizes='(max-width: 768px) 100vw, 800px'
+                  priority
+                />
+              </div>
             ) : (
               <div className='flex h-full w-full items-center justify-center'>
                 <p className='text-xl text-purple-700'>{t('carousel.noImage', language)}</p>

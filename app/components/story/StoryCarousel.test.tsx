@@ -10,21 +10,21 @@ const mockHistory: StoryBeat[] = [
     storyText: 'First scene story text',
     choices: ['Choice A', 'Choice B'],
     imagePrompt: 'first scene image',
-    imageUrl: 'https://example.com/image1.png',
+    imageData: 'https://example.com/image1.png',
     selected: 'Choice A',
   },
   {
-    storyText: 'Second scene story text',
+    storyText: 'Second scene',
     choices: ['Choice C', 'Choice D'],
     imagePrompt: 'second scene image',
-    imageUrl: 'https://example.com/image2.png',
+    imageData: 'https://example.com/image2.png',
     selected: 'Choice C',
   },
   {
-    storyText: 'Third scene story text - the ending',
+    storyText: 'Third scene',
     choices: [],
     imagePrompt: 'third scene image',
-    imageUrl: 'https://example.com/image3.png',
+    imageData: 'https://example.com/image3.png',
   },
 ];
 
@@ -44,7 +44,7 @@ describe('StoryCarousel', () => {
     // Should show Scene 3 of 3
     expect(screen.getByText('Scene 3 / 3')).toBeInTheDocument();
     // Should show the last story text
-    expect(screen.getByText('Third scene story text - the ending')).toBeInTheDocument();
+    expect(screen.getByText('Third scene')).toBeInTheDocument();
   });
 
   it('renders Thai text when language is th', () => {

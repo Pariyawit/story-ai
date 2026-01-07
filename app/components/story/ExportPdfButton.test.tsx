@@ -115,14 +115,16 @@ describe('ExportPdfButton', () => {
       storyText: 'First scene of the story.',
       choices: ['Choice A', 'Choice B'],
       imagePrompt: 'A magical forest',
-      imageUrl: 'https://example.com/image1.png',
+      imageData:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
       selected: 'Choice A',
     },
     {
       storyText: 'Second scene continues.',
       choices: ['Choice C', 'Choice D'],
       imagePrompt: 'A friendly dragon',
-      imageUrl: 'https://example.com/image2.png',
+      imageData:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
       selected: 'Choice C',
     },
   ];
@@ -130,7 +132,7 @@ describe('ExportPdfButton', () => {
   const mockHistoryWithoutImages: StoryBeat[] = [
     {
       storyText: 'Scene without image.',
-      choices: ['Choice A'],
+      choices: ['Choice A', 'Choice B'], // Added choices to match StoryBeat type
       imagePrompt: 'No image',
       selected: 'Choice A',
     },
@@ -144,8 +146,6 @@ describe('ExportPdfButton', () => {
   });
 
   it('shows loading state while exporting', async () => {
-    global.fetch = mockFetchResponse(true);
-
     render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
@@ -160,9 +160,7 @@ describe('ExportPdfButton', () => {
     });
   });
 
-  it('fetches images and adds them to PDF when story beats have image URLs', async () => {
-    global.fetch = mockFetchResponse(true);
-
+  it('adds base64 images to PDF when story beats have image data URLs', async () => {
     render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
@@ -172,18 +170,11 @@ describe('ExportPdfButton', () => {
       expect(mockSave).toHaveBeenCalled();
     });
 
-    // Should have fetched both images
-    expect(global.fetch).toHaveBeenCalledTimes(2);
-    expect(global.fetch).toHaveBeenCalledWith('https://example.com/image1.png');
-    expect(global.fetch).toHaveBeenCalledWith('https://example.com/image2.png');
-
-    // Should have called addImage for each story beat with an image
+    // Should have called addImage for each story beat with a base64 image
     expect(mockAddImage).toHaveBeenCalledTimes(2);
   });
 
   it('handles story beats without images gracefully', async () => {
-    global.fetch = mockFetchResponse(true);
-
     render(<ExportPdfButton history={mockHistoryWithoutImages} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
@@ -193,17 +184,23 @@ describe('ExportPdfButton', () => {
       expect(mockSave).toHaveBeenCalled();
     });
 
-    // Should not have fetched any images
-    expect(global.fetch).not.toHaveBeenCalled();
-
-    // Should not have called addImage
+    // Should not have called addImage since there are no images
     expect(mockAddImage).not.toHaveBeenCalled();
   });
 
-  it('handles image fetch failures gracefully', async () => {
-    global.fetch = mockFetchResponse(false); // Simulate failed fetch
+  it('handles non-base64 image URLs gracefully (legacy fallback)', async () => {
+    // Test with legacy HTTP URLs that should be ignored with a warning
+    const legacyHistory: StoryBeat[] = [
+      {
+        storyText: 'Scene with legacy URL.',
+        choices: ['Choice A'],
+        imagePrompt: 'A scene',
+        imageData: 'https://example.com/legacy-image.png',
+        selected: 'Choice A',
+      },
+    ];
 
-    render(<ExportPdfButton history={mockHistoryWithImages} playerName='Test Player' language='en' />);
+    render(<ExportPdfButton history={legacyHistory} playerName='Test Player' language='en' />);
 
     const button = screen.getByRole('button', { name: /Download Story Book \(PDF\)/i });
     fireEvent.click(button);
@@ -212,9 +209,9 @@ describe('ExportPdfButton', () => {
       expect(mockSave).toHaveBeenCalled();
     });
 
-    // PDF should still be generated even if images fail
+    // PDF should still be generated but without images (legacy URLs are ignored)
     expect(mockSave).toHaveBeenCalled();
-    // Images should not be added when fetch fails
+    // Images should not be added for non-base64 URLs
     expect(mockAddImage).not.toHaveBeenCalled();
   });
 

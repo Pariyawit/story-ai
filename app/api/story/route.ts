@@ -15,7 +15,7 @@ const storyBeatSchema = z.object({
   storyText: z.string(),
   choices: z.array(z.string()),
   choicesWithTransition: z.array(choiceWithTransitionSchema).optional(),
-  imageUrl: z.string().optional(),
+  imageData: z.string().optional(),
   imagePrompt: z.string(),
   selected: z.string().optional(),
 });

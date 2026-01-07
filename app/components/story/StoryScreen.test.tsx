@@ -18,14 +18,14 @@ const mockHistory: StoryBeat[] = [
     storyText: 'First scene story text.',
     choices: ['Choice A', 'Choice B'],
     imagePrompt: 'first scene image',
-    imageUrl: 'https://example.com/image1.png',
+    imageData: 'https://example.com/image1.png',
     selected: 'Choice A',
   },
   {
     storyText: 'Second scene story text.',
     choices: ['Choice C', 'Choice D'],
     imagePrompt: 'second scene image',
-    imageUrl: 'https://example.com/image2.png',
+    imageData: 'https://example.com/image2.png',
     selected: 'Choice C',
   },
 ];
@@ -35,7 +35,7 @@ const endedCurrentBeat: StoryBeat = {
   storyText: 'The end of the story.',
   choices: [],
   imagePrompt: 'ending scene image',
-  imageUrl: 'https://example.com/image3.png',
+  imageData: 'https://example.com/image3.png',
 };
 
 // Current beat with choices = story ongoing
@@ -43,7 +43,7 @@ const ongoingCurrentBeat: StoryBeat = {
   storyText: 'The story continues...',
   choices: ['Go left', 'Go right'],
   imagePrompt: 'scene image',
-  imageUrl: 'https://example.com/image.png',
+  imageData: 'https://example.com/image.png',
 };
 
 describe('StoryScreen', () => {
