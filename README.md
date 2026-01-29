@@ -2,6 +2,8 @@
 
 An AI-powered interactive storytelling app for kids that creates personalized adventures using GPT-4o-mini and DALL-E 2. Children follow the Hero's Journey through 12 magical story beats with beautiful watercolor illustrations, making choices that shape their unique adventure.
 
+**🌐 [Live Demo](https://story-ai-six.vercel.app/)** - Try it now!
+
 ![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black)
 ![React](https://img.shields.io/badge/React-19.2.3-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
