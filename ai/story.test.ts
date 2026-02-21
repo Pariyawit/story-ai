@@ -20,7 +20,9 @@ vi.mock('./generateImage', () => ({
   generateImage: vi.fn(),
 }));
 
-import { PLACEHOLDER_PATTERNS, isPlaceholderChoice, validateChoices, mapHistory } from './story';
+import { generateImage } from './generateImage';
+import { runLLM } from './llm';
+import { PLACEHOLDER_PATTERNS, isPlaceholderChoice, validateChoices, mapHistory, runStory } from './story';
 
 describe('PLACEHOLDER_PATTERNS', () => {
   it('contains expected number of patterns', () => {
@@ -255,5 +257,109 @@ describe('mapHistory', () => {
     const userMessage = messages.find((m) => m.role === 'user');
     expect(userMessage?.content).toContain('beat');
     expect(userMessage?.content).toContain('1');
+  });
+});
+
+describe('runStory', () => {
+  const mockRunLLM = vi.mocked(runLLM);
+  const mockGenerateImage = vi.mocked(generateImage);
+
+  beforeEach(() => {
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockRunLLM.mockReset();
+    mockGenerateImage.mockReset();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('returns parsed LLM content with imageData on success', async () => {
+    const llmContent = {
+      storyText: 'Once upon a time in a magical forest...',
+      choices: ['Follow the butterfly', 'Open the magic door'],
+      imagePrompt: 'forest scene',
+    };
+    mockRunLLM.mockResolvedValue({
+      role: 'assistant',
+      content: JSON.stringify(llmContent),
+      refusal: null,
+    });
+    mockGenerateImage.mockResolvedValue('data:image/png;base64,abc123');
+
+    const result = await runStory('Alice', [], 'girl', 'en', 'enchanted_forest');
+
+    expect(result).not.toBeNull();
+    expect(result!.storyText).toBe('Once upon a time in a magical forest...');
+    expect(result!.choices).toEqual(['Follow the butterfly', 'Open the magic door']);
+    expect(result!.imageData).toBe('data:image/png;base64,abc123');
+  });
+
+  it('returns null when LLM returns no content', async () => {
+    mockRunLLM.mockResolvedValue({
+      role: 'assistant',
+      content: '',
+      refusal: null,
+    });
+
+    const result = await runStory('Alice', [], 'girl', 'en', 'enchanted_forest');
+
+    expect(result).toBeNull();
+  });
+
+  it('returns null when LLM content is undefined', async () => {
+    mockRunLLM.mockResolvedValue({
+      role: 'assistant',
+      content: undefined as unknown as string,
+      refusal: null,
+    });
+
+    const result = await runStory('Alice', [], 'girl', 'en', 'enchanted_forest');
+
+    expect(result).toBeNull();
+  });
+
+  it('returns content with imageData undefined when generateImage throws', async () => {
+    const llmContent = {
+      storyText: 'A brave hero ventured forth...',
+      choices: ['Go left', 'Go right'],
+      imagePrompt: 'hero on a path',
+    };
+    mockRunLLM.mockResolvedValue({
+      role: 'assistant',
+      content: JSON.stringify(llmContent),
+      refusal: null,
+    });
+    mockGenerateImage.mockRejectedValue(new Error('Image generation failed'));
+
+    const result = await runStory('Bob', [], 'boy', 'en', 'enchanted_forest');
+
+    expect(result).not.toBeNull();
+    expect(result!.storyText).toBe('A brave hero ventured forth...');
+    expect(result!.choices).toEqual(['Go left', 'Go right']);
+    expect(result!.imageData).toBeUndefined();
+  });
+
+  it('calls validateChoices on LLM response choices', async () => {
+    const llmContent = {
+      storyText: 'The adventure begins...',
+      choices: ['Choice A', 'Choice B'],
+      imagePrompt: 'a scene',
+    };
+    mockRunLLM.mockResolvedValue({
+      role: 'assistant',
+      content: JSON.stringify(llmContent),
+      refusal: null,
+    });
+    mockGenerateImage.mockResolvedValue('data:image/png;base64,xyz');
+
+    const warnSpy = vi.spyOn(console, 'warn');
+
+    const result = await runStory('Charlie', [], 'boy', 'en', 'enchanted_forest');
+
+    expect(result).not.toBeNull();
+    expect(warnSpy).toHaveBeenCalledWith('[WARN] Proceeding with potentially invalid choices');
   });
 });

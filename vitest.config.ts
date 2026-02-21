@@ -14,6 +14,12 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: ['node_modules', '.next', '**/*.config.*'],
+      thresholds: {
+        statements: 70,
+        branches: 62,
+        functions: 67,
+        lines: 70,
+      },
     },
   },
   resolve: {
