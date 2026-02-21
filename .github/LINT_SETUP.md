@@ -53,7 +53,7 @@ This repository is configured with comprehensive linting and formatting tools to
 After cloning the repository:
 
 ```bash
-npm install
+pnpm install
 ```
 
 This will automatically set up Husky hooks via the `prepare` script.
@@ -66,22 +66,22 @@ Just code normally! The pre-commit hook will handle formatting automatically whe
 
 ```bash
 # Format all files
-npm run format
+pnpm run format
 
 # Check formatting without changes
-npm run format:check
+pnpm run format:check
 
 # Lint all files
-npm run lint
+pnpm run lint
 
 # Fix auto-fixable lint issues
-npm run lint:fix
+pnpm run lint:fix
 
 # Type check
-npm run typecheck
+pnpm run typecheck
 
 # Run all checks (before PR)
-npm run check
+pnpm run check
 ```
 
 ## What Happens on Commit
@@ -141,7 +141,7 @@ git commit --no-verify
 After setting up linting for the first time, format all existing files:
 
 ```bash
-npm run format
+pnpm run format
 ```
 
 Then commit the formatted files:
@@ -154,7 +154,7 @@ git commit -m "chore: format all files with Prettier"
 ### Scenario 2: Resolving Merge Conflicts with Formatting
 
 1. Resolve conflicts manually
-2. Run `npm run format` to ensure consistent formatting
+2. Run `pnpm run format` to ensure consistent formatting
 3. Commit the resolution
 
 ### Scenario 3: CI/CD Integration
@@ -163,7 +163,7 @@ Add this to your CI pipeline:
 
 ```yaml
 - name: Check code quality
-  run: npm run check
+  run: pnpm run check
 ```
 
 This runs:
@@ -178,7 +178,7 @@ This runs:
 
 ```bash
 # Reinstall hooks
-npm run prepare
+pnpm run prepare
 ```
 
 ### Conflicting Editor Formatting
@@ -186,7 +186,7 @@ npm run prepare
 1. Ensure editor is using the Prettier extension
 2. Check that `.prettierrc` is being read
 3. Restart editor
-4. Run `npm run format` to align
+4. Run `pnpm run format` to align
 
 ### ESLint Errors on Existing Code
 
@@ -239,8 +239,8 @@ These are pre-existing and don't block commits.
 
 If migrating existing code:
 
-1. Run `npm run format` to format all files
-2. Run `npm run lint:fix` to auto-fix linting issues
+1. Run `pnpm run format` to format all files
+2. Run `pnpm run lint:fix` to auto-fix linting issues
 3. Manually fix remaining warnings
 4. Commit with message: `chore: apply linting and formatting standards`
 
