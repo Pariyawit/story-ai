@@ -28,4 +28,3 @@ export const generateImage = async ({ prompt }: generateImageArgs) => {
   // Return as a complete data URL that can be used directly in img src
   return `data:image/png;base64,${b64Data}`;
 };
-
